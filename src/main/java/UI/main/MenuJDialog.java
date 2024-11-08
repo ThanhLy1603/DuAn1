@@ -4,17 +4,53 @@
  */
 package UI.main;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+
 /**
  *
  * @author hp
  */
-public class MenuJDialog extends javax.swing.JFrame {
+public class MenuJDialog extends javax.swing.JFrame implements initialize<Object>{
 
     /**
      * Creates new form MenuJDialog
      */
     public MenuJDialog() {
         initComponents();
+        init();
+    }
+    private void showPanel(JPanel visiblePanel) {
+    pnDoanhThu.setVisible(false);
+    pnKhachHang.setVisible(false);
+    pnNhanVien.setVisible(false);
+    visiblePanel.setVisible(true);
+}
+    
+        @Override
+    public void init() {
+            setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void fillToTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setForm(Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -39,6 +75,9 @@ public class MenuJDialog extends javax.swing.JFrame {
         pnContainers = new javax.swing.JPanel();
         pnDoanhThu = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        pnKhachHang = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        pnNhanVien = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,10 +110,20 @@ public class MenuJDialog extends javax.swing.JFrame {
         lblNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblNhanVien.setForeground(new java.awt.Color(255, 255, 255));
         lblNhanVien.setText("Nhân Viên");
+        lblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblNhanVienMouseClicked(evt);
+            }
+        });
 
         lblKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblKhachHang.setForeground(new java.awt.Color(255, 255, 255));
         lblKhachHang.setText("Khách Hàng");
+        lblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblKhachHangMouseClicked(evt);
+            }
+        });
 
         lblDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDoanhThu.setForeground(new java.awt.Color(255, 255, 255));
@@ -94,7 +143,7 @@ public class MenuJDialog extends javax.swing.JFrame {
         pnSideMenuLayout.setHorizontalGroup(
             pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnSideMenuLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(29, 29, 29)
                 .addGroup(pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblDoanhThu)
                     .addComponent(lblBanHang)
@@ -104,12 +153,12 @@ public class MenuJDialog extends javax.swing.JFrame {
                     .addComponent(lblNhanVien)
                     .addComponent(lblKhachHang)
                     .addComponent(lblThoat))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         pnSideMenuLayout.setVerticalGroup(
             pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnSideMenuLayout.createSequentialGroup()
-                .addGap(184, 184, 184)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnSideMenuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblBanHang)
                 .addGap(26, 26, 26)
                 .addComponent(lblSanPham)
@@ -125,7 +174,7 @@ public class MenuJDialog extends javax.swing.JFrame {
                 .addComponent(lblDoanhThu)
                 .addGap(29, 29, 29)
                 .addComponent(lblThoat)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(55, 55, 55))
         );
 
         pnContainers.setBackground(new java.awt.Color(255, 255, 255));
@@ -149,10 +198,44 @@ public class MenuJDialog extends javax.swing.JFrame {
             .addGroup(pnDoanhThuLayout.createSequentialGroup()
                 .addGap(159, 159, 159)
                 .addComponent(jLabel1)
-                .addContainerGap(607, Short.MAX_VALUE))
+                .addContainerGap(467, Short.MAX_VALUE))
         );
 
         pnContainers.add(pnDoanhThu, "card2");
+
+        jLabel2.setText("Khách Hàng");
+
+        javax.swing.GroupLayout pnKhachHangLayout = new javax.swing.GroupLayout(pnKhachHang);
+        pnKhachHang.setLayout(pnKhachHangLayout);
+        pnKhachHangLayout.setHorizontalGroup(
+            pnKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnKhachHangLayout.createSequentialGroup()
+                .addGap(511, 511, 511)
+                .addComponent(jLabel2)
+                .addContainerGap(548, Short.MAX_VALUE))
+        );
+        pnKhachHangLayout.setVerticalGroup(
+            pnKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnKhachHangLayout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(jLabel2)
+                .addContainerGap(534, Short.MAX_VALUE))
+        );
+
+        pnContainers.add(pnKhachHang, "card3");
+
+        javax.swing.GroupLayout pnNhanVienLayout = new javax.swing.GroupLayout(pnNhanVien);
+        pnNhanVien.setLayout(pnNhanVienLayout);
+        pnNhanVienLayout.setHorizontalGroup(
+            pnNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1124, Short.MAX_VALUE)
+        );
+        pnNhanVienLayout.setVerticalGroup(
+            pnNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+        );
+
+        pnContainers.add(pnNhanVien, "card4");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,7 +278,32 @@ public class MenuJDialog extends javax.swing.JFrame {
     private void lblDoanhThuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDoanhThuMouseClicked
         // TODO add your handling code here:
         //Hiên thị panel và ẩn panel
+        showPanel(pnDoanhThu);
+        //Khởi tạo đố tượng
+        DoanhThuJDialog dialog = new DoanhThuJDialog();
+        JPanel contentPanel = new JPanel();;// Tạo một JPanel để chứa nội dung của dialog
+        contentPanel.setLayout(new BorderLayout());// Thiết lập layout BorderLayout cho contentPanel
+        contentPanel.add(dialog.getContentPane(), BorderLayout.CENTER);// Thêm nội dung của dialog vào giữa contentPanel
+        contentPanel.setPreferredSize(new Dimension(pnDoanhThu.getWidth(), pnDoanhThu.getHeight()));// Đặt kích thước ưu tiên của contentPanel bằng kích thước của panel
+        pnDoanhThu.removeAll();
+        pnDoanhThu.setLayout(new BorderLayout());// Thiết lập layout cho panel thành BorderLayout
+        pnDoanhThu.add(contentPanel, BorderLayout.CENTER);// Thêm contentPanel vào giữa của pnBanHang
+        // Cập nhật lại giao diện của pnBanHang để đảm bảo các thay đổi được áp dụng
+        pnDoanhThu.revalidate();
+        pnDoanhThu.repaint();
+        // Điều chỉnh kích thước của dialog để vừa với nội dung
+        dialog.pack();
     }//GEN-LAST:event_lblDoanhThuMouseClicked
+
+    private void lblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblKhachHangMouseClicked
+        // TODO add your handling code here:
+        showPanel(pnKhachHang);
+    }//GEN-LAST:event_lblKhachHangMouseClicked
+
+    private void lblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhanVienMouseClicked
+        // TODO add your handling code here:
+        showPanel(pnNhanVien);
+    }//GEN-LAST:event_lblNhanVienMouseClicked
 
     /**
      * @param args the command line arguments
@@ -234,6 +342,7 @@ public class MenuJDialog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblDoanhThu;
@@ -245,6 +354,10 @@ public class MenuJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel lblThoat;
     private javax.swing.JPanel pnContainers;
     private javax.swing.JPanel pnDoanhThu;
+    private javax.swing.JPanel pnKhachHang;
+    private javax.swing.JPanel pnNhanVien;
     private javax.swing.JPanel pnSideMenu;
     // End of variables declaration//GEN-END:variables
+
+    
 }
