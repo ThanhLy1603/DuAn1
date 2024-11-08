@@ -8,15 +8,43 @@ package UI.main;
  *
  * @author hp
  */
-public class DoanhThuJDialog extends javax.swing.JFrame {
+public class DoanhThuJDialog extends javax.swing.JFrame implements initialize<Object>{
 
     /**
      * Creates new form DoanhThuJDialog
      */
     public DoanhThuJDialog() {
         initComponents();
+        init();
+    }
+    
+    
+    @Override
+    public void init() {
+        setLocationRelativeTo(null);
+    }
+    
+    
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public void fillToTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    public void setForm(Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -372,4 +400,5 @@ public class DoanhThuJDialog extends javax.swing.JFrame {
     private javax.swing.JTable tblDoanhThu;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
 }
