@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package UI.main;
+package UI.Component;
 
 /**
  *
  * @author hp
  */
-public class DoanhThuJDialog extends javax.swing.JFrame implements initialize<Object>{
+public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Object>{
 
     /**
      * Creates new form DoanhThuJDialog
@@ -93,7 +93,7 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements initialize<Ob
         pnTongKhachHangLayout.setHorizontalGroup(
             pnTongKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTongKhachHangLayout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+                .addContainerGap(77, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(59, 59, 59))
             .addGroup(pnTongKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
