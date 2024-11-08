@@ -98,8 +98,6 @@ public class NhanVienJDialog extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -189,10 +187,6 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
         jLabel15.setText("Lọc theo vai trò");
 
-        jComboBoxLocGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBoxLocVaiTro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -248,6 +242,11 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 "Tên nhân viên", "Giới tính", "Chức vụ", "Lương", "Số điện thoại", "Email"
             }
         ));
+        tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblNhanVienMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblNhanVien);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -277,6 +276,11 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 "Tên quản lý", "Giới tính", "Chức vụ", "Lương", "Số điện thoại", "Email"
             }
         ));
+        tblQuanLy.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQuanLyMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblQuanLy);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -353,6 +357,14 @@ public class NhanVienJDialog extends javax.swing.JFrame {
     private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSDTActionPerformed
+
+    private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblNhanVienMouseClicked
+
+    private void tblQuanLyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQuanLyMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblQuanLyMouseClicked
 
     /**
      * @param args the command line arguments
