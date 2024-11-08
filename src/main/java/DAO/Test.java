@@ -12,11 +12,15 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         LoaiSanPhamDAO DAO = new LoaiSanPhamDAO();
+        LoaiSanPham loai = DAO.getDataById("DRE");
         List<LoaiSanPham> list = DAO.getAllData();
         
-        for(LoaiSanPham o : list) {
-            System.out.println(o.getMaLoai());
-            System.out.println(o.getTenLoai());
-        }
+        System.out.println(loai.getMaLoai());
+        System.out.println(loai.getTenLoai());
+        
+//        for(LoaiSanPham o : list) {
+//            System.out.println(o.getMaLoai());
+//            System.out.println(o.getTenLoai());
+//        }
     }
 }

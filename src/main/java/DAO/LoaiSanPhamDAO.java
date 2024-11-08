@@ -8,6 +8,7 @@ import Utils.JDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +42,22 @@ public class LoaiSanPhamDAO implements DAO<LoaiSanPham, String>{
 
     @Override
     public LoaiSanPham getDataById(String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        LoaiSanPham loai = new LoaiSanPham();
+        
+        String sql = "Select * from LoaiSanPham Where MaLoai=?";
+        Object[] values = {ma};
+        
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        try {
+            while (rs.next()) {
+                loai.setMaLoai(rs.getString("MaLoai"));
+                loai.setTenLoai(rs.getString("TenLoai"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoaiSanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return loai;
     }
 
     @Override
