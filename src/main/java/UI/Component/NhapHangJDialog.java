@@ -376,7 +376,7 @@ public class NhapHangJDialog extends javax.swing.JFrame {
         Tabs.getAccessibleContext().setAccessibleName("Thông tin đã thêm");
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jLabel6.setText("Thiết lập thông tin nhập hàng");
+        jLabel6.setText("Thông tin sản phẩm");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

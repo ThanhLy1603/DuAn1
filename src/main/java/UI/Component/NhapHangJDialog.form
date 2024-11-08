@@ -602,7 +602,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="16" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Thi&#x1ebf;t l&#x1ead;p th&#xf4;ng tin nh&#x1ead;p h&#xe0;ng"/>
+        <Property name="text" type="java.lang.String" value="Th&#xf4;ng tin s&#x1ea3;n ph&#x1ea9;m"/>
       </Properties>
     </Component>
   </SubComponents>
