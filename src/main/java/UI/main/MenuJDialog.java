@@ -7,12 +7,14 @@ package UI.main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import UI.Component.DoanhThuJDialog;
+import UI.Component.Initialize;
 
 /**
  *
  * @author hp
  */
-public class MenuJDialog extends javax.swing.JFrame implements initialize<Object>{
+public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object>{
 
     /**
      * Creates new form MenuJDialog
@@ -28,7 +30,7 @@ public class MenuJDialog extends javax.swing.JFrame implements initialize<Object
     visiblePanel.setVisible(true);
 }
     
-        @Override
+    @Override
     public void init() {
             setLocationRelativeTo(null);
     }
