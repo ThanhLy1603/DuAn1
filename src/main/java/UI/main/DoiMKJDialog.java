@@ -15,6 +15,8 @@ public class DoiMKJDialog extends javax.swing.JFrame {
      */
     public DoiMKJDialog() {
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     /**

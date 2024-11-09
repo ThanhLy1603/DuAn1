@@ -15,6 +15,8 @@ public class LoginJDialog extends javax.swing.JFrame {
      */
     public LoginJDialog() {
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     /**
