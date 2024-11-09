@@ -62,17 +62,32 @@ public class LoaiSanPhamDAO implements DAO<LoaiSanPham, String>{
 
     @Override
     public void insertData(LoaiSanPham o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "EXEC SP_InsertUpdateLoaiSanPham ?,?";
+        Object[] values = {
+            o.getMaLoai(), 
+            o.getTenLoai()
+        };
+        
+        JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void updateData(LoaiSanPham o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "EXEC SP_InsertUpdateLoaiSanPham ?,?";
+        Object[] values = {
+            o.getMaLoai(), 
+            o.getTenLoai()
+        };
+        
+        JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void deleteById(String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "DELETE FROM LoaiSanPham WHERE MaLoai = ?";
+        Object[] values = {ma};
+        
+        JDBC.executeUpdate(sql, values);
     }
     
 }
