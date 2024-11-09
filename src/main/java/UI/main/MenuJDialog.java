@@ -9,12 +9,19 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import UI.Component.DoanhThuJDialog;
 import Interfaces.Initialize;
+import UI.Component.KhachHangJDialog;
+import UI.Component.KhuyenMaiJDialog;
+import UI.Component.NhanVienJDialog;
+import UI.Component.NhapHangJDialog;
+import UI.Component.SanPhamJDialog;
+import UI.Component.SanPhamJDialog;
+import javax.swing.JFrame;
 
 /**
  *
  * @author hp
  */
-public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object>{
+public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object> {
 
     /**
      * Creates new form MenuJDialog
@@ -23,16 +30,48 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         initComponents();
         init();
     }
+
     private void showPanel(JPanel visiblePanel) {
-    pnDoanhThu.setVisible(false);
-    pnKhachHang.setVisible(false);
-    pnNhanVien.setVisible(false);
-    visiblePanel.setVisible(true);
-}
-    
+        pnDoanhThu.setVisible(false);
+        pnKhachHang.setVisible(false);
+        pnNhanVien.setVisible(false);
+        pnSanPham.setVisible(false);
+        pnKhuyenMai.setVisible(false);
+        pnNhapHang.setVisible(false);
+        visiblePanel.setVisible(true);
+    }
+
+    public void showDialogInPanel(JPanel targetPanel, JFrame dialog) {
+        // Tạo một JPanel để chứa nội dung của dialog
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout()); // Thiết lập layout BorderLayout cho contentPanel
+
+        // Thêm nội dung của dialog vào giữa contentPanel
+        contentPanel.add(dialog.getContentPane(), BorderLayout.CENTER);
+
+        // Đặt kích thước ưu tiên của contentPanel bằng kích thước của panel đích
+        contentPanel.setPreferredSize(new Dimension(targetPanel.getWidth(), targetPanel.getHeight()));
+
+        // Xóa tất cả các thành phần hiện có trong targetPanel
+        targetPanel.removeAll();
+
+        // Thiết lập layout cho targetPanel
+        targetPanel.setLayout(new BorderLayout());
+
+        // Thêm contentPanel vào targetPanel
+        targetPanel.add(contentPanel, BorderLayout.CENTER);
+
+        // Cập nhật lại giao diện của targetPanel để đảm bảo các thay đổi được áp dụng
+        targetPanel.revalidate();
+        targetPanel.repaint();
+
+        // Điều chỉnh kích thước của dialog để vừa với nội dung
+        dialog.pack();
+    }
+
     @Override
     public void init() {
-            setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
 
     @Override
@@ -74,12 +113,16 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         lblKhachHang = new javax.swing.JLabel();
         lblDoanhThu = new javax.swing.JLabel();
         lblThoat = new javax.swing.JLabel();
+        lblNhapHang = new javax.swing.JLabel();
         pnContainers = new javax.swing.JPanel();
         pnDoanhThu = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         pnKhachHang = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         pnNhanVien = new javax.swing.JPanel();
+        pnSanPham = new javax.swing.JPanel();
+        pnKhuyenMai = new javax.swing.JPanel();
+        pnNhapHang = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,6 +143,11 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         lblSanPham.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblSanPham.setForeground(new java.awt.Color(255, 255, 255));
         lblSanPham.setText("Sản Phẩm");
+        lblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSanPhamMouseClicked(evt);
+            }
+        });
 
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setForeground(new java.awt.Color(255, 255, 255));
@@ -108,6 +156,11 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         lblKhuyenMai.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblKhuyenMai.setForeground(new java.awt.Color(255, 255, 255));
         lblKhuyenMai.setText("Khuyến Mại");
+        lblKhuyenMai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblKhuyenMaiMouseClicked(evt);
+            }
+        });
 
         lblNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblNhanVien.setForeground(new java.awt.Color(255, 255, 255));
@@ -140,12 +193,21 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         lblThoat.setForeground(new java.awt.Color(255, 255, 255));
         lblThoat.setText("Thoát");
 
+        lblNhapHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNhapHang.setForeground(new java.awt.Color(255, 255, 255));
+        lblNhapHang.setText("Nhập  Hàng");
+        lblNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblNhapHangMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnSideMenuLayout = new javax.swing.GroupLayout(pnSideMenu);
         pnSideMenu.setLayout(pnSideMenuLayout);
         pnSideMenuLayout.setHorizontalGroup(
             pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnSideMenuLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(31, 31, 31)
                 .addGroup(pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblDoanhThu)
                     .addComponent(lblBanHang)
@@ -154,13 +216,14 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
                     .addComponent(lblKhuyenMai)
                     .addComponent(lblNhanVien)
                     .addComponent(lblKhachHang)
-                    .addComponent(lblThoat))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addComponent(lblThoat)
+                    .addComponent(lblNhapHang))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         pnSideMenuLayout.setVerticalGroup(
             pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnSideMenuLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnSideMenuLayout.createSequentialGroup()
+                .addGap(165, 165, 165)
                 .addComponent(lblBanHang)
                 .addGap(26, 26, 26)
                 .addComponent(lblSanPham)
@@ -174,9 +237,11 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
                 .addComponent(lblKhachHang)
                 .addGap(26, 26, 26)
                 .addComponent(lblDoanhThu)
-                .addGap(29, 29, 29)
+                .addGap(27, 27, 27)
+                .addComponent(lblNhapHang)
+                .addGap(33, 33, 33)
                 .addComponent(lblThoat)
-                .addGap(55, 55, 55))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnContainers.setBackground(new java.awt.Color(255, 255, 255));
@@ -200,7 +265,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
             .addGroup(pnDoanhThuLayout.createSequentialGroup()
                 .addGap(159, 159, 159)
                 .addComponent(jLabel1)
-                .addContainerGap(467, Short.MAX_VALUE))
+                .addContainerGap(622, Short.MAX_VALUE))
         );
 
         pnContainers.add(pnDoanhThu, "card2");
@@ -221,7 +286,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
             .addGroup(pnKhachHangLayout.createSequentialGroup()
                 .addGap(92, 92, 92)
                 .addComponent(jLabel2)
-                .addContainerGap(534, Short.MAX_VALUE))
+                .addContainerGap(689, Short.MAX_VALUE))
         );
 
         pnContainers.add(pnKhachHang, "card3");
@@ -234,10 +299,49 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         );
         pnNhanVienLayout.setVerticalGroup(
             pnNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 642, Short.MAX_VALUE)
+            .addGap(0, 797, Short.MAX_VALUE)
         );
 
         pnContainers.add(pnNhanVien, "card4");
+
+        javax.swing.GroupLayout pnSanPhamLayout = new javax.swing.GroupLayout(pnSanPham);
+        pnSanPham.setLayout(pnSanPhamLayout);
+        pnSanPhamLayout.setHorizontalGroup(
+            pnSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1124, Short.MAX_VALUE)
+        );
+        pnSanPhamLayout.setVerticalGroup(
+            pnSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 797, Short.MAX_VALUE)
+        );
+
+        pnContainers.add(pnSanPham, "card5");
+
+        javax.swing.GroupLayout pnKhuyenMaiLayout = new javax.swing.GroupLayout(pnKhuyenMai);
+        pnKhuyenMai.setLayout(pnKhuyenMaiLayout);
+        pnKhuyenMaiLayout.setHorizontalGroup(
+            pnKhuyenMaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1124, Short.MAX_VALUE)
+        );
+        pnKhuyenMaiLayout.setVerticalGroup(
+            pnKhuyenMaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 797, Short.MAX_VALUE)
+        );
+
+        pnContainers.add(pnKhuyenMai, "card6");
+
+        javax.swing.GroupLayout pnNhapHangLayout = new javax.swing.GroupLayout(pnNhapHang);
+        pnNhapHang.setLayout(pnNhapHangLayout);
+        pnNhapHangLayout.setHorizontalGroup(
+            pnNhapHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1124, Short.MAX_VALUE)
+        );
+        pnNhapHangLayout.setVerticalGroup(
+            pnNhapHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 797, Short.MAX_VALUE)
+        );
+
+        pnContainers.add(pnNhapHang, "card7");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -283,29 +387,44 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         showPanel(pnDoanhThu);
         //Khởi tạo đố tượng
         DoanhThuJDialog dialog = new DoanhThuJDialog();
-        JPanel contentPanel = new JPanel();;// Tạo một JPanel để chứa nội dung của dialog
-        contentPanel.setLayout(new BorderLayout());// Thiết lập layout BorderLayout cho contentPanel
-        contentPanel.add(dialog.getContentPane(), BorderLayout.CENTER);// Thêm nội dung của dialog vào giữa contentPanel
-        contentPanel.setPreferredSize(new Dimension(pnDoanhThu.getWidth(), pnDoanhThu.getHeight()));// Đặt kích thước ưu tiên của contentPanel bằng kích thước của panel
-        pnDoanhThu.removeAll();
-        pnDoanhThu.setLayout(new BorderLayout());// Thiết lập layout cho panel thành BorderLayout
-        pnDoanhThu.add(contentPanel, BorderLayout.CENTER);// Thêm contentPanel vào giữa của pnBanHang
-        // Cập nhật lại giao diện của pnBanHang để đảm bảo các thay đổi được áp dụng
-        pnDoanhThu.revalidate();
-        pnDoanhThu.repaint();
-        // Điều chỉnh kích thước của dialog để vừa với nội dung
-        dialog.pack();
+        showDialogInPanel(pnDoanhThu, dialog);
     }//GEN-LAST:event_lblDoanhThuMouseClicked
 
     private void lblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblKhachHangMouseClicked
         // TODO add your handling code here:
         showPanel(pnKhachHang);
+        KhachHangJDialog dialog= new KhachHangJDialog();
+        showDialogInPanel(pnKhachHang, dialog);
     }//GEN-LAST:event_lblKhachHangMouseClicked
 
     private void lblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhanVienMouseClicked
         // TODO add your handling code here:
         showPanel(pnNhanVien);
+        NhanVienJDialog dialog=new NhanVienJDialog();
+        showDialogInPanel(pnNhanVien, dialog);
     }//GEN-LAST:event_lblNhanVienMouseClicked
+
+    private void lblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSanPhamMouseClicked
+        // TODO add your handling code here:
+        showPanel(pnSanPham);
+        SanPhamJDialog dialog=new SanPhamJDialog();
+        showDialogInPanel(pnSanPham, dialog);
+
+    }//GEN-LAST:event_lblSanPhamMouseClicked
+
+    private void lblKhuyenMaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblKhuyenMaiMouseClicked
+        // TODO add your handling code here:
+        showPanel(pnKhuyenMai);
+        KhuyenMaiJDialog dialog=new KhuyenMaiJDialog();
+        showDialogInPanel(pnKhuyenMai, dialog);
+    }//GEN-LAST:event_lblKhuyenMaiMouseClicked
+
+    private void lblNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhapHangMouseClicked
+        // TODO add your handling code here:
+        showPanel(pnNhapHang);
+        NhapHangJDialog dialog= new NhapHangJDialog();
+        showDialogInPanel(pnNhapHang, dialog);
+    }//GEN-LAST:event_lblNhapHangMouseClicked
 
     /**
      * @param args the command line arguments
@@ -352,14 +471,17 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
     private javax.swing.JLabel lblKhachHang;
     private javax.swing.JLabel lblKhuyenMai;
     private javax.swing.JLabel lblNhanVien;
+    private javax.swing.JLabel lblNhapHang;
     private javax.swing.JLabel lblSanPham;
     private javax.swing.JLabel lblThoat;
     private javax.swing.JPanel pnContainers;
     private javax.swing.JPanel pnDoanhThu;
     private javax.swing.JPanel pnKhachHang;
+    private javax.swing.JPanel pnKhuyenMai;
     private javax.swing.JPanel pnNhanVien;
+    private javax.swing.JPanel pnNhapHang;
+    private javax.swing.JPanel pnSanPham;
     private javax.swing.JPanel pnSideMenu;
     // End of variables declaration//GEN-END:variables
 
-    
 }
