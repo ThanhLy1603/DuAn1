@@ -4,6 +4,8 @@
  */
 package UI.Component;
 
+import Interfaces.Initialize;
+
 /**
  *
  * @author hp

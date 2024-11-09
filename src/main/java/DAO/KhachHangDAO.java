@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Interfaces.DAO;
 import Entity.KhachHang;
 import Utils.JDBC;
 import java.sql.ResultSet;

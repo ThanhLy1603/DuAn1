@@ -8,7 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import UI.Component.DoanhThuJDialog;
-import UI.Component.Initialize;
+import Interfaces.Initialize;
 
 /**
  *

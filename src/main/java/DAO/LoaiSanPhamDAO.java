@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
+import Interfaces.DAO;
 import Entity.LoaiSanPham;
 import Utils.JDBC;
 import java.sql.ResultSet;
