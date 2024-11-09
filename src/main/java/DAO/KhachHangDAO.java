@@ -63,14 +63,28 @@ public class KhachHangDAO implements DAO<KhachHang, String> {
     @Override
     public void insertData(KhachHang kh) {
         String sql="EXEC SP_InsertUpdateKhachHang ?, ?, ?,?,?";
-        Object[] values={kh.getMaKH(),kh.getTenKH(),kh.isGioiTinh(),kh.getDiaChi(),kh.getSoDT()};
+        Object[] values = {
+            kh.getMaKH(),
+            kh.getTenKH(),
+            kh.isGioiTinh(),
+            kh.getDiaChi(),
+            kh.getSoDT()
+        };
+        
         JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void updateData(KhachHang kh) {
         String sql="EXEC SP_InsertUpdateKhachHang ?, ?, ?,?,?";
-        Object[] values={kh.getTenKH(),kh.isGioiTinh(),kh.getDiaChi(),kh.getSoDT(),kh.getMaKH()};
+        Object[] values = {
+            kh.getTenKH(),
+            kh.isGioiTinh(),
+            kh.getDiaChi(),
+            kh.getSoDT(),
+            kh.getMaKH()
+        };
+        
         JDBC.executeUpdate(sql, values);
     }
 
