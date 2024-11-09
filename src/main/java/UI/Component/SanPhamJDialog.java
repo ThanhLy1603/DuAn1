@@ -202,6 +202,7 @@ public class SanPhamJDialog extends javax.swing.JFrame {
         jLabel11.setText("Size");
 
         jLabel12.setText("Hinh anh");
+        jLabel12.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel13.setText("Hình Ảnh");
 
