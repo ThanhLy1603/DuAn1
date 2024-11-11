@@ -17,7 +17,7 @@ public class testHoaDon {
         HoaDonDAO hd= new HoaDonDAO();
         List<HoaDon> list = hd.getAllData();
         
-        hd.updateData(new HoaDon(
+        hd.ppdateData(new HoaDon(
                 "HD12", 
                 "PS43138", 
                 "KH5", 
