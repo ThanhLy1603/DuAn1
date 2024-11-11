@@ -99,6 +99,5 @@ public class HoaDonDao implements DAO<HoaDon,String>{
         
         JDBC.executeUpdate(sql, values);
     }
-    
 }
 
