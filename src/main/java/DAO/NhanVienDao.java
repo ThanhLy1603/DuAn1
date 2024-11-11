@@ -4,7 +4,6 @@
  */
 package DAO;
 
-import Entity.KhachHang;
 import Entity.NhanVien;
 import Entity.SanPham;
 import Interfaces.DAO;
