@@ -26,6 +26,13 @@ public class testHoaDon {
                 "Chuyển khoản", 
                 true
         ));
+        
+        for (HoaDon o: list) {
+            System.out.println(o.getMaHD()); 
+            System.out.println(o.getHinhThuc());
+            System.out.println(o.isTrangThai());
+            System.out.println("-----------------------");
+        }
     }
   
 }
