@@ -14,10 +14,11 @@ import java.util.List;
  */
 public class testHoaDon {
     public static void main(String[] args) {
-        HoaDonDAO hd= new HoaDonDAO();
+        
+        HoaDonDAO hd = new HoaDonDAO();
         List<HoaDon> list = hd.getAllData();
         
-        hd.ppdateData(new HoaDon(
+        hd.updateData(new HoaDon(
                 "HD12", 
                 "PS43138", 
                 "KH5", 
