@@ -5,7 +5,6 @@
 package DAO;
 
 import Entity.NhanVien;
-import Entity.SanPham;
 import Interfaces.DAO;
 import Utils.JDBC;
 import java.sql.ResultSet;

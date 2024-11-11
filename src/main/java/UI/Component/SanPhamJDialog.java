@@ -94,8 +94,6 @@ public class SanPhamJDialog extends javax.swing.JFrame {
 
         jLabel3.setText("Tên sản phẩm");
 
-        cbxLoaiSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel4.setText("Đơn giá");
 
         jLabel5.setText("Số lượng ");
