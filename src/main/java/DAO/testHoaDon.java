@@ -15,24 +15,24 @@ import java.util.List;
 public class testHoaDon {
     public static void main(String[] args) {
         
-        HoaDonDAO hd = new HoaDonDAO();
-        List<HoaDon> list = hd.getAllData();
-        
-        hd.updateData(new HoaDon(
-                "HD12", 
-                "PS43138", 
-                "KH5", 
-                new Date(2024-1900, 11-1, 11), 
-                "Chuyển khoản", 
-                true
-        ));
-        
-        for (HoaDon o: list) {
-            System.out.println(o.getMaHD()); 
-            System.out.println(o.getHinhThuc());
-            System.out.println(o.isTrangThai());
-            System.out.println("-----------------------");
-        }
+//        HoaDonDAO hd = new HoaDonDAO();
+//        List<HoaDon> list = hd.getAllData();
+//        
+//        hd.updateData(new HoaDon(
+//                "HD12", 
+//                "PS43138", 
+//                "KH5", 
+//                new Date(2024-1900, 11-1, 11), 
+//                "Chuyển khoản", 
+//                true
+//        ));
+//        
+//        for (HoaDon o: list) {
+//            System.out.println(o.getMaHD()); 
+//            System.out.println(o.getHinhThuc());
+//            System.out.println(o.isTrangThai());
+//            System.out.println("-----------------------");
+//        }
     }
   
 }
