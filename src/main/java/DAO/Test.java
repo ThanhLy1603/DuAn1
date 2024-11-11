@@ -5,25 +5,19 @@
 package DAO;
 import Entity.SanPham;
 import java.util.List;
+import Entity.KhuyenMai;
+import java.util.Date;
 /**
  *
  * @author anhth
  */
 public class Test {
     public static void main(String[] args) {
-       SanPhamDAO sp = new SanPhamDAO();
-       List<SanPham> list = sp.getAllData();
-        
+       KhuyenMaiDAO dao = new KhuyenMaiDAO();
        
-       
-        for(SanPham o : list) {
-            System.out.println(o.getMaSP());
-            System.out.println(o.getMaLoai());
-            System.out.println(o.getTenSP());
-            System.out.println(o.getSoLuong());
-            System.out.println(o.getDonGia());
-            System.out.println(o.isTrangThai());
-            System.out.println("----------------------------");
-        }
-    }
+       List<KhuyenMai> list = dao.getAllData();
+           
+       dao.deleteById("KM6");
+    } 
 }
+

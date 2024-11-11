@@ -71,17 +71,38 @@ public class KhuyenMaiDAO implements DAO<KhuyenMai, String> {
 
     @Override
     public void insertData(KhuyenMai o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "EXEC SP_InsertUpdateKhuyenMai ?,?,?,?,?";
+        Object[] values = {
+            o.getMaKM(), 
+            o.getTenKM(), 
+            o.getMucKM(), 
+            o.getNgayBatDau(), 
+            o.getNgayKetThuc()
+        };
+        
+        JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void updateData(KhuyenMai o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "EXEC SP_InsertUpdateKhuyenMai ?,?,?,?,?";
+        Object[] values = {
+            o.getMaKM(), 
+            o.getTenKM(), 
+            o.getMucKM(), 
+            o.getNgayBatDau(), 
+            o.getNgayKetThuc()
+        };
+        
+        JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void deleteById(String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "DELETE FROM KhuyenMai WHERE MaKM = ?";
+        Object[] values = {ma};
+        
+        JDBC.executeUpdate(sql, values);
     }
     
 }
