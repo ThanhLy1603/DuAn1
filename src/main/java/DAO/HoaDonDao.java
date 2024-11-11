@@ -5,7 +5,6 @@
 package DAO;
 
 import Entity.HoaDon;
-import Entity.NhanVien;
 import Interfaces.DAO;
 import Utils.JDBC;
 import java.sql.ResultSet;
@@ -32,7 +31,7 @@ public class HoaDonDao implements DAO<HoaDon,String>{
                 hd.setMaKH(rs.getString("MaKH"));
                 hd.setNgayLap(rs.getDate("NgayLap"));
                 hd.setHinhThuc(rs.getString("HinhThuc"));
-                hd.setTrangThai(rs.getBoolean("TrangThai"));
+                hd.setTrangThai(rs.getInt("TrangThai")==1);
                 list.add(hd);
             }
             return list;
@@ -54,7 +53,7 @@ public class HoaDonDao implements DAO<HoaDon,String>{
                 hd.setMaKH(rs.getString("MaKH"));
                 hd.setNgayLap(rs.getDate("NgayLap"));
                 hd.setHinhThuc(rs.getString("HinhThuc"));
-                hd.setTrangThai(rs.getBoolean("TrangThai"));
+                hd.setTrangThai(rs.getInt("TrangThai")==1);
                 return hd;
             }
         } catch (Exception e) {
@@ -65,29 +64,31 @@ public class HoaDonDao implements DAO<HoaDon,String>{
 
     @Override
     public void insertData(HoaDon hd) {
-         String sql = "EXEC SP_InsertUpdateHoaDon ?, ?, ?,?,?,?";
+        String sql = "EXEC SP_InsertUpdateHoaDon ?,?,?,?,?,?";
         Object[] values = {
-            hd.getMaKH(),
+            hd.getMaHD(),
             hd.getMaNV(),
             hd.getMaKH(),
             hd.getNgayLap(),
             hd.getHinhThuc(),
-            hd.isTrangThai()
+            hd.isTrangThai()?1:0
         };
+        
         JDBC.executeUpdate(sql, values);
     }
 
     @Override
     public void updateData(HoaDon hd) {
-         String sql="EXEC SP_InsertUpdateHoaDon ?, ?, ?,?,?,?";
-      Object[] values = {
-            hd.getMaKH(),
+        String sql="EXEC SP_InsertUpdateHoaDon ?,?,?,?,?,?";
+        Object[] values = {
+            hd.getMaHD(),
             hd.getMaNV(),
             hd.getMaKH(),
             hd.getNgayLap(),
             hd.getHinhThuc(),
-            hd.isTrangThai()
+            hd.isTrangThai()?1:0
         };
+      
         JDBC.executeUpdate(sql, values);
     }
 
@@ -95,7 +96,9 @@ public class HoaDonDao implements DAO<HoaDon,String>{
     public void deleteById(String ma) {
         String sql="Delete FROM HoaDon WHERE MaHD=?";
         Object[] values={ma};
+        
         JDBC.executeUpdate(sql, values);
     }
     
 }
+
