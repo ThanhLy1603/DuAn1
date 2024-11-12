@@ -13,11 +13,48 @@ import java.util.Date;
  */
 public class Test {
     public static void main(String[] args) {
-       KhuyenMaiDAO dao = new KhuyenMaiDAO();
+       SanPhamDAO dao = new SanPhamDAO();
+       List<SanPham> list = dao.getAllData();
        
-       List<KhuyenMai> list = dao.getAllData();
-           
-       dao.deleteById("KM6");
+//       for (SanPham o : list) {
+//           System.out.println(o.getMaSP());
+//           System.out.println(o.getTenSP());
+//           System.out.println(o.getMaLoai());
+//           System.out.println(o.getSoLuong());
+//           System.out.println(o.getDonGia());
+//           System.out.println(o.getMauSac());
+//           System.out.println(o.getChatLieu());
+//           System.out.println(o.getSize());
+//           System.out.println(o.getHinhAnh());
+//           System.out.println(o.isTrangThai());
+//           System.out.println("---------------------------");
+//       }
+
+//        SanPham o = dao.getDataById("SP12");
+//        
+//        System.out.println(o.getMaSP());
+//           System.out.println(o.getTenSP());
+//           System.out.println(o.getMaLoai());
+//           System.out.println(o.getSoLuong());
+//           System.out.println(o.getDonGia());
+//           System.out.println(o.getMauSac());
+//           System.out.println(o.getChatLieu());
+//           System.out.println(o.getSize());
+//           System.out.println(o.getHinhAnh());
+//           System.out.println(o.isTrangThai());
+        dao.insertData(new SanPham(
+                "SP11", 
+                "JEAN", 
+                "Quần Jeans đi du lịch",
+                350000, 
+                150, 
+                "Xanh",
+                "Jean", 
+                "XXL", 
+                "", 
+                false
+        ));
+        
     } 
 }
 

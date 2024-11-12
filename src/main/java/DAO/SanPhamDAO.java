@@ -33,6 +33,10 @@ public class SanPhamDAO implements DAO<SanPham, String>{
                         rs.getString("TenSanPham"),
                         rs.getDouble("DonGia"), 
                         rs.getInt("SoLuong"), 
+                        rs.getString("MauSac"),
+                        rs.getString("ChatLieu"),
+                        rs.getString("Size"),
+                        rs.getString("HinhAnh"),
                         rs.getByte("TrangThai")==1
                 ));
             }
@@ -44,7 +48,7 @@ public class SanPhamDAO implements DAO<SanPham, String>{
 
     @Override
     public SanPham getDataById(String ma) {
-        SanPham sp = new SanPham();
+        SanPham sp = null;
         
         String sql = "SELECT * FROM SanPham where MaSanPham=?";
         Object[] values = {ma};
@@ -52,14 +56,20 @@ public class SanPhamDAO implements DAO<SanPham, String>{
         ResultSet rs = JDBC.executeQuery(sql, values);
         try {
             while(rs.next()){
-                sp.setMaSP(rs.getString("MaSanPham"));
-                sp.setMaLoai(rs.getString("MaLoai"));
-                sp.setTenSP(rs.getString("TenSanPham"));
-                sp.setDonGia(rs.getDouble("DonGia"));
-                sp.setSoLuong(rs.getInt("SoLuong"));
-                sp.setTrangThai(rs.getByte("TrangThai")==1);
+                sp = new SanPham(
+                        rs.getString("MaSanPham"),
+                        rs.getString("MaLoai"), 
+                        rs.getString("TenSanPham"),
+                        rs.getDouble("DonGia"), 
+                        rs.getInt("SoLuong"), 
+                        rs.getString("MauSac"),
+                        rs.getString("ChatLieu"),
+                        rs.getString("Size"),
+                        rs.getString("HinhAnh"),
+                        rs.getByte("TrangThai")==1
+                );
             }
-            }    catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sp;
@@ -67,13 +77,17 @@ public class SanPhamDAO implements DAO<SanPham, String>{
 
     @Override
     public void insertData(SanPham o) {
-        String sql = "EXEC SP_InsertUpdateSanPham ?,?,?,?,?,?";
+        String sql = "EXEC SP_InsertUpdateSanPham ?,?,?,?,?,?,?,?,?,?";
         Object[] values = {
             o.getMaSP(),
             o.getMaLoai(),
             o.getTenSP(),
             o.getDonGia(),
             o.getSoLuong(),
+            o.getMauSac(),
+            o.getChatLieu(),
+            o.getSize(),
+            o.getHinhAnh(),
             o.isTrangThai()?1:0
         };
             
@@ -82,17 +96,21 @@ public class SanPhamDAO implements DAO<SanPham, String>{
 
     @Override
     public void updateData(SanPham o) {
-        String sql = "EXEC SP_InsertUpdateSanPham ?,?,?,?,?,?";
+        String sql = "EXEC SP_InsertUpdateSanPham ?,?,?,?,?,?,?,?,?,?";
         Object[] values = {
             o.getMaSP(),
             o.getMaLoai(),
             o.getTenSP(),
             o.getDonGia(),
             o.getSoLuong(),
+            o.getMauSac(),
+            o.getChatLieu(),
+            o.getSize(),
+            o.getHinhAnh(),
             o.isTrangThai()?1:0
         };
             
-        JDBC.executeUpdate(sql, values); 
+        JDBC.executeUpdate(sql, values);
     }
 
     @Override
@@ -102,5 +120,4 @@ public class SanPhamDAO implements DAO<SanPham, String>{
         
         JDBC.executeUpdate(sql, values);
     }
-    
 }

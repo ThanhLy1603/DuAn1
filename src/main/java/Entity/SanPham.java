@@ -14,17 +14,25 @@ public class SanPham {
     private String tenSP;
     private double donGia;
     private int soLuong;
+    private String mauSac;
+    private String chatLieu;
+    private String size;
+    private String hinhAnh;
     private boolean trangThai;
 
     public SanPham() {
     }
 
-    public SanPham(String maSP, String maLoai, String tenSP, double donGia, int soLuong, boolean trangThai) {
+    public SanPham(String maSP, String maLoai, String tenSP, double donGia, int soLuong, String mauSac, String chatLieu, String size, String hinhAnh, boolean trangThai) {
         this.maSP = maSP;
         this.maLoai = maLoai;
         this.tenSP = tenSP;
         this.donGia = donGia;
         this.soLuong = soLuong;
+        this.mauSac = mauSac;
+        this.chatLieu = chatLieu;
+        this.size = size;
+        this.hinhAnh = hinhAnh;
         this.trangThai = trangThai;
     }
 
@@ -68,11 +76,43 @@ public class SanPham {
         this.soLuong = soLuong;
     }
 
+    public String getMauSac() {
+        return mauSac;
+    }
+
+    public void setMauSac(String mauSac) {
+        this.mauSac = mauSac;
+    }
+
+    public String getChatLieu() {
+        return chatLieu;
+    }
+
+    public void setChatLieu(String chatLieu) {
+        this.chatLieu = chatLieu;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+
     public boolean isTrangThai() {
         return trangThai;
     }
 
     public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
-    } 
+    }
 }
