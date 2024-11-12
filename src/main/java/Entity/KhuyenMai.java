@@ -67,4 +67,9 @@ public class KhuyenMai {
     public void setNgayKetThuc(Date ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
+
+    @Override
+    public String toString() {
+        return "KhuyenMai{" + "maKM=" + maKM + ", tenKM=" + tenKM + ", mucKM=" + mucKM + ", ngayBatDau=" + ngayBatDau + ", ngayKetThuc=" + ngayKetThuc + '}';
+    } 
 }

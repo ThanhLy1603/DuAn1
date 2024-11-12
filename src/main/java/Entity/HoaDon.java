@@ -77,4 +77,9 @@ public class HoaDon {
     public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
     }
+
+    @Override
+    public String toString() {
+        return "HoaDon{" + "maHD=" + maHD + ", maNV=" + maNV + ", maKH=" + maKH + ", ngayLap=" + ngayLap + ", hinhThuc=" + hinhThuc + ", trangThai=" + trangThai + '}';
+    }
 }

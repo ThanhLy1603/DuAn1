@@ -95,4 +95,9 @@ public class NhanVien {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "NhanVien{" + "maNV=" + maNV + ", matKhau=" + matKhau + ", tenNV=" + tenNV + ", gioiTinh=" + gioiTinh + ", chucVu=" + chucVu + ", luong=" + luong + ", soDT=" + soDT + ", email=" + email + '}';
+    }
 }

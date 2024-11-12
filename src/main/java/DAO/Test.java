@@ -17,17 +17,7 @@ public class Test {
        List<SanPham> list = dao.getAllData();
        
 //       for (SanPham o : list) {
-//           System.out.println(o.getMaSP());
-//           System.out.println(o.getTenSP());
-//           System.out.println(o.getMaLoai());
-//           System.out.println(o.getSoLuong());
-//           System.out.println(o.getDonGia());
-//           System.out.println(o.getMauSac());
-//           System.out.println(o.getChatLieu());
-//           System.out.println(o.getSize());
-//           System.out.println(o.getHinhAnh());
-//           System.out.println(o.isTrangThai());
-//           System.out.println("---------------------------");
+//           System.out.println(o.toString());
 //       }
 
 //        SanPham o = dao.getDataById("SP12");
@@ -42,6 +32,11 @@ public class Test {
 //           System.out.println(o.getSize());
 //           System.out.println(o.getHinhAnh());
 //           System.out.println(o.isTrangThai());
+
+        list.forEach((SanPham) -> {
+            System.out.println(SanPham.toString());
+        });
+        
         dao.insertData(new SanPham(
                 "SP11", 
                 "JEAN", 

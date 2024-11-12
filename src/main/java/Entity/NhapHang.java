@@ -55,4 +55,9 @@ public class NhapHang {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
+
+    @Override
+    public String toString() {
+        return "NhapHang{" + "maNhap=" + maNhap + ", maSP=" + maSP + ", ngayNhap=" + ngayNhap + ", soLuong=" + soLuong + '}';
+    }
 }

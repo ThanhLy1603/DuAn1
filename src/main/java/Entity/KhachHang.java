@@ -65,4 +65,9 @@ public class KhachHang {
     public void setSoDT(String soDT) {
         this.soDT = soDT;
     }
+
+    @Override
+    public String toString() {
+        return "KhachHang{" + "maKH=" + maKH + ", tenKH=" + tenKH + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + ", soDT=" + soDT + '}';
+    }
 }

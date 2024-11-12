@@ -115,4 +115,9 @@ public class SanPham {
     public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
     }
+
+    @Override
+    public String toString() {
+        return "SanPham{" + "maSP=" + maSP + ", maLoai=" + maLoai + ", tenSP=" + tenSP + ", donGia=" + donGia + ", soLuong=" + soLuong + ", mauSac=" + mauSac + ", chatLieu=" + chatLieu + ", size=" + size + ", hinhAnh=" + hinhAnh + ", trangThai=" + trangThai + '}';
+    }
 }

@@ -85,4 +85,9 @@ public class ChiTietHoaDon {
     public void setThue(float thue) {
         this.thue = thue;
     }
+
+    @Override
+    public String toString() {
+        return "ChiTietHoaDon{" + "maCTHD=" + maCTHD + ", maHD=" + maHD + ", maSP=" + maSP + ", maKM=" + maKM + ", soLuong=" + soLuong + ", gia=" + gia + ", thue=" + thue + '}';
+    }
 }
