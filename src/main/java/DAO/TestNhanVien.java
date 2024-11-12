@@ -25,7 +25,5 @@ public class TestNhanVien {
         
         System.out.println(nv2.getTenNV());
         
-    }
-    
-    
+    }   
 }
