@@ -52,6 +52,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         btnReset = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        cbHinhThuc = new javax.swing.JComboBox<>();
         pnGioHang = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGioHang = new javax.swing.JTable();
@@ -155,6 +157,10 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel15.setText("TẠO ĐƠN");
 
+        jLabel16.setText("Hình Thức");
+
+        cbHinhThuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout pnTaoDonLayout = new javax.swing.GroupLayout(pnTaoDon);
         pnTaoDon.setLayout(pnTaoDonLayout);
         pnTaoDonLayout.setHorizontalGroup(
@@ -190,12 +196,6 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel8))
                                 .addGap(1, 1, 1))
-                            .addGroup(pnTaoDonLayout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTienThuaTraKhach)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTaoDonLayout.createSequentialGroup()
                                 .addGap(0, 6, Short.MAX_VALUE)
                                 .addGroup(pnTaoDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -204,7 +204,17 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(31, 31, 31)
                                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(40, 40, 40)))))
+                                .addGap(40, 40, 40))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTaoDonLayout.createSequentialGroup()
+                                .addGroup(pnTaoDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel16))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnTaoDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cbHinhThuc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtTienThuaTraKhach))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel10)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnTaoDonLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -245,7 +255,11 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(txtTienThuaTraKhach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addGap(52, 52, 52)
+                .addGap(12, 12, 12)
+                .addGroup(pnTaoDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(cbHinhThuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(pnTaoDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -437,6 +451,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnThem;
+    private javax.swing.JComboBox<String> cbHinhThuc;
     private javax.swing.JComboBox<String> cbKhuyenMai;
     private javax.swing.JComboBox<String> cbMaKH;
     private javax.swing.JLabel jLabel1;
@@ -446,6 +461,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
