@@ -4,31 +4,33 @@
  */
 package Entity;
 
+import java.util.Date;
+
 /**
  *
  * @author ADMIN
  */
 public class NhapHang {
-    private String maNhap;
+    private int maNhap;
     private String maSP;
-    private String ngayNhap;
+    private Date ngayNhap;
     private int soLuong;
 
     public NhapHang() {
     }
 
-    public NhapHang(String maNhap, String maSP, String ngayNhap, int soLuong) {
+    public NhapHang(int maNhap, String maSP, Date ngayNhap, int soLuong) {
         this.maNhap = maNhap;
         this.maSP = maSP;
         this.ngayNhap = ngayNhap;
         this.soLuong = soLuong;
     }
 
-    public String getMaNhap() {
+    public int getMaNhap() {
         return maNhap;
     }
 
-    public void setMaNhap(String maNhap) {
+    public void setMaNhap(int maNhap) {
         this.maNhap = maNhap;
     }
 
@@ -40,11 +42,11 @@ public class NhapHang {
         this.maSP = maSP;
     }
 
-    public String getNgayNhap() {
+    public Date getNgayNhap() {
         return ngayNhap;
     }
 
-    public void setNgayNhap(String ngayNhap) {
+    public void setNgayNhap(Date ngayNhap) {
         this.ngayNhap = ngayNhap;
     }
 
