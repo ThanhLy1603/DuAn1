@@ -40,4 +40,8 @@ public class LoaiSanPham {
     public String toString() {
         return "LoaiSanPham{" + "maLoai=" + maLoai + ", tenLoai=" + tenLoai + '}';
     }
+    
+    public Object[] getObjectArray() {
+        return new Object[]{maLoai, tenLoai};
+    }
 }

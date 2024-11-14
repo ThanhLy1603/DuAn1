@@ -3,20 +3,123 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package UI.Component;
+import Entity.LoaiSanPham;
+import Entity.SanPham;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import DAO.LoaiSanPhamDAO;
+import javax.swing.DefaultComboBoxModel;
+import DAO.SanPhamDAO;
+import Map.MapLoaiSanPham;
 
 /**
  *
  * @author hp
  */
 public class SanPhamJDialog extends javax.swing.JFrame {
-
+    private final LoaiSanPhamDAO daoLSP = new LoaiSanPhamDAO();
+    private final SanPhamDAO daoSP = new SanPhamDAO();
+    
     /**
      * Creates new form SanPhamJDialog1
      */
     public SanPhamJDialog() {
         initComponents();
+        init();
     }
-
+    
+    public void init() {
+        setLocationRelativeTo(null);
+        generateCombobox();
+        fillToTblSanPham();
+    }
+    
+    public void generateCombobox() {
+        CbxLoaiSP();
+        CbxSize();
+        CbxMacSac();
+    }
+    
+    public void CbxSize() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] size = {
+            "S",
+            "L",
+            "M",
+            "XL",
+            "XXL",
+            "XXXL"
+        };
+        
+        for (String o : size) {
+            model.addElement(o);
+        }
+        
+        cbxSize.setModel(model);
+    }
+    
+    public void CbxMacSac() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] mauSac = {
+            "Đen",
+            "Hồng",
+            "Trắng",
+            "Xanh",
+            "Vàng",
+            "Đỏ"
+        };
+        
+        for (String o :mauSac) {
+            model.addElement(o);
+        }
+        
+        cbxMauSac.setModel(model);
+    }
+    
+    public void CbxLoaiSP() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<LoaiSanPham> list = daoLSP.getAllData();
+        
+        for (LoaiSanPham o : list) {
+            model.addElement(o.getTenLoai());
+        }
+        
+        cbxLoaiSanPham.setModel(model);
+    }
+    
+    public void fillToTable() {
+        fillToTblSanPham(); 
+    }
+    
+    public void fillToTblSanPham() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<SanPham> list = daoSP.getAllData();
+        String[] col = {
+            "Mã sản phẩm",
+            "Tên loại",
+            "Tên sản phẩm",
+            "Đơn giá",
+            "Số lượng",
+            "Trạng thái"
+        };
+        
+        model.setColumnIdentifiers(col);
+        list.forEach((o) -> {
+            model.addRow(new Object[]{
+                o.getMaSP(),
+                MapLoaiSanPham.getTenByMa(o.getMaLoai()),
+                o.getTenSP(),
+                o.getDonGia(),
+                o.getSoLuong(),
+                o.isTrangThai()?"Còn hàng":"Hết hàng"
+            });
+        });
+        
+        tblSanPham.setModel(model);
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -617,4 +720,5 @@ public class SanPhamJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField txtTenLoai;
     private javax.swing.JTextField txtTenSP;
     // End of variables declaration//GEN-END:variables
+
 }

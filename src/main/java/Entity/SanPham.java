@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Entity;
-
+import Map.MapLoaiSanPham;
 /**
  *
  * @author ADMIN
@@ -119,5 +119,58 @@ public class SanPham {
     @Override
     public String toString() {
         return "SanPham{" + "maSP=" + maSP + ", maLoai=" + maLoai + ", tenSP=" + tenSP + ", donGia=" + donGia + ", soLuong=" + soLuong + ", mauSac=" + mauSac + ", chatLieu=" + chatLieu + ", size=" + size + ", hinhAnh=" + hinhAnh + ", trangThai=" + trangThai + '}';
+    }
+    
+//    public Object[] getObjectArray() {
+//        return new Object[]{
+//            maSP,
+//            maLoai,
+//            tenSP,
+//            donGia,donGia,
+//            soLuong,
+//            mauSac,
+//            chatLieu,
+//            size,hinhAnh,
+//            trangThai
+//        };
+//    }
+//    
+//    public Map<String, String> getDataMap() {
+//        Map<String, String> map = new TreeMap<>();
+//        LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
+//        List<LoaiSanPham> list = dao.getAllData();
+//        
+//        for (LoaiSanPham o : list) {
+//            map.put(
+//                    o.getMaLoai(), 
+//                    o.getTenLoai()
+//            );
+//        }
+//        
+//        return map;
+//    }
+//    
+//    public String getTenByMa(String ma) {
+//        String tenLoai = null;
+//        Map<String, String> map = getDataMap();
+//        
+//        for (Map.Entry<String, String> o : map.entrySet()){
+//            if (o.getKey().equalsIgnoreCase(ma)){
+//                tenLoai = o.getValue();
+//            }
+//        }
+//        
+//        return tenLoai;
+//    }
+    
+    public Object[] getObjectSanPham() {
+        return new Object[]{
+            getMaSP(),
+            MapLoaiSanPham.getTenByMa(maSP),
+            getTenSP(),
+            getDonGia(),
+            getSoLuong(),
+            isTrangThai()?"Còn hàng":"Hết hàng"
+        };
     }
 }

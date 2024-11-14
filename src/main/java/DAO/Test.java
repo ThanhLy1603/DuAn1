@@ -7,49 +7,23 @@ import Entity.SanPham;
 import java.util.List;
 import Entity.KhuyenMai;
 import java.util.Date;
+import Entity.LoaiSanPham;
+import DAO.SanPhamDAO;
 /**
  *
  * @author anhth
  */
 public class Test {
     public static void main(String[] args) {
-       SanPhamDAO dao = new SanPhamDAO();
-       List<SanPham> list = dao.getAllData();
+        LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
+        List<LoaiSanPham> list = dao.getAllData();
        
-//       for (SanPham o : list) {
-//           System.out.println(o.toString());
-//       }
-
-//        SanPham o = dao.getDataById("SP12");
-//        
-//        System.out.println(o.getMaSP());
-//           System.out.println(o.getTenSP());
-//           System.out.println(o.getMaLoai());
-//           System.out.println(o.getSoLuong());
-//           System.out.println(o.getDonGia());
-//           System.out.println(o.getMauSac());
-//           System.out.println(o.getChatLieu());
-//           System.out.println(o.getSize());
-//           System.out.println(o.getHinhAnh());
-//           System.out.println(o.isTrangThai());
-
-        list.forEach((SanPham) -> {
-            System.out.println(SanPham.toString());
-        });
+        SanPhamDAO daoSP = new SanPhamDAO();
+        List<SanPham> listSP = daoSP.getAllData();
         
-        dao.insertData(new SanPham(
-                "SP11", 
-                "JEAN", 
-                "Quần Jeans đi du lịch",
-                350000, 
-                150, 
-                "Xanh",
-                "Jean", 
-                "XXL", 
-                "", 
-                false
-        ));
-        
+        for (SanPham o : listSP) {
+            System.out.println(o.toString());
+        }
     } 
 }
 
