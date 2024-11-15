@@ -4,19 +4,138 @@
  */
 package UI.Detail;
 
+import DAO.SanPhamDAO;
+import Entity.SanPham;
+import Interfaces.CheckForm;
+import Interfaces.CrudController;
+import Interfaces.Function;
+import Interfaces.Initialize;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import Map.MapLoaiSanPham;
+
 /**
  *
  * @author ADMIN
  */
-public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
-
+public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
+        CheckForm<SanPham, String>, Function,CrudController{
+    private SanPhamDAO dao = new SanPhamDAO();
+    private MapLoaiSanPham map = new MapLoaiSanPham();
     /**
      * Creates new form ChiTietSPDetailJDialog
      */
     public ChiTietSPDetailJDialog() {
         initComponents();
     }
+    
+    
+    @Override
+    public void init() {
+        generateCbx();
+        fillToTable();
+        
+        setLocationRelativeTo(null);
+    }
 
+    @Override
+    public void fillToTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<SanPham> list = dao.getAllData();
+        String[] col = {
+            "Tên sản phẩm",
+            "Tên loại",
+            "Màu sắc",
+            "Chất liệu",
+            "Size",
+            "Hình ảnh"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (SanPham o : list) {
+            model.addRow(new Object[]{
+                o.getTenSP(),
+                
+            });
+        }
+    }
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setForm(SanPham o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckValid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckContain(List<SanPham> list, String ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void selectPhoto() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void create() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,9 +158,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
         cbxSize = new javax.swing.JComboBox<>();
         lblHinhAnh = new javax.swing.JLabel();
         btnThem2 = new javax.swing.JButton();
-        btnSua2 = new javax.swing.JButton();
         btnLamMoi2 = new javax.swing.JButton();
-        btnXoa2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblChiTietSanPham = new javax.swing.JTable();
 
@@ -64,11 +181,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
 
         btnThem2.setText("Thêm");
 
-        btnSua2.setText("Sửa ");
-
         btnLamMoi2.setText("Làm mới");
-
-        btnXoa2.setText("Xóa");
 
         tblChiTietSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -118,10 +231,8 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
                 .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLamMoi2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSua2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnThem2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnXoa2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLamMoi2, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                    .addComponent(btnThem2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(96, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
@@ -150,14 +261,10 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(cbxMauSac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(24, 24, 24)
                         .addComponent(btnThem2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSua2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLamMoi2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnXoa2))
+                        .addGap(46, 46, 46)
+                        .addComponent(btnLamMoi2))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -221,9 +328,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLamMoi2;
-    private javax.swing.JButton btnSua2;
     private javax.swing.JButton btnThem2;
-    private javax.swing.JButton btnXoa2;
     private javax.swing.JComboBox<String> cbxMauSac;
     private javax.swing.JComboBox<String> cbxSize;
     private javax.swing.JLabel jLabel10;
@@ -239,4 +344,5 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField txtChiTietSP;
     private javax.swing.JTextField txtMaSP2;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -14,6 +14,7 @@ import Interfaces.Function;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Map.MapLoaiSanPham;
+import Utils.DialogBox;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 
@@ -119,6 +120,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         String tenSP = txtTenSP.getText();
         String donGia = txtDonGia.getText();
         String soLuong = txtSoLuong.getText();
+        String loaiSP = (String) cbxLoaiSanPham.getSelectedItem();
         String patternNumber = "\\d*";
         String patternText = "\\s+";
         int count = 0;
@@ -134,13 +136,22 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         }
         
         if (donGia.equals("") || !donGia.matches(patternNumber)) {
-            sb.append("Bạn chưa nhập đơn giá\n");
+            sb.append("Bạn chưa nhập đơn giá. Vui lòng nhập số nguyên\n");
             count++;
         }
         
-        if (soLuong.equals("") || !soLuong.matches(patternText)) {
-            sb.append("Bạn chưa nhập số lượng\n");
+        if (soLuong.equals("") || !soLuong.matches(patternNumber)) {
+            sb.append("Bạn chưa nhập số lượng. Vui lòng nhập số nguyên\n");
             count++;
+        }
+        
+        if (loaiSP == null) {
+            sb.append("Bạn chưa chọn loại sản phẩm\n");
+            count++;
+        }
+        
+        if (sb.length() > 0) {
+            DialogBox.notice(this, sb.toString()); 
         }
         
         return count == 0;
@@ -148,47 +159,133 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
 
     @Override
     public boolean isCheckContain(List<SanPham> list, String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int count = 0;
+        for (SanPham o : list) {
+            if (ma.equals(o.getMaSP())) count++;
+        }
+        
+        return count != 0;
     }
 
     @Override
     public boolean isCheckDuplicate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maSP = txtMaSP.getText();
+        List<SanPham> list = dao.getAllData();
+        
+        if (isCheckContain(list, maSP)) {
+            DialogBox.notice(this, "Mã sản phẩm này có rồi. Vui lòng nhập mã sản phẩm khác");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public boolean isCheckUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maSP = txtMaSP.getText();
+        List<SanPham> list = dao.getAllData();
+        
+        if (!isCheckContain(list, maSP)) {
+            DialogBox.notice(this, "Không tìm thấy mã sản phẩm cần sửa");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public boolean isCheckDelete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maSP = txtMaSP.getText();
+        List<SanPham> list = dao.getAllData();
+        
+        if (!isCheckContain(list, maSP)) {
+            DialogBox.notice(this, "Không tìm thấy mã sản phẩm cần xóa");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public void create() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (isCheckValid()) {
+            if (isCheckDuplicate()) {
+                String itemCbx = map.getIDByValue((String) cbxLoaiSanPham.getSelectedItem());
+                
+                dao.insertData(new SanPham(
+                        txtMaSP.getText(), 
+                        itemCbx, 
+                        txtTenSP.getText(), 
+                        Double.parseDouble(txtDonGia.getText()), 
+                        Integer.parseInt(txtSoLuong.getText()), 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        true
+                )); 
+                
+                DialogBox.notice(this, "Thêm thành công");
+                fillToTable();
+            }
+        }
     }
 
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SanPham sp = new SanPham(
+                "", 
+                "", 
+                "", 
+                0, 
+                0, 
+                "", 
+                "",
+                "",
+                "", 
+                true
+        );
+        setForm(sp);
+        txtDonGia.setText("");
+        txtSoLuong.setText("");
+        txtTrangThai.setText("");
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (isCheckValid()) {
+            if (isCheckUpdate()) {
+                String itemCbx = map.getIDByValue((String) cbxLoaiSanPham.getSelectedItem());
+                
+                dao.insertData(new SanPham(
+                        txtMaSP.getText(), 
+                        itemCbx, 
+                        txtTenSP.getText(), 
+                        Double.parseDouble(txtDonGia.getText()), 
+                        Integer.parseInt(txtSoLuong.getText()), 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        true
+                )); 
+                
+                DialogBox.notice(this, "Sửa thành công");
+                fillToTable();
+            }
+        }
     }
 
     @Override
     public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (isCheckDelete()) {
+            if (DialogBox.confirm(this, "Bạn có muốn xóa sản phẩm này không?")){
+                dao.deleteById(txtMaSP.getText());
+                DialogBox.notice(this, "Xóa thành công");
+                fillToTable();
+                reset();
+            }
+        }
     }
     
     /**
@@ -234,12 +331,32 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         txtTrangThai.setEnabled(false);
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnLamMoi.setText("Làm mới");
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -277,12 +394,13 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
                                 .addComponent(txtMaSP)
                                 .addComponent(txtTenSP, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(cbxLoaiSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDonGia)
                             .addComponent(txtSoLuong)
@@ -345,6 +463,22 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         showDetail();
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        create();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        reset();
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        update();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLamMoi;
@@ -368,6 +502,11 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     // End of variables declaration//GEN-END:variables
     @Override
     public void selectPhoto() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+        @Override
+    public boolean isCheckLength() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -32,6 +32,7 @@ public class MapLoaiSanPham implements MapData{
         return map;
     }
     
+    @Override
     public String getValueByID(String id) {
         String tenLoai = null;
         Map<String, String> map = getMapData();
@@ -47,15 +48,15 @@ public class MapLoaiSanPham implements MapData{
 
     @Override
     public String getIDByValue(String value) {
-        String tenLoai = null;
+        String id = null;
         Map<String, String> map = getMapData();
         
         for (Map.Entry<String, String> o : map.entrySet()){
-            if (o.getKey().equalsIgnoreCase(value)){
-                tenLoai = o.getKey();
+            if (o.getValue().equalsIgnoreCase(value)){
+                id = o.getKey();
             }
         }
         
-        return tenLoai;
+        return id;
     }
 }
