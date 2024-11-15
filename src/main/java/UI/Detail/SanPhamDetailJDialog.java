@@ -322,6 +322,18 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
 
         jLabel3.setText("Tên sản phẩm");
 
+        txtMaSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaSPActionPerformed(evt);
+            }
+        });
+
+        cbxLoaiSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxLoaiSanPhamActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Đơn giá");
 
         jLabel5.setText("Số lượng ");
@@ -478,6 +490,14 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         delete();
     }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaSPActionPerformed
+
+    private void cbxLoaiSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLoaiSanPhamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxLoaiSanPhamActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
