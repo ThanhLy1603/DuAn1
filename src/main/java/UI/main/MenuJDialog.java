@@ -33,7 +33,12 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
        initComponents();
         init();
     }
-
+    
+    @Override
+    public void init() {
+        setLocationRelativeTo(null);
+    }
+    
     private void showPanel(JPanel visiblePanel) {
         pnDoanhThu.setVisible(false);
         pnKhachHang.setVisible(false);
@@ -71,32 +76,6 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         // Điều chỉnh kích thước của dialog để vừa với nội dung
         dialog.pack();
     }
-
-    @Override
-    public void init() {
-        setLocationRelativeTo(null);
-    }
-
-    @Override
-    public void fillToTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setForm(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void generateCbx() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -487,4 +466,28 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
     private javax.swing.JPanel pnSideMenu;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public void fillToTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setForm(Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

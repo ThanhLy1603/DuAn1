@@ -10,7 +10,6 @@ import Entity.SanPham;
 import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Interfaces.Initialize;
-import Interfaces.Function;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Map.MapLoaiSanPham;
@@ -23,11 +22,12 @@ import javax.swing.DefaultComboBoxModel;
  * @author ADMIN
  */
 public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
-        CheckForm<SanPham, String>, Function,CrudController {
+        CheckForm<SanPham, String>,CrudController {
     private SanPhamDAO dao = new SanPhamDAO();
     private LoaiSanPhamDAO daoLSP = new LoaiSanPhamDAO();
     private DecimalFormat df = new DecimalFormat("#");
     private MapLoaiSanPham map = new MapLoaiSanPham();
+    private ChiTietSPDetailJDialog dialog = new ChiTietSPDetailJDialog();
     /**
      * Creates new form SanPhamDetailJDialog
      */
@@ -500,11 +500,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     private javax.swing.JTextField txtTenSP;
     private javax.swing.JTextField txtTrangThai;
     // End of variables declaration//GEN-END:variables
-    @Override
-    public void selectPhoto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
+
         @Override
     public boolean isCheckLength() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

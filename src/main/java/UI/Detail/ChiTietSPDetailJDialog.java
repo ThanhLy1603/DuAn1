@@ -8,27 +8,34 @@ import DAO.SanPhamDAO;
 import Entity.SanPham;
 import Interfaces.CheckForm;
 import Interfaces.CrudController;
-import Interfaces.Function;
 import Interfaces.Initialize;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Map.MapLoaiSanPham;
+import Utils.DialogBox;
+import Utils.SelectPhotos;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author ADMIN
  */
 public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
-        CheckForm<SanPham, String>, Function,CrudController{
+        CheckForm<SanPham, String>, CrudController{
     private SanPhamDAO dao = new SanPhamDAO();
     private MapLoaiSanPham map = new MapLoaiSanPham();
+    private JFileChooser file = new JFileChooser();
+    private SelectPhotos photo = new SelectPhotos();
+    private SanPhamDetailJDialog dialog = new SanPhamDetailJDialog();
     /**
      * Creates new form ChiTietSPDetailJDialog
      */
     public ChiTietSPDetailJDialog() {
         initComponents();
+        
+        init();
     }
-    
     
     @Override
     public void init() {
@@ -55,87 +62,163 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         
         for (SanPham o : list) {
             model.addRow(new Object[]{
+                o.getMaSP(),
                 o.getTenSP(),
-                
+                o.getMauSac(),
+                o.getChatLieu(),
+                o.getSize(),
+                o.getHinhAnh()
             });
         }
+        
+        tblChiTietSanPham.setModel(model);
     }
 
     @Override
     public void generateCbx() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        CbxMauSac();
+        CbxSize();
+        CbxChatLieu();
     }
-
+    
+    public void CbxMauSac() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] items = {
+            "Đen",
+            "Đỏ",
+            "Xanh",
+            "Trắng",
+            "Xanh lá",
+            "Hồng",
+            "Cam"
+        };
+        
+        for (String o : items) {
+            model.addElement(o);
+        }
+        
+        cbxMauSac.setModel(model);
+    }
+    
+    public void CbxSize() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] items = {
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "XXXL"
+        };
+        
+        for (String o : items) {
+            model.addElement(o);
+        }
+        
+        cbxSize.setModel(model);
+    }
+    
+    public void CbxChatLieu() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] items = {
+            "Vải",
+            "Cotton",
+            "Jean",
+            "Thun"
+        };
+        
+        for (String o : items) {
+            model.addElement(o);
+        }
+        
+        cbxChatLieu.setModel(model);
+    }
+    
     @Override
     public void setForm(SanPham o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        txtMaSanPham.setText(o.getMaSP());
+        txtTenSanPham.setText(o.getTenSP());
+        cbxMauSac.setSelectedItem(o.getMauSac());
+        cbxSize.setSelectedItem(o.getSize());
+        cbxChatLieu.setSelectedItem(o.getChatLieu());
     }
 
     @Override
     public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckContain(List<SanPham> list, String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckDuplicate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckDelete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SanPham o = dao.getAllData().get(index);
+        
+        setForm(o);
     }
 
     @Override
     public void showDetail() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int index = tblChiTietSanPham.getSelectedRow();
+        
+        getForm(index);
     }
-
+    
     @Override
-    public void selectPhoto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void create() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean isCheckValid() {
+        String maSP = txtMaSanPham.getText();
+        int count = 0;
+        
+        if (maSP.equals("")) {
+            DialogBox.notice(this, "Bạn chưa chọn sản phẩm");
+            count++;
+        }
+        
+        return count == 0;
     }
 
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SanPham o = new SanPham(
+                "", 
+                "", 
+                "", 
+                0, 
+                0, 
+                "", 
+                "", 
+                "", 
+                "", 
+                true
+        );
+        
+        lblHinhAnh.setText("Nhấn để chọn ảnh");
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        if (isCheckValid()){
+            SanPham o = dao.getDataById(txtMaSanPham.getText());
+            String mauSac = (String)cbxMauSac.getSelectedItem();
+            String chatLieu = (String)cbxChatLieu.getSelectedItem();
+            String size = (String)cbxSize.getSelectedItem();
 
-    @Override
-    public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
+            String hinhAnh;
+
+            try {
+                hinhAnh = file.getSelectedFile().getName();
+            } catch (NullPointerException e){
+                hinhAnh = "";
+            }
+
+            dao.updateData(new SanPham(
+                    txtMaSanPham.getText(), 
+                    o.getMaLoai(), 
+                    txtTenSanPham.getText(), 
+                    o.getDonGia(), 
+                    o.getSoLuong(), 
+                    mauSac, 
+                    chatLieu, 
+                    size, 
+                    hinhAnh, 
+                    true
+            ));
+            DialogBox.notice(this, "Thêm thành công");
+            fillToTable(); 
+        }
+    } 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,39 +232,59 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtChiTietSP = new javax.swing.JTextField();
-        txtMaSP2 = new javax.swing.JTextField();
+        txtMaSanPham = new javax.swing.JTextField();
+        txtTenSanPham = new javax.swing.JTextField();
         cbxMauSac = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        txtChatLieu = new javax.swing.JTextField();
         cbxSize = new javax.swing.JComboBox<>();
         lblHinhAnh = new javax.swing.JLabel();
-        btnThem2 = new javax.swing.JButton();
-        btnLamMoi2 = new javax.swing.JButton();
+        btnThem = new javax.swing.JButton();
+        btnLamMoi = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblChiTietSanPham = new javax.swing.JTable();
+        cbxChatLieu = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel7.setText("Mã Chi Tiết SP");
+        jLabel7.setText("Mã sản phẩm");
 
-        jLabel8.setText("Mã SP");
+        jLabel8.setText("Tên sản phẩm");
 
         jLabel9.setText("Màu Sắc");
+
+        txtMaSanPham.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtMaSanPham.setEnabled(false);
+
+        txtTenSanPham.setEnabled(false);
 
         jLabel10.setText("Chất Liệu");
 
         jLabel11.setText("Size");
 
-        lblHinhAnh.setText("Hinh anh");
+        lblHinhAnh.setText("Nhấn để chọn hình");
         lblHinhAnh.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblHinhAnh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHinhAnhMouseClicked(evt);
+            }
+        });
 
-        btnThem2.setText("Thêm");
+        btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
-        btnLamMoi2.setText("Làm mới");
+        btnLamMoi.setText("Làm mới");
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
         tblChiTietSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -191,7 +294,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Chi Tiết SP", "Mã Sản Phẩm", "Màu Sắc", "Chất Liệu ", "Size", "Hình Ảnh"
+                "Mã sản phẩm", "Tên sản phẩm", "Màu Sắc", "Chất Liệu ", "Size", "Hình Ảnh"
             }
         ));
         tblChiTietSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -201,6 +304,8 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         });
         jScrollPane2.setViewportView(tblChiTietSanPham);
 
+        cbxChatLieu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -209,30 +314,30 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                 .addGap(31, 31, 31)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtChiTietSP, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMaSP2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtMaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTenSanPham, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(cbxMauSac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(cbxSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtChatLieu, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(99, 99, 99)
-                .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLamMoi2, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-                    .addComponent(btnThem2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cbxSize, 0, 123, Short.MAX_VALUE)
+                    .addComponent(cbxChatLieu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(107, 107, 107)
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(82, 82, 82)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(96, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
@@ -247,13 +352,13 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(txtChiTietSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
-                            .addComponent(txtChatLieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbxChatLieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(txtMaSP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11)
                             .addComponent(cbxSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(29, 29, 29)
@@ -262,9 +367,9 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                             .addComponent(cbxMauSac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(btnThem2)
+                        .addComponent(btnThem)
                         .addGap(46, 46, 46)
-                        .addComponent(btnLamMoi2))
+                        .addComponent(btnLamMoi))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -288,8 +393,20 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
-        // TODO add your handling code here:
+        showDetail();
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
+
+    private void lblHinhAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHinhAnhMouseClicked
+        photo.selectPhotos(lblHinhAnh);
+    }//GEN-LAST:event_lblHinhAnhMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        update();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        reset();
+    }//GEN-LAST:event_btnLamMoiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,8 +444,9 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLamMoi2;
-    private javax.swing.JButton btnThem2;
+    private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JComboBox<String> cbxChatLieu;
     private javax.swing.JComboBox<String> cbxMauSac;
     private javax.swing.JComboBox<String> cbxSize;
     private javax.swing.JLabel jLabel10;
@@ -340,9 +458,41 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblHinhAnh;
     private javax.swing.JTable tblChiTietSanPham;
-    private javax.swing.JTextField txtChatLieu;
-    private javax.swing.JTextField txtChiTietSP;
-    private javax.swing.JTextField txtMaSP2;
+    private javax.swing.JTextField txtMaSanPham;
+    private javax.swing.JTextField txtTenSanPham;
     // End of variables declaration//GEN-END:variables
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+        @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckContain(List<SanPham> list, String ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public void create() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public void delete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

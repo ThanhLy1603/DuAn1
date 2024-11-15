@@ -403,4 +403,9 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
