@@ -14,15 +14,13 @@ import UI.Component.KhuyenMaiJDialog;
 import UI.Component.NhanVienJDialog;
 import UI.Component.NhapHangJDialog;
 import UI.Component.SanPhamJDialog;
-import UI.Component.SanPhamJDialog;
 import javax.swing.JFrame;
 
 /**
  *
  * @author hp
  */
-public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object> {
-
+public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object> { 
     /**
      * Creates new form MenuJDialog
      */
