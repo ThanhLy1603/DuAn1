@@ -9,13 +9,15 @@ import Entity.LoaiSanPham;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
+import Interfaces.MapData;
 /**
  *
  * @author ADMIN
  */
-public class MapLoaiSanPham {
-    public static Map<String, String> getDataMap() {
+public class MapLoaiSanPham implements MapData{
+    
+    @Override
+    public Map<String, String> getMapData() {
         Map<String, String> map = new TreeMap<>();
         LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
         List<LoaiSanPham> list = dao.getAllData();
@@ -30,13 +32,27 @@ public class MapLoaiSanPham {
         return map;
     }
     
-    public static String getTenByMa(String ma) {
+    public String getValueByID(String id) {
         String tenLoai = null;
-        Map<String, String> map = getDataMap();
+        Map<String, String> map = getMapData();
         
         for (Map.Entry<String, String> o : map.entrySet()){
-            if (o.getKey().equalsIgnoreCase(ma)){
+            if (o.getKey().equalsIgnoreCase(id)){
                 tenLoai = o.getValue();
+            }
+        }
+        
+        return tenLoai;
+    }
+
+    @Override
+    public String getIDByValue(String value) {
+        String tenLoai = null;
+        Map<String, String> map = getMapData();
+        
+        for (Map.Entry<String, String> o : map.entrySet()){
+            if (o.getKey().equalsIgnoreCase(value)){
+                tenLoai = o.getKey();
             }
         }
         

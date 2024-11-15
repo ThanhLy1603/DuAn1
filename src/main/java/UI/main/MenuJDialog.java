@@ -405,7 +405,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
     private void lblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSanPhamMouseClicked
         // TODO add your handling code here:
         showPanel(pnSanPham);
-        SanPhamJDialog dialog=new SanPhamJDialog();
+        SanPhamJDialog dialog = new SanPhamJDialog();
         showDialogInPanel(pnSanPham, dialog);
 
     }//GEN-LAST:event_lblSanPhamMouseClicked

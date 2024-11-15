@@ -10,9 +10,11 @@ import Entity.SanPham;
 import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Interfaces.Initialize;
+import Interfaces.Function;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Map.MapLoaiSanPham;
+import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -20,9 +22,11 @@ import javax.swing.DefaultComboBoxModel;
  * @author ADMIN
  */
 public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
-        CheckForm<SanPham, String>, CrudController{
+        CheckForm<SanPham, String>, Function,CrudController {
     private SanPhamDAO dao = new SanPhamDAO();
     private LoaiSanPhamDAO daoLSP = new LoaiSanPhamDAO();
+    private DecimalFormat df = new DecimalFormat("#");
+    private MapLoaiSanPham map = new MapLoaiSanPham();
     /**
      * Creates new form SanPhamDetailJDialog
      */
@@ -60,9 +64,9 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         for (SanPham o : list) {
             model.addRow(new Object[]{
                 o.getMaSP(),
-                MapLoaiSanPham.getTenByMa(o.getMaLoai()),
+                map.getValueByID(o.getMaLoai()),
                 o.getTenSP(),
-                o.getDonGia(),
+                df.format(o.getDonGia()),
                 o.getSoLuong(),
                 o.isTrangThai()?"Còn hàng":"Hết hàng"
             }); 
@@ -85,24 +89,61 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
 
     @Override
     public void setForm(SanPham o) {
-        String itemCbx = MapLoaiSanPham.getTenByMa(o.getMaLoai());
+        String itemCbx = map.getValueByID(o.getMaLoai());
+        String donGia = df.format(o.getDonGia());
         
         txtMaSP.setText(o.getMaSP());
         cbxLoaiSanPham.setSelectedItem(itemCbx);
         txtTenSP.setText(o.getTenSP());
-        txtDonGia.setText(String.valueOf(o.getDonGia()));
+        txtDonGia.setText(donGia);
         txtSoLuong.setText(String.valueOf(o.getSoLuong()));
         txtTrangThai.setText(o.isTrangThai()?"Còn hàng":"Hết hàng");
     }
 
     @Override
     public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SanPham o = dao.getAllData().get(index);
+        setForm(o);
     }
-
+    
+    @Override
+    public void showDetail() {
+        int index = tblSanPham.getSelectedRow();
+        getForm(index);
+    }
+    
     @Override
     public boolean isCheckValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        StringBuilder sb = new StringBuilder();
+        String maSP = txtMaSP.getText();
+        String tenSP = txtTenSP.getText();
+        String donGia = txtDonGia.getText();
+        String soLuong = txtSoLuong.getText();
+        String patternNumber = "\\d*";
+        String patternText = "\\s+";
+        int count = 0;
+        
+        if (maSP.equals("") || maSP.matches(patternText)) {
+            sb.append("Bạn chưa nhập mã sản phẩm\n");
+            count++;
+        }
+        
+        if (tenSP.equals("") || tenSP.matches(patternText)) {
+            sb.append("Bạn chưa nhập tên sản phẩm\n");
+            count++;
+        }
+        
+        if (donGia.equals("") || !donGia.matches(patternNumber)) {
+            sb.append("Bạn chưa nhập đơn giá\n");
+            count++;
+        }
+        
+        if (soLuong.equals("") || !soLuong.matches(patternText)) {
+            sb.append("Bạn chưa nhập số lượng\n");
+            count++;
+        }
+        
+        return count == 0;
     }
 
     @Override
@@ -301,7 +342,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
-        // TODO add your handling code here:
+        showDetail();
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
 
@@ -325,5 +366,8 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     private javax.swing.JTextField txtTenSP;
     private javax.swing.JTextField txtTrangThai;
     // End of variables declaration//GEN-END:variables
-
+    @Override
+    public void selectPhoto() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
