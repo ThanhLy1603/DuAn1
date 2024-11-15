@@ -4,19 +4,204 @@
  */
 package UI.Detail;
 
+import DAO.LoaiSanPhamDAO;
+import Entity.SanPham;
+import Interfaces.CheckForm;
+import Interfaces.CrudController;
+import Interfaces.Initialize;
+import Entity.LoaiSanPham;
+import Utils.DialogBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author ADMIN
  */
-public class LoaiSPDetailJDialog extends javax.swing.JFrame {
-
+public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initialize<LoaiSanPham>,
+        CheckForm<LoaiSanPham, String>, CrudController {
+    private LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
+    
     /**
      * Creates new form LoaiSPDetailJDialog
      */
     public LoaiSPDetailJDialog() {
         initComponents();
+        
+        init();
+    }
+    
+    
+    @Override
+    public void init() {
+        fillToTable();
+        
+        setLocationRelativeTo(null);
     }
 
+    @Override
+    public void fillToTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<LoaiSanPham> list = dao.getAllData();
+        
+        String[] col = {
+            "Mã loại",
+            "Tên loại"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (LoaiSanPham o : list) {
+            model.addRow(new Object[]{
+                o.getMaLoai(),
+                o.getTenLoai()
+            });
+        }
+        
+        tblThuocTinhSanPham.setModel(model);
+    }
+
+    @Override
+    public void setForm(LoaiSanPham o) {
+        txtMaLoai.setText(o.getMaLoai());
+        txtTenLoai.setText(o.getTenLoai());
+    }
+
+    @Override
+    public void getForm(int index) {
+        LoaiSanPham o = dao.getAllData().get(index);
+        setForm(o);
+    }
+
+    @Override
+    public void showDetail() {
+        int index = tblThuocTinhSanPham.getSelectedRow();
+        getForm(index);
+    }
+
+    @Override
+    public boolean isCheckValid() {
+        StringBuilder sb = new StringBuilder();
+        String ma = txtMaLoai.getText();
+        String ten = txtTenLoai.getText();
+        String patternText = "\\s+";
+        int count = 0;
+        
+        if (ma.equals("") || ma.matches(patternText)) {
+            sb.append("Bạn chưa nhập mã sản phẩm\n");
+            count++;
+        }
+        
+        if (ten.equals("") || ten.matches(patternText)) {
+            sb.append("Bạn chưa nhập tên\n");
+            count++;
+        }
+        
+        if (sb.length() > 0) {
+            DialogBox.notice(this, sb.toString());
+        }
+        
+        return count == 0;
+    }
+
+    @Override
+    public boolean isCheckContain(List<LoaiSanPham> list, String ma) {
+        int count = 0;
+        for (LoaiSanPham o : list) {
+            if (ma.equals(o.getMaLoai())) count++;
+        }
+        
+        return count != 0;
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        List<LoaiSanPham> list = dao.getAllData();
+        String ma = txtMaLoai.getText();
+        
+        if (isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Mã loại này có rồi. Vui lòng nhập mã loại khác");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        List<LoaiSanPham> list = dao.getAllData();
+        String ma = txtMaLoai.getText();
+        
+        if (!isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Không tìm thấy loại sản phẩm cần sửa");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        List<LoaiSanPham> list = dao.getAllData();
+        String ma = txtMaLoai.getText();
+        
+        if (!isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Không tìm thấy loại sản phẩm cần xóa");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void create() {
+        if (isCheckValid()) {
+            if (isCheckDuplicate()) {
+                String ma = txtMaLoai.getText();
+                String ten = txtTenLoai.getText();
+                
+                dao.insertData(new LoaiSanPham(ma, ten)); 
+                DialogBox.notice(this, "Thêm thành công");
+                fillToTable();
+            }
+        }
+    }
+
+    @Override
+    public void reset() {
+        LoaiSanPham o = new LoaiSanPham(
+                "", 
+                ""
+        );
+        
+        setForm(o);
+    }
+
+    @Override
+    public void update() {
+        if (isCheckValid()) {
+            if (isCheckUpdate()) {
+                String ma = txtMaLoai.getText();
+                String ten = txtTenLoai.getText();
+                
+                dao.updateData(new LoaiSanPham(ma, ten)); 
+                DialogBox.notice(this, "Sửa thành công");
+                fillToTable();
+            }
+        }
+    }
+
+    @Override
+    public void delete() {
+        if (isCheckDelete()) {
+            if (DialogBox.confirm(this, "Bạn có muốn xóa loại sản phẩm này không?")) {
+                dao.deleteById(txtMaLoai.getText());
+                DialogBox.notice(this, "Xóa thành công");
+                fillToTable();
+                reset();
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,10 +218,10 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
         txtMaLoai = new javax.swing.JTextField();
         txtTenLoai = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
-        btnThem3 = new javax.swing.JButton();
-        btnSua3 = new javax.swing.JButton();
-        btnLamMoi3 = new javax.swing.JButton();
-        btnXoa3 = new javax.swing.JButton();
+        btnThem = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
+        btnLamMoi = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblThuocTinhSanPham = new javax.swing.JTable();
@@ -76,13 +261,33 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnThem3.setText("Thêm");
+        btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
-        btnSua3.setText("Sửa");
+        btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
-        btnLamMoi3.setText("Làm mới");
+        btnLamMoi.setText("Làm mới");
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
-        btnXoa3.setText("Xóa");
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -91,23 +296,23 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(164, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnSua3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnThem3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLamMoi3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnXoa3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(144, 144, 144))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(btnThem3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSua3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(btnLamMoi3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnXoa3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
@@ -194,8 +399,24 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblThuocTinhSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuocTinhSanPhamMouseClicked
-        // TODO add your handling code here:
+        showDetail();
     }//GEN-LAST:event_tblThuocTinhSanPhamMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        create();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        update();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        reset();
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,10 +454,10 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLamMoi3;
-    private javax.swing.JButton btnSua3;
-    private javax.swing.JButton btnThem3;
-    private javax.swing.JButton btnXoa3;
+    private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel6;
@@ -248,4 +469,14 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaLoai;
     private javax.swing.JTextField txtTenLoai;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
