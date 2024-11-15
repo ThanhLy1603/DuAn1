@@ -89,5 +89,10 @@ public class LoaiSanPhamDAO implements DAO<LoaiSanPham, String>{
         
         JDBC.executeUpdate(sql, values);
     }
+
+    @Override
+    public List<LoaiSanPham> getDataByValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

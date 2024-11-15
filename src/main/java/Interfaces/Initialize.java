@@ -11,6 +11,7 @@ package Interfaces;
 public interface Initialize<Entity> {
     public void init();
     public void fillToTable();
+    public void filterTable();
     public void generateCbx();
     public void setForm(Entity o);
     public void getForm(int index);

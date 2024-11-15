@@ -115,5 +115,10 @@ public class ChiTietHoaDonDAO implements DAO<ChiTietHoaDon, String>{
         
         JDBC.executeUpdate(sql, values);
     }
+
+    @Override
+    public List<ChiTietHoaDon> getDataByValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

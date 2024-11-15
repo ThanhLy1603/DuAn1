@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface DAO <Entity, Type>{
     public List<Entity> getAllData();
+    public List<Entity> getDataByValue(Type value);
     public Entity getDataById(Type ma);
     public void insertData(Entity o);
     public void updateData(Entity o);

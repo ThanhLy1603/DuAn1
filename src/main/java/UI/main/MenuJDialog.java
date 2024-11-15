@@ -8,7 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import UI.Component.DoanhThuJDialog;
-import Interfaces.Initialize;
+import Interfaces.Panel;
 import UI.Component.KhachHangJDialog;
 import UI.Component.KhuyenMaiJDialog;
 import UI.Component.NhanVienJDialog;
@@ -20,7 +20,7 @@ import javax.swing.JFrame;
  *
  * @author hp
  */
-public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object> { 
+public class MenuJDialog extends javax.swing.JFrame implements Panel { 
     /**
      * Creates new form MenuJDialog
      */
@@ -28,18 +28,13 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         initComponents();
         init();
     }
-
-    MenuJDialog(LoginJDialog aThis, boolean b) {
-       initComponents();
-        init();
-    }
     
-    @Override
     public void init() {
         setLocationRelativeTo(null);
     }
     
-    private void showPanel(JPanel visiblePanel) {
+    @Override
+    public void showPanel(JPanel visiblePanel) {
         pnDoanhThu.setVisible(false);
         pnKhachHang.setVisible(false);
         pnNhanVien.setVisible(false);
@@ -48,7 +43,8 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         pnNhapHang.setVisible(false);
         visiblePanel.setVisible(true);
     }
-
+    
+    @Override
     public void showDialogInPanel(JPanel targetPanel, JFrame dialog) {
         // Tạo một JPanel để chứa nội dung của dialog
         JPanel contentPanel = new JPanel();
@@ -466,28 +462,4 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
     private javax.swing.JPanel pnSideMenu;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void showDetail() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    @Override
-    public void fillToTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setForm(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void generateCbx() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

@@ -15,10 +15,11 @@ public class TestDoanhThu {
     public static void main(String[] args) {
         DoanhThuDAO dao = new DoanhThuDAO();
         
-        List<DoanhThu> list = dao.getAllData();
+        List<DoanhThu> list = dao.getDataByValue("Váy");
         
         for (DoanhThu doanhThu : list) {
             System.out.println(doanhThu.toString());
         }
+        
     }
 }

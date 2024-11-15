@@ -95,4 +95,9 @@ public class KhachHangDAO implements DAO<KhachHang, String> {
         JDBC.executeUpdate(sql, values);
     }
 
+    @Override
+    public List<KhachHang> getDataByValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

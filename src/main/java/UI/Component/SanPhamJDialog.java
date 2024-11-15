@@ -4,11 +4,11 @@
  */
 package UI.Component;
 
+import Interfaces.Panel;
 import UI.Detail.ChiTietSPDetailJDialog;
 import UI.Detail.LoaiSPDetailJDialog;
 import UI.Detail.SanPhamDetailJDialog;
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.BorderLayout;;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author ADMIN
  */
-public class SanPhamJDialog extends javax.swing.JFrame {
+public class SanPhamJDialog extends javax.swing.JFrame implements Panel{
     /**
      * Creates new form SanPhamDJlogTest
      */
@@ -35,10 +35,12 @@ public class SanPhamJDialog extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
-    private void showPanel(JPanel visiblePanel) {
+    @Override
+    public void showPanel(JPanel visiblePanel) {
         visiblePanel.setVisible(true);
     }
     
+    @Override
     public void showDialogInPanel(JPanel targetPanel, JFrame dialog) {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout()); // Thiết lập layout BorderLayout cho contentPanel

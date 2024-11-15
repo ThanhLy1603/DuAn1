@@ -204,7 +204,7 @@ public class LoginJDialog extends javax.swing.JFrame implements CheckForm<NhanVi
                 DialogBox.alert(this, "Đăng Nhập Thành Công");
                 Auth.user = nv;
                 this.setVisible(false);
-                MenuJDialog dialog = new MenuJDialog(this, true);
+                MenuJDialog dialog = new MenuJDialog();
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
             }

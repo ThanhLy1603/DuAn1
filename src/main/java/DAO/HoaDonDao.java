@@ -99,5 +99,10 @@ public class HoaDonDao implements DAO<HoaDon,String>{
         
         JDBC.executeUpdate(sql, values);
     }
+
+    @Override
+    public List<HoaDon> getDataByValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
 

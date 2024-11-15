@@ -94,4 +94,9 @@ public class NhapHangDAO implements DAO<NhapHang, Integer>{
     public void deleteById(Integer ma) {
         throw new UnsupportedOperationException("Not Available");
     }
+
+    @Override
+    public List<NhapHang> getDataByValue(Integer value) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

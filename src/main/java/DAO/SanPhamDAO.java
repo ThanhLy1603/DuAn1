@@ -120,4 +120,32 @@ public class SanPhamDAO implements DAO<SanPham, String>{
         
         JDBC.executeUpdate(sql, values);
     }
+
+    @Override
+    public List<SanPham> getDataByValue(String value) {
+        List<SanPham> list = new ArrayList();
+        String sql = "SELECT * FROM SanPham WHERE TenSanPham like ?";
+        Object[] values = {"%" + value + "%"};
+        
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        try {
+            while(rs.next()){
+                list.add(new SanPham(
+                        rs.getString("MaSanPham"),
+                        rs.getString("MaLoai"), 
+                        rs.getString("TenSanPham"),
+                        rs.getDouble("DonGia"), 
+                        rs.getInt("SoLuong"), 
+                        rs.getString("MauSac"),
+                        rs.getString("ChatLieu"),
+                        rs.getString("Size"),
+                        rs.getString("HinhAnh"),
+                        rs.getByte("TrangThai")==1
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 }

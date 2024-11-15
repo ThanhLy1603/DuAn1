@@ -31,9 +31,9 @@ public class DoanhThuDAO implements DAO<DoanhThu, String>{
                 list.add(new DoanhThu(
                         rs.getString("MaSanPham"), 
                         rs.getString("TenSanPham"), 
-                        rs.getShort("SoLuong"),
-                        rs.getShort("Gia"),
-                        rs.getShort("TongTien"), 
+                        rs.getInt("SoLuong"),
+                        rs.getDouble("Gia"),
+                        rs.getDouble("TongTien"), 
                         rs.getDate("NgayLap")
                 ));
             }
@@ -63,5 +63,30 @@ public class DoanhThuDAO implements DAO<DoanhThu, String>{
     public void deleteById(String ma) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
+    @Override
+    public List<DoanhThu> getDataByValue(String value) {
+        List<DoanhThu> list = new ArrayList<>();
+        String sql = "SELECT  * FROM V_DoanhThu Where TenSanPham like ?";
+        Object[] values = {"%" + value + "%"};
+        
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        
+        try {
+            while (rs.next()) {
+                list.add(new DoanhThu(
+                        rs.getString("MaSanPham"), 
+                        rs.getString("TenSanPham"), 
+                        rs.getInt("SoLuong"),
+                        rs.getDouble("Gia"),
+                        rs.getDouble("TongTien"), 
+                        rs.getDate("NgayLap")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoanhThuDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return list;
+    }
 }

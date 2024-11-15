@@ -5,7 +5,6 @@
 package UI.Detail;
 
 import DAO.LoaiSanPhamDAO;
-import Entity.SanPham;
 import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Interfaces.Initialize;
@@ -477,6 +476,11 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
     
     @Override
     public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void filterTable() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

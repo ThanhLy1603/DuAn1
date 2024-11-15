@@ -4,14 +4,21 @@
  */
 package UI.Component;
 
+import DAO.DoanhThuDAO;
 import Interfaces.Initialize;
-
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import Entity.DoanhThu;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author hp
  */
 public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Object>{
-
+    private DoanhThuDAO dao = new DoanhThuDAO();
+    private DecimalFormat df = new DecimalFormat("#,###");
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form DoanhThuJDialog
      */
@@ -23,30 +30,81 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     
     @Override
     public void init() {
+        fillToTable();
+        generateCbx();
+        
         setLocationRelativeTo(null);
     }
     
     
     @Override
     public void generateCbx() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
     
     @Override
     public void fillToTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setForm(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DefaultTableModel model = new DefaultTableModel();
+        List<DoanhThu> list = dao.getAllData();
+        
+        String[] col = {
+            "Mã sản phẩm",
+            "Tên sản phẩm",
+            "Đơn giá",
+            "Số lượng",
+            "Tổng tiền",
+            "Ngày lập"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (DoanhThu o : list) {
+            model.addRow(new Object[]{
+                o.getMaSP(),
+                o.getTenSP(),
+                df.format(o.getDonGia()),
+                o.getSoLuong(),
+                df.format(o.getTongTien()),
+                formatter.format(o.getNgayLap())
+            });
+        }
+        
+        tblDoanhThu.setModel(model);
     }
     
+    public void filterTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<DoanhThu> list = dao.getDataByValue(txtTimKiem.getText());
+        
+        String[] col = {
+            "Mã sản phẩm",
+            "Tên sản phẩm",
+            "Đơn giá",
+            "Số lượng",
+            "Tổng tiền",
+            "Ngày lập"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (DoanhThu o : list) {
+            model.addRow(new Object[]{
+                o.getMaSP(),
+                o.getTenSP(),
+                df.format(o.getDonGia()),
+                o.getSoLuong(),
+                df.format(o.getTongTien()),
+                formatter.format(o.getNgayLap())
+            });
+        }
+        
+        tblDoanhThu.setModel(model);
+    }
+    
+    public void search()  {
+        dao.getDataByValue(txtTimKiem.getText());
+        filterTable();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -236,6 +294,12 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm Kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -345,6 +409,10 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        search();
+    }//GEN-LAST:event_txtTimKiemKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -407,5 +475,14 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     public void showDetail() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+     @Override
+    public void setForm(Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
