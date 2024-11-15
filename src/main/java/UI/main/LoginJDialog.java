@@ -4,18 +4,26 @@
  */
 package UI.main;
 
+import DAO.NhanVienDao;
+import Entity.NhanVien;
+import Utils.Auth;
+import Utils.DialogBox;
+import javax.swing.JDialog;
+import Interfaces.CheckForm;
+import java.util.List;
+
 /**
  *
  * @author PHONG
  */
-public class LoginJDialog extends javax.swing.JFrame {
+public class LoginJDialog extends javax.swing.JFrame implements CheckForm<NhanVien, String> {
 
     /**
      * Creates new form Login1
      */
     public LoginJDialog() {
         initComponents();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -36,7 +44,7 @@ public class LoginJDialog extends javax.swing.JFrame {
         btnReset = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
+        txtpassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
@@ -52,6 +60,11 @@ public class LoginJDialog extends javax.swing.JFrame {
 
         btnLogin.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         btnReset.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnReset.setText("Reset");
@@ -96,7 +109,7 @@ public class LoginJDialog extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(passwordField))
+                    .addComponent(txtpassword))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -111,7 +124,7 @@ public class LoginJDialog extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel4)
                 .addGap(39, 39, 39)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
@@ -122,6 +135,11 @@ public class LoginJDialog extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        login();
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,7 +185,71 @@ public class LoginJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField txtUsername;
+    private javax.swing.JPasswordField txtpassword;
     // End of variables declaration//GEN-END:variables
+    NhanVienDao dao = new NhanVienDao();
+    NhanVien nv = new NhanVien();
+
+    public void login() {
+        String username = txtUsername.getText();
+        String password = txtpassword.getText();
+        if (isCheckValid()) {
+            nv = dao.getDataById(username);
+            if (nv == null) {
+                DialogBox.alert(this, "Tên Đăng Nhập Không tồn tại");
+            } else if (!password.equals(nv.getMatKhau())) {
+                DialogBox.alert(this, "Sai Mật Khẩu");
+            } else {
+                DialogBox.alert(this, "Đăng Nhập Thành Công");
+                Auth.user = nv;
+                this.setVisible(false);
+                MenuJDialog dialog = new MenuJDialog(this, true);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean isCheckValid() {
+        String username = txtUsername.getText();
+        String password = txtpassword.getText();
+        if (username == null || username.trim().isEmpty()) {
+            DialogBox.alert(this, "Username không được để trống");
+            return false;
+        }
+        if (password == null || password.trim().isEmpty()) {
+            DialogBox.alert(this, "Password không được để trống");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isCheckContain(List<NhanVien> list, String ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

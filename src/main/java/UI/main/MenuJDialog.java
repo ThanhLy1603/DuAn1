@@ -29,6 +29,11 @@ public class MenuJDialog extends javax.swing.JFrame implements Initialize<Object
         init();
     }
 
+    MenuJDialog(LoginJDialog aThis, boolean b) {
+       initComponents();
+        init();
+    }
+
     private void showPanel(JPanel visiblePanel) {
         pnDoanhThu.setVisible(false);
         pnKhachHang.setVisible(false);
