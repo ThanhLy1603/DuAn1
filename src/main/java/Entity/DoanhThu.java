@@ -13,6 +13,7 @@ import java.util.Date;
 public class DoanhThu {
     private String maSP;
     private String tenSP;
+    private String tenLoai;
     private int soLuong;
     private double donGia;
     private double tongTien;
@@ -21,9 +22,10 @@ public class DoanhThu {
     public DoanhThu() {
     }
 
-    public DoanhThu(String maSP, String tenSP, int soLuong, double donGia, double tongTien, Date ngayLap) {
+    public DoanhThu(String maSP, String tenSP, String tenLoai, int soLuong, double donGia, double tongTien, Date ngayLap) {
         this.maSP = maSP;
         this.tenSP = tenSP;
+        this.tenLoai = tenLoai;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.tongTien = tongTien;
@@ -44,6 +46,14 @@ public class DoanhThu {
 
     public void setTenSP(String tenSP) {
         this.tenSP = tenSP;
+    }
+
+    public String getTenLoai() {
+        return tenLoai;
+    }
+
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
     }
 
     public int getSoLuong() {
@@ -80,6 +90,6 @@ public class DoanhThu {
 
     @Override
     public String toString() {
-        return "DoanhThu{" + "maSP=" + maSP + ", tenSP=" + tenSP + ", soLuong=" + soLuong + ", donGia=" + donGia + ", tongTien=" + tongTien + ", ngayLap=" + ngayLap + '}';
+        return "DoanhThu{" + "maSP=" + maSP + ", tenSP=" + tenSP + ", tenLoai=" + tenLoai + ", soLuong=" + soLuong + ", donGia=" + donGia + ", tongTien=" + tongTien + ", ngayLap=" + ngayLap + '}';
     }
 }

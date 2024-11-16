@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initialize<LoaiSanPham>,
         CheckForm<LoaiSanPham, String>, CrudController {
     private LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
+    private SanPhamDetailJDialog dialog = new SanPhamDetailJDialog();
     
     /**
      * Creates new form LoaiSPDetailJDialog
@@ -58,7 +59,29 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
         
         tblThuocTinhSanPham.setModel(model);
     }
-
+    
+    @Override
+    public void filterTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<LoaiSanPham> list = dao.getDataByValue(txtTenLoai.getText());
+        
+        String[] col = {
+            "Mã loại",
+            "Tên loại"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (LoaiSanPham o : list) {
+            model.addRow(new Object[]{
+                o.getMaLoai(),
+                o.getTenLoai()
+            });
+        }
+        
+        tblThuocTinhSanPham.setModel(model);
+    }
+    
     @Override
     public void setForm(LoaiSanPham o) {
         txtMaLoai.setText(o.getMaLoai());
@@ -230,6 +253,12 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
         jLabel12.setText("Mã loại");
 
         jLabel13.setText("Tên loại");
+
+        txtTenLoai.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTenLoaiKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -417,6 +446,10 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
         delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void txtTenLoaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenLoaiKeyPressed
+        filterTable();
+    }//GEN-LAST:event_txtTenLoaiKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -476,11 +509,6 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
     
     @Override
     public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void filterTable() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

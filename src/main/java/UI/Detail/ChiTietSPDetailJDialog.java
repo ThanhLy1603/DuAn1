@@ -27,7 +27,6 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
     private MapLoaiSanPham map = new MapLoaiSanPham();
     private JFileChooser file = new JFileChooser();
     private SelectPhotos photo = new SelectPhotos();
-    private SanPhamDetailJDialog dialog = new SanPhamDetailJDialog();
     /**
      * Creates new form ChiTietSPDetailJDialog
      */
@@ -73,7 +72,36 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         
         tblChiTietSanPham.setModel(model);
     }
-
+    
+    @Override
+    public void filterTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<SanPham> list = dao.getDataByValue(txtTenSanPham.getText());
+        String[] col = {
+            "Tên sản phẩm",
+            "Tên loại",
+            "Màu sắc",
+            "Chất liệu",
+            "Size",
+            "Hình ảnh"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (SanPham o : list) {
+            model.addRow(new Object[]{
+                o.getMaSP(),
+                o.getTenSP(),
+                o.getMauSac(),
+                o.getChatLieu(),
+                o.getSize(),
+                o.getHinhAnh()
+            });
+        }
+        
+        tblChiTietSanPham.setModel(model);
+    }
+    
     @Override
     public void generateCbx() {
         CbxMauSac();
@@ -140,6 +168,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         cbxMauSac.setSelectedItem(o.getMauSac());
         cbxSize.setSelectedItem(o.getSize());
         cbxChatLieu.setSelectedItem(o.getChatLieu());
+        photo.setImage(lblHinhAnh, o.getHinhAnh());
     }
 
     @Override
@@ -183,8 +212,10 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                 "", 
                 true
         );
+        setForm(o);
         
         lblHinhAnh.setText("Nhấn để chọn ảnh");
+        fillToTable();
     }
 
     @Override
@@ -195,13 +226,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
             String chatLieu = (String)cbxChatLieu.getSelectedItem();
             String size = (String)cbxSize.getSelectedItem();
 
-            String hinhAnh;
-
-            try {
-                hinhAnh = file.getSelectedFile().getName();
-            } catch (NullPointerException e){
-                hinhAnh = "";
-            }
+            String hinhAnh = photo.getPhotoName();
 
             dao.updateData(new SanPham(
                     txtMaSanPham.getText(), 
@@ -217,6 +242,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
             ));
             DialogBox.notice(this, "Thêm thành công");
             fillToTable(); 
+            System.out.println(hinhAnh);
         }
     } 
     /**
@@ -258,7 +284,11 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         txtMaSanPham.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtMaSanPham.setEnabled(false);
 
-        txtTenSanPham.setEnabled(false);
+        txtTenSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTenSanPhamKeyPressed(evt);
+            }
+        });
 
         jLabel10.setText("Chất Liệu");
 
@@ -408,6 +438,10 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         reset();
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
+    private void txtTenSanPhamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenSanPhamKeyPressed
+        filterTable();
+    }//GEN-LAST:event_txtTenSanPhamKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -496,8 +530,4 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public void filterTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

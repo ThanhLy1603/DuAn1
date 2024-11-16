@@ -5,12 +5,17 @@
 package UI.Component;
 
 import DAO.DoanhThuDAO;
+import DAO.LoaiSanPhamDAO;
 import Interfaces.Initialize;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import Entity.DoanhThu;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.DefaultComboBoxModel;
+import Entity.LoaiSanPham;
+import Entity.SanPham;
+import java.util.ArrayList;
 /**
  *
  * @author hp
@@ -19,6 +24,7 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     private DoanhThuDAO dao = new DoanhThuDAO();
     private DecimalFormat df = new DecimalFormat("#,###");
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    private LoaiSanPhamDAO daoLSP = new LoaiSanPhamDAO();
     /**
      * Creates new form DoanhThuJDialog
      */
@@ -39,7 +45,32 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     
     @Override
     public void generateCbx() {
+        cbxLoaiSanPham();
+        cbxNam();
+    }
         
+    public void cbxNam() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<Integer> list = dao.getYear();
+        
+        model.addElement("Tất cả");
+        for (Integer o : list) {
+            model.addElement(String.valueOf(o));
+        }
+        
+        cbxNam.setModel(model);
+    }
+    
+    public void cbxLoaiSanPham() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<LoaiSanPham> list = daoLSP.getAllData();
+        
+        model.addElement("Tất cả");
+        for (LoaiSanPham o : list) {
+            model.addElement(o.getTenLoai());
+        }
+        
+        cbxLoaiSanPham.setModel(model);
     }
     
     @Override
@@ -50,6 +81,7 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         String[] col = {
             "Mã sản phẩm",
             "Tên sản phẩm",
+            "Tên loại",
             "Đơn giá",
             "Số lượng",
             "Tổng tiền",
@@ -62,6 +94,7 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
             model.addRow(new Object[]{
                 o.getMaSP(),
                 o.getTenSP(),
+                o.getTenLoai(),
                 df.format(o.getDonGia()),
                 o.getSoLuong(),
                 df.format(o.getTongTien()),
@@ -72,13 +105,27 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         tblDoanhThu.setModel(model);
     }
     
+    @Override
     public void filterTable() {
         DefaultTableModel model = new DefaultTableModel();
-        List<DoanhThu> list = dao.getDataByValue(txtTimKiem.getText());
         
+        String timKiem = txtTimKiem.getText();
+        
+        String selectValueNam = (String) cbxNam.getSelectedItem();
+        String resultNam = selectValueNam.equals("Tất cả")?"":selectValueNam;
+        
+        String selectValueLoai = (String) cbxLoaiSanPham.getSelectedItem();
+        String resultLoai = selectValueLoai.equals("Tất cả")?"":selectValueLoai;
+        
+        List<DoanhThu> list = null;
+        
+        if (resultNam.equals("")) list = dao.getDataByValue(timKiem, resultLoai);
+        else list = dao.getDataByValue(timKiem, resultLoai, Integer.parseInt(resultNam));
+                     
         String[] col = {
             "Mã sản phẩm",
             "Tên sản phẩm",
+            "Tên loại",
             "Đơn giá",
             "Số lượng",
             "Tổng tiền",
@@ -91,6 +138,7 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
             model.addRow(new Object[]{
                 o.getMaSP(),
                 o.getTenSP(),
+                o.getTenLoai(),
                 df.format(o.getDonGia()),
                 o.getSoLuong(),
                 df.format(o.getTongTien()),
@@ -101,10 +149,6 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         tblDoanhThu.setModel(model);
     }
     
-    public void search()  {
-        dao.getDataByValue(txtTimKiem.getText());
-        filterTable();
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -126,9 +170,9 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         lblSoLuong = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        cboNam = new javax.swing.JComboBox<>();
+        cbxNam = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
-        cbDanhMuc = new javax.swing.JComboBox<>();
+        cbxLoaiSanPham = new javax.swing.JComboBox<>();
         jPanel8 = new javax.swing.JPanel();
         txtTimKiem = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -250,7 +294,12 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Năm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        cboNam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxNam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxNam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxNamActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -258,21 +307,26 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cboNam, 0, 289, Short.MAX_VALUE)
+                .addComponent(cbxNam, 0, 289, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cboNam, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxNam, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh Mục", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Loại sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        cbDanhMuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxLoaiSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxLoaiSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxLoaiSanPhamActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -280,14 +334,14 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cbDanhMuc, 0, 289, Short.MAX_VALUE)
+                .addComponent(cbxLoaiSanPham, 0, 289, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(8, Short.MAX_VALUE)
-                .addComponent(cbDanhMuc, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxLoaiSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -410,8 +464,16 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
-        search();
+        filterTable();
     }//GEN-LAST:event_txtTimKiemKeyPressed
+
+    private void cbxNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxNamActionPerformed
+        filterTable();
+    }//GEN-LAST:event_cbxNamActionPerformed
+
+    private void cbxLoaiSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLoaiSanPhamActionPerformed
+        filterTable();
+    }//GEN-LAST:event_cbxLoaiSanPhamActionPerformed
 
     /**
      * @param args the command line arguments
@@ -450,8 +512,8 @@ public class DoanhThuJDialog extends javax.swing.JFrame implements Initialize<Ob
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cbDanhMuc;
-    private javax.swing.JComboBox<String> cboNam;
+    private javax.swing.JComboBox<String> cbxLoaiSanPham;
+    private javax.swing.JComboBox<String> cbxNam;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -4,6 +4,7 @@
  */
 package Utils;
 
+import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -30,5 +31,22 @@ public class SelectPhotos {
             image.getScaledInstance(lable.getWidth(), lable.getHeight(), 0);
             lable.setIcon((imageIcon));
         }
+    }
+    
+    public String getPhotoName() {
+        String image;
+        
+        try {
+                image = file.getSelectedFile().getName();
+        } catch (NullPointerException e){
+                image = "";
+        }
+        
+        return image;
+    }
+    
+    public void setImage(JLabel lable, String image) {
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/Photos/" + image));
+        lable.setIcon(imageIcon);
     }
 }

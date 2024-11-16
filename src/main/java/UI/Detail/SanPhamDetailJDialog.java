@@ -77,6 +77,36 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     }
     
     @Override
+    public void filterTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<SanPham> list = dao.getDataByValue(txtTenSP.getText());
+        
+        String[] col = {
+            "Mã sản phẩm",
+            "Loại sản phẩm",
+            "Tên sản phẩm",
+            "Đơn giá",
+            "Số lượng",
+            "Trạng thái"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (SanPham o : list) {
+            model.addRow(new Object[]{
+                o.getMaSP(),
+                map.getValueByID(o.getMaLoai()),
+                o.getTenSP(),
+                df.format(o.getDonGia()),
+                o.getSoLuong(),
+                o.isTrangThai()?"Còn hàng":"Hết hàng"
+            }); 
+        }
+        
+        tblSanPham.setModel(model);
+    }
+    
+    @Override
     public void generateCbx() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         List<LoaiSanPham> list = daoLSP.getAllData();
@@ -249,6 +279,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         txtDonGia.setText("");
         txtSoLuong.setText("");
         txtTrangThai.setText("");
+        generateCbx();
     }
 
     @Override
@@ -331,6 +362,12 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         cbxLoaiSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxLoaiSanPhamActionPerformed(evt);
+            }
+        });
+
+        txtTenSP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTenSPKeyPressed(evt);
             }
         });
 
@@ -499,6 +536,10 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxLoaiSanPhamActionPerformed
 
+    private void txtTenSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenSPKeyPressed
+        filterTable();
+    }//GEN-LAST:event_txtTenSPKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLamMoi;
@@ -523,11 +564,6 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
 
         @Override
     public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void filterTable() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

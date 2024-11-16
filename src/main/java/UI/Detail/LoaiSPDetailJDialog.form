@@ -134,6 +134,9 @@
             <Component class="javax.swing.JTextField" name="txtMaLoai">
             </Component>
             <Component class="javax.swing.JTextField" name="txtTenLoai">
+              <Events>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTenLoaiKeyPressed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

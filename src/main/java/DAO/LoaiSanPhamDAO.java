@@ -92,7 +92,24 @@ public class LoaiSanPhamDAO implements DAO<LoaiSanPham, String>{
 
     @Override
     public List<LoaiSanPham> getDataByValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<LoaiSanPham> list = new ArrayList<>();
+       
+       String sql = "Select * from LoaiSanPham WHERE TenLoai like ?";
+       Object[] values = {"%" + value + "%"};
+       
+       ResultSet rs = JDBC.executeQuery(sql, values);
+        try {
+            while (rs.next()) {
+                list.add(new LoaiSanPham(
+                        rs.getString("MaLoai"),
+                        rs.getString("TenLoai")
+                )); 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoaiSanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return list;
     }
     
 }
