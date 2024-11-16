@@ -14,7 +14,7 @@ import Interfaces.MapData;
  *
  * @author ADMIN
  */
-public class MapLoaiSanPham implements MapData{
+public class MapLoaiSanPham implements MapData {
     
     @Override
     public Map<String, String> getMapData() {
