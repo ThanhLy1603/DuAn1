@@ -75,8 +75,8 @@ public class NhanVienDao implements DAO<NhanVien, String> {
         String sql = "EXEC SP_InsertUpdateNhanVien ?, ?, ?,?,?,?,?,?";
         Object[] values = {
             nv.getMaNV(),
-            nv.getTenNV(),
             nv.getMatKhau(),
+            nv.getTenNV(),
             nv.isGioiTinh(),
             nv.isChucVu(),
             nv.getLuong(),
@@ -91,8 +91,8 @@ public class NhanVienDao implements DAO<NhanVien, String> {
          String sql="EXEC SP_InsertUpdateNhanVien ?, ?, ?,?,?,?,?,?";
       Object[] values = {
             nv.getMaNV(),
-            nv.getTenNV(),
             nv.getMatKhau(),
+            nv.getTenNV(),
             nv.isGioiTinh(),
             nv.isChucVu(),
             nv.getLuong(),
