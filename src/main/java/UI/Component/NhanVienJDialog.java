@@ -618,4 +618,14 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         txtEmail.setText(nv.getEmail());
         txtSDT.setText(nv.getSoDT());
     }
+
+    @Override
+    public void filterTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
