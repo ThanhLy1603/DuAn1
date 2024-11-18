@@ -92,7 +92,7 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public void getForm(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
     @Override
@@ -102,7 +102,12 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public void setForm(KhachHang o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        txtMaKH.setText(o.getMaKH());
+        txtTenKH.setText(o.getTenKH());
+        rdnNam.setSelected(o.isGioiTinh());
+        rdnNu.setSelected(o.isGioiTinh());
+        txtSDT.setText(o.getSoDT());
+        txaDiaChi.setText(o.getDiaChi());
     }
 
     @Override
