@@ -17,9 +17,9 @@ public class TestDoanhThu {
         
         List<DoanhThu> list = dao.getDataByValue("Váy");
         
-        for (DoanhThu doanhThu : list) {
-            System.out.println(doanhThu.toString());
-        }
-        
+//        for (DoanhThu doanhThu : list) {
+//            System.out.println(doanhThu.toString());
+//        }
+              
     }
 }

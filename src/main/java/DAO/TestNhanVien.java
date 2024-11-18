@@ -16,14 +16,14 @@ public class TestNhanVien {
         NhanVienDao nv= new NhanVienDao();
         List<NhanVien> list= nv.getAllData();
         
-        list.forEach(nv1->{
-            System.out.println(nv1.getMaNV());
-            }
-        );
-        
-        NhanVien nv2 = nv.getDataById("PS43194");
-        
-        System.out.println(nv2.getTenNV());
-        
+//        list.forEach(nv1->{
+//            System.out.println(nv1.toString());
+//            }
+//        );
+        list = nv.getDataByValue(1,1);
+        list.forEach(o->{
+            System.out.println(o.toString());
+        });
+                
     }   
 }

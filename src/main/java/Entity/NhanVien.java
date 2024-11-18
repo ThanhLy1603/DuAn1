@@ -95,7 +95,23 @@ public class NhanVien {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
+    public boolean isNam() {
+        return isGioiTinh();
+    }
+    
+    public boolean isNu() {
+        return !isGioiTinh();
+    }
+    
+    public boolean isTruongPhong() {
+        return isChucVu();
+    }
+    
+    public boolean isNhanVien() {
+        return !isChucVu();
+    }
+    
     @Override
     public String toString() {
         return "NhanVien{" + "maNV=" + maNV + ", matKhau=" + matKhau + ", tenNV=" + tenNV + ", gioiTinh=" + gioiTinh + ", chucVu=" + chucVu + ", luong=" + luong + ", soDT=" + soDT + ", email=" + email + '}';

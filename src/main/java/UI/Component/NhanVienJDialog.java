@@ -10,25 +10,249 @@ import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Interfaces.Initialize;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-
+import Map.MapGioiTinh;
+import Map.MapChucVu;
 /**
  *
  * @author PHONG
  */
 public class NhanVienJDialog extends javax.swing.JFrame implements CrudController, CheckForm<NhanVien, String>, Initialize<NhanVien> {
-
+    private NhanVienDao dao = new NhanVienDao();
+    private DecimalFormat df = new DecimalFormat("#,###");
+    private MapChucVu mapRole = new MapChucVu();
+    private MapGioiTinh mapGender = new MapGioiTinh();
     /**
      * Creates new form NhanVien
      */
     public NhanVienJDialog() {
         initComponents();
+        
+        init();
+    }
+
+    @Override
+    public void init() {
+        this.fillToTable();
+        this.generateCbx();
+        
+        setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void fillToTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        List<NhanVien> list = dao.getAllData();
+        
+        String[] col = {
+            "Tên nhân viên",
+            "Giới tính",
+            "Chức vụ",
+            "Lương",
+            "Số điện thoại",
+            "Email"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        list.forEach(nv -> {
+            Object[] values = {
+                nv.getTenNV(),
+                nv.isGioiTinh() ? "Nam" : "Nữ",
+                nv.isChucVu() ? "Quản lý" : "Nhân viên",
+                df.format(nv.getLuong()),
+                nv.getSoDT(),
+                nv.getEmail()
+            };
+            model.addRow(values);
+        });
+        
+        tblNhanVien.setModel(model);
+    }
+    
+    @Override
+    public void filterTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        String itemGioiTinh = (String) cbGioiTinh.getSelectedItem();
+        String itemChucVu = (String) cbVaiTro.getSelectedItem();
+        
+        int indexGioiTinh = mapGender.getIDByValue(itemGioiTinh);
+        int indexChucVu = mapRole.getIDByValue(itemChucVu);
+        
+        List<NhanVien> list = dao.getDataByValue(indexGioiTinh, indexChucVu);
+        String[] col = {
+            "Tên nhân viên",
+            "Giới tính",
+            "Chức vụ",
+            "Lương",
+            "Số điện thoại",
+            "Email"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        list.forEach(nv -> {
+            Object[] values = {
+                nv.getTenNV(),
+                nv.isGioiTinh() ? "Nam" : "Nữ",
+                nv.isChucVu() ? "Quản lý" : "Nhân viên",
+                df.format(nv.getLuong()),
+                nv.getSoDT(),
+                nv.getEmail()
+            };
+            
+            model.addRow(values);
+        });
+        
+        tblNhanVien.setModel(model);
+        
+        System.out.println("ChucVu = " + indexChucVu);
+        System.out.println("Gioi Tinh = " + indexGioiTinh);
+        System.out.println("-----------------------------");
+    }
+    
+    @Override
+    public void generateCbx() {
+        cbxGioiTinh();
+        cbxChucVu();
+    }
+
+    public void cbxGioiTinh() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] gender = {
+            "Tất cả",
+            "Nam",
+            "Nữ"
+        };
+
+        for (String o : gender) {
+            model.addElement(o);
+        }
+
+        cbGioiTinh.setModel(model);
+    }
+
+    public void cbxChucVu() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] VaiTro = {
+            "Tất cả",
+            "Quản lý",
+            "Nhân viên"
+        };
+
+        for (String o : VaiTro) {
+            model.addElement(o);
+        }
+
+        cbVaiTro.setModel(model);
+    }
+
+
+    @Override
+    public void getForm(int index) {
+        NhanVien nv = dao.getAllData().get(index);
+        setForm(nv);
+    }
+
+    @Override
+    public void setForm(NhanVien nv) {
+        txtMaNV.setText(nv.getMaNV());
+        txtTenNV.setText(nv.getTenNV());
+        rdbNam.setSelected(nv.isNam());
+        rdbNu.setSelected(nv.isNu());
+        rbtnNhanVien.setSelected(nv.isNhanVien());
+        rbtnTruongPhong.setSelected(nv.isTruongPhong());
+        txtLuong.setText(df.format((long) nv.getLuong()));
+        txtEmail.setText(nv.getEmail());
+        txtSDT.setText(nv.getSoDT());
+    }
+
+    @Override
+    public void showDetail() {
+        int index = tblNhanVien.getSelectedRow();
+        getForm(index);
+    }
+    @Override
+    public void create() {
+        dao.insertData(new NhanVien(
+                txtMaNV.getText(), // Mã nhân viên
+                txtPassword.getText(), // Mật khẩu
+                txtTenNV.getText(), // Tên nhân viên
+                rdbNam.isSelected(), // Giới tính
+                rbtnTruongPhong.isSelected(), // Chức vụ
+                Float.parseFloat(txtLuong.getText()), // Lương
+                txtSDT.getText(), // Số điện thoại
+                txtEmail.getText()
+        )); // Email
+        reset();
+        fillToTable();
+    }
+
+    @Override
+    public void reset() {
+        txtMaNV.setText("");
+        txtPassword.setText("");
+        txtTenNV.setText("");
+        rbtnNhanVien.isSelected();
+        rbtnNhanVien.setSelected(true); // Giả sử "Nhân viên" là lựa chọn mặc định
+        rdbNam.setSelected(true);       // Giả sử "Nam" là giới tính mặc định
+        txtLuong.setText("");
+        txtSDT.setText("");
+        txtEmail.setText("");
+    }
+
+    @Override
+    public void update() {
+        dao.updateData(new NhanVien(
+                txtMaNV.getText(), // Mã nhân viên
+                txtPassword.getText(), // Mật khẩu
+                txtTenNV.getText(), // Tên nhân viên
+                rdbNam.isSelected(), // Giới tính
+                rbtnTruongPhong.isSelected(), // Chức vụ
+                Float.parseFloat(txtLuong.getText()), // Lương
+                txtSDT.getText(), // Số điện thoại
+                txtEmail.getText()
+        ));
+        fillToTable();
+    }
+
+    @Override
+    public void delete() {
+        dao.deleteById(txtMaNV.getText());
+        reset();
+        fillToTable();
+    }
+
+    @Override
+    public boolean isCheckValid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckContain(List<NhanVien> list, String ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -283,6 +507,12 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             }
         });
 
+        cbVaiTro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbVaiTroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -424,9 +654,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     }//GEN-LAST:event_rbtnTruongPhongActionPerformed
 
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
-        // TODO add your handling code here:
-        int index = tblNhanVien.getSelectedRow();
-        getForm(index);
+        showDetail();
     }//GEN-LAST:event_tblNhanVienMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -440,13 +668,16 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void cbGioiTinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbGioiTinhActionPerformed
-        // TODO add your handling code here:
+        filterTable();
     }//GEN-LAST:event_cbGioiTinhActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
         delete();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void cbVaiTroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVaiTroActionPerformed
+        filterTable();
+    }//GEN-LAST:event_cbVaiTroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -525,232 +756,5 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     private javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
-    NhanVienDao dao = new NhanVienDao();
-    DecimalFormat df = new DecimalFormat("#,###");
-
-    @Override
-    public void create() {
-        dao.insertData(new NhanVien(
-                txtMaNV.getText(), // Mã nhân viên
-                txtPassword.getText(), // Mật khẩu
-                txtTenNV.getText(), // Tên nhân viên
-                rdbNam.isSelected(), // Giới tính
-                rbtnTruongPhong.isSelected(), // Chức vụ
-                Float.parseFloat(txtLuong.getText()), // Lương
-                txtSDT.getText(), // Số điện thoại
-                txtEmail.getText()
-        )); // Email
-        reset();
-        fillToTable();
-    }
-
-    @Override
-    public void reset() {
-        txtMaNV.setText("");
-        txtPassword.setText("");
-        txtTenNV.setText("");
-        rbtnNhanVien.isSelected();
-        rbtnNhanVien.setSelected(true); // Giả sử "Nhân viên" là lựa chọn mặc định
-        rdbNam.setSelected(true);       // Giả sử "Nam" là giới tính mặc định
-        txtLuong.setText("");
-        txtSDT.setText("");
-        txtEmail.setText("");
-    }
-
-    @Override
-    public void update() {
-        dao.updateData(new NhanVien(
-                txtMaNV.getText(), // Mã nhân viên
-                txtPassword.getText(), // Mật khẩu
-                txtTenNV.getText(), // Tên nhân viên
-                rdbNam.isSelected(), // Giới tính
-                rbtnTruongPhong.isSelected(), // Chức vụ
-                Float.parseFloat(txtLuong.getText()), // Lương
-                txtSDT.getText(), // Số điện thoại
-                txtEmail.getText()
-        ));
-        fillToTable();
-    }
-
-    @Override
-    public void delete() {
-        dao.deleteById(txtMaNV.getText());
-        reset();
-        fillToTable();
-    }
-
-    @Override
-    public boolean isCheckValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckContain(List<NhanVien> list, String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckDuplicate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean isCheckDelete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void init() {
-        this.fillToTable();
-        this.generateCbx();
-    }
-
-    @Override
-    public void fillToTable() {
-        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
-        model.setRowCount(0);
-
-        // Lọc giới tính
-        int selectValueGioiTinh = cbGioiTinh.getSelectedIndex();  // "Tất cả" có chỉ số = 0
-        int gioiTinh = selectValueGioiTinh == 0 ? -1 : selectValueGioiTinh;  // Nếu "Tất cả" thì -1
-
-        // Lọc chức vụ
-        int selectValueChucVu = cbVaiTro.getSelectedIndex();  // "Tất cả" có chỉ số = 0
-        int chucVu = selectValueChucVu == 0 ? -1 : selectValueChucVu;  // Nếu "Tất cả" thì -1
-        List<NhanVien> list = dao.getAllData();
-        list.forEach(nv -> {
-            Object[] values = {
-                nv.getTenNV(),
-                nv.isGioiTinh() ? "Nam" : "Nữ",
-                nv.isChucVu() ? "Quản lý" : "Nhân viên",
-                df.format(nv.getLuong()),
-                nv.getSoDT(),
-                nv.getEmail()
-            };
-            model.addRow(values);
-        });
-
-    }
-
-    @Override
-    public void generateCbx() {
-       // Thiết lập combobox giới tính
-        cbxGioiTinh();
-        // Khi người dùng thay đổi lựa chọn giới tính, gọi phương thức fillToTable để cập nhật bảng
-        cbGioiTinh.addActionListener(e -> fillToTable());
-
-        // Thiết lập combobox chức vụ
-        cbxChucVu();
-        // Khi người dùng thay đổi lựa chọn chức vụ, gọi phương thức fillToTable để cập nhật bảng
-        cbVaiTro.addActionListener(e -> fillToTable());
-
-    }
-
-    public void cbxGioiTinh() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        String[] gender = {
-            "Tất cả",
-            "Nam",
-            "Nữ"
-        };
-
-        for (String o : gender) {
-            model.addElement(o);
-        }
-
-        cbGioiTinh.setModel(model);
-    }
-
-    public void cbxChucVu() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        String[] VaiTro = {
-            "Tất cả",
-            "Quản Lý",
-            "Nhân Viên"
-        };
-
-        for (String o : VaiTro) {
-            model.addElement(o);
-        }
-
-        cbVaiTro.setModel(model);
-    }
-
-
-    @Override
-    public void getForm(int index) {
-        NhanVien nv = dao.getAllData().get(index);
-        setForm(nv);
-    }
-
-    @Override
-    public void setForm(NhanVien nv) {
-        txtMaNV.setText(nv.getMaNV());
-        txtTenNV.setText(nv.getTenNV());
-        if (nv.isGioiTinh()) {
-            rdbNam.setSelected(true);
-        } else {
-            rdbNu.setSelected(true);
-        }
-        if (nv.isChucVu()) {
-            rbtnTruongPhong.setSelected(true);
-        } else {
-            rbtnNhanVien.setSelected(true);
-        }
-        txtLuong.setText(df.format(nv.getLuong()));
-        txtEmail.setText(nv.getEmail());
-        txtSDT.setText(nv.getSoDT());
-    }
-
-    @Override
-    public void filterTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void showDetail() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    //    void fillToTable() {
-//    DefaultTableModel model = (DefaultTableModel) tblQuanLyNhanVien.getModel();
-//    model.setRowCount(0);
-//    try {
-//        // Lấy giá trị lọc từ combo box hoặc text field
-//        String gioiTinh = (String) cboGioiTinh.getSelectedItem();
-//        String chucVu = (String) cboChucVu.getSelectedItem();
-//        
-//        // Lấy danh sách nhân viên từ DAO
-//        List<NhanVien> list = dao.selectAll(); // Giả sử DAO có phương thức lấy tất cả nhân viên
-//        
-//        // Áp dụng bộ lọc
-//        List<NhanVien> filteredList = list.stream()
-//            .filter(nv -> (gioiTinh.equals("Tất cả") || nv.getGioiTinh().equals(gioiTinh)))
-//            .filter(nv -> (chucVu.equals("Tất cả") || nv.getChucVu().equals(chucVu)))
-//            .toList();
-//        
-//        // Đổ dữ liệu vào bảng
-//        filteredList.forEach(nv -> {
-//            Object[] row = {
-//                nv.getMaNV(),
-//                nv.getHoTen(),
-//                nv.getGioiTinh(),
-//                nv.getChucVu()
-//            };
-//            model.addRow(row);
-//        });
-//    } catch (Exception e) {
-//        throw new RuntimeException(e);
-//    }
-//}
+    
 }

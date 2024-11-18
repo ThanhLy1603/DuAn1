@@ -17,7 +17,40 @@ import java.util.logging.Logger;
  * @author ADMIN
  */
 public class DoanhThuDAO implements DAO<DoanhThu, String>{
+    public class MinMaxRevenue {
+        private double min;
+        private double max;
 
+        public MinMaxRevenue() {
+        }
+
+        public MinMaxRevenue(double min, double max) {
+            this.min = min;
+            this.max = max;
+        }
+         
+        public double getMin() {
+            return min;
+        }
+
+        public void setMin(double min) {
+            this.min = min;
+        }
+
+        public double getMax() {
+            return max;
+        }
+
+        public void setMax(double max) {
+            this.max = max;
+        }
+
+        @Override
+        public String toString() {
+            return "MinMaxRevenue{" + "min=" + min + ", max=" + max + '}';
+        }
+    }
+    
     @Override
     public List<DoanhThu> getAllData() {
         List<DoanhThu> list = new ArrayList<>();
@@ -153,6 +186,43 @@ public class DoanhThuDAO implements DAO<DoanhThu, String>{
         }
         
         return list;
+    }
+    
+    public double getTotalRevenue() {
+        double total = 0;
+        String sql = "SELECT SUM(TongTien) as Tong FROM V_DoanhThu";
+        Object[] values = {};
+        
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        try {
+            while (rs.next()) {
+                total = rs.getDouble("Tong");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoanhThuDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return total;
+    }
+    
+    public MinMaxRevenue getMinMaxRevenue() {
+        MinMaxRevenue o = null;
+        
+        String sql = "SELECT MAX(TongTien) as CaoNhat, MIN(TongTien) as ThapNhat FROM V_DoanhThu";
+        Object[] values = {};
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        
+        try {
+            while (rs.next()) {
+                o = new MinMaxRevenue(
+                        rs.getDouble("ThapNhat"), 
+                        rs.getDouble("CaoNhat")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoanhThuDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
     }
     
     @Override

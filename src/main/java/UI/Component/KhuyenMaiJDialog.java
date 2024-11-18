@@ -3,20 +3,146 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package UI.Component;
-
+import DAO.KhuyenMaiDAO;
+import Interfaces.Initialize;
+import Entity.KhuyenMai;
+import Interfaces.CheckForm;
+import Interfaces.CrudController;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+        
 /**
  *
  * @author nguye
  */
-public class KhuyenMaiJDialog extends javax.swing.JFrame {
-
+public class KhuyenMaiJDialog extends javax.swing.JFrame implements Initialize<KhuyenMai>, CheckForm<KhuyenMai, String>, CrudController{
+    private KhuyenMaiDAO dao = new KhuyenMaiDAO();
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form KhuyenMaiJDialog
-     */
+ */
     public KhuyenMaiJDialog() {
         initComponents();
+        
+        init();
     }
 
+    
+    @Override
+    public void init() {
+        fillToTable();
+        
+        setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void fillToTable() {
+        List<KhuyenMai> list = dao.getAllData();
+        DefaultTableModel model = new DefaultTableModel();
+        String[] col = {
+            "Mã khuyến mãi",
+            "Tên khuyến mãi",
+            "Mức khuyến mãi",
+            "Ngày bắt đầu",
+            "Ngày kết thúc"
+        };
+        
+        model.setColumnIdentifiers(col);
+        
+        for (KhuyenMai o : list) {
+            model.addRow(new Object[]{
+                o.getMaKM(),
+                o.getTenKM(),
+                o.getMucKM(),
+                o.getNgayBatDau(),
+                o.getNgayKetThuc()
+            });
+        }
+        
+        tblKhuyenMai.setModel(model);
+    }
+
+    @Override
+    public void filterTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setForm(KhuyenMai o) {
+        txtMaKM.setText(o.getMaKM());
+        txtMucKM.setText(String.valueOf(o.getMucKM()));
+        txtTenKM.setText(o.getTenKM());
+        txtNgayBD.setText(formatter.format(o.getNgayBatDau()));
+        txtNgayKT.setText(formatter.format(o.getNgayKetThuc()));
+    }
+
+    @Override
+    public void getForm(int index) {
+        KhuyenMai o = dao.getAllData().get(index);
+        setForm(o);
+    }
+
+    @Override
+    public void showDetail() {
+        int index = tblKhuyenMai.getSelectedRow();
+        getForm(index);
+    }
+
+    @Override
+    public boolean isCheckValid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckContain(List<KhuyenMai> list, String ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void create() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,9 +179,9 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtNgayKT = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtNgayBD = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jTextField6 = new javax.swing.JTextField();
@@ -128,7 +254,7 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel4.setText("Mục khuyến mãi");
+        jLabel4.setText("Mức khuyến mãi");
 
         txtMucKM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,14 +276,10 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(12, 12, 12))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -190,18 +312,18 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel7.setText("Thời gian bắt đầu giảm giá ");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtNgayKT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtNgayKTActionPerformed(evt);
             }
         });
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel8.setText("Thời gian kết thúc giảm giá ");
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        txtNgayBD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                txtNgayBDActionPerformed(evt);
             }
         });
 
@@ -219,9 +341,9 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNgayKT, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNgayBD, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(7, Short.MAX_VALUE))
@@ -236,11 +358,11 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addGap(12, 12, 12)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNgayBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jLabel8)
                 .addGap(12, 12, 12)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNgayKT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -274,7 +396,7 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã khuyến mãi", "Tên khuyến mãi", "Mucj khuyến mãi", "Ngày bắt đầu", "Ngày kết thúc"
+                "Mã khuyến mãi", "Tên khuyến mãi", "Mức khuyến mãi", "Ngày bắt đầu", "Ngày kết thúc"
             }
         ));
         tblKhuyenMai.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -417,13 +539,13 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMucKMActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtNgayKTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNgayKTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtNgayKTActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtNgayBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNgayBDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_txtNgayBDActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
@@ -442,7 +564,7 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void tblKhuyenMaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhuyenMaiMouseClicked
-        // TODO add your handling code here:
+        showDetail();
     }//GEN-LAST:event_tblKhuyenMaiMouseClicked
 
     /**
@@ -520,12 +642,13 @@ public class KhuyenMaiJDialog extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTable tblKhuyenMai;
     private javax.swing.JTextField txtMaKM;
     private javax.swing.JTextField txtMucKM;
+    private javax.swing.JTextField txtNgayBD;
+    private javax.swing.JTextField txtNgayKT;
     private javax.swing.JTextField txtTenKM;
     // End of variables declaration//GEN-END:variables
+
 }

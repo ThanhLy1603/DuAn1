@@ -8,7 +8,7 @@ import Interfaces.Panel;
 import UI.Detail.ChiTietSPDetailJDialog;
 import UI.Detail.LoaiSPDetailJDialog;
 import UI.Detail.SanPhamDetailJDialog;
-import java.awt.BorderLayout;;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

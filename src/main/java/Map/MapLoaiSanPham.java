@@ -14,7 +14,7 @@ import Interfaces.MapData;
  *
  * @author ADMIN
  */
-public class MapLoaiSanPham implements MapData {
+public class MapLoaiSanPham implements MapData<String, String> {
     
     @Override
     public Map<String, String> getMapData() {
@@ -34,16 +34,11 @@ public class MapLoaiSanPham implements MapData {
     
     @Override
     public String getValueByID(String id) {
-        String tenLoai = null;
-        Map<String, String> map = getMapData();
+        String value = null;
+        Map<String, String> map = getMapData();   
+        value = map.get(id);
         
-        for (Map.Entry<String, String> o : map.entrySet()){
-            if (o.getKey().equalsIgnoreCase(id)){
-                tenLoai = o.getValue();
-            }
-        }
-        
-        return tenLoai;
+        return value;
     }
 
     @Override
@@ -51,10 +46,9 @@ public class MapLoaiSanPham implements MapData {
         String id = null;
         Map<String, String> map = getMapData();
         
-        for (Map.Entry<String, String> o : map.entrySet()){
-            if (o.getValue().equalsIgnoreCase(value)){
-                id = o.getKey();
-            }
+        for (Map.Entry<String, String> o : map.entrySet()) {
+            if (value.equalsIgnoreCase(o.getValue()))
+            id = o.getKey();
         }
         
         return id;

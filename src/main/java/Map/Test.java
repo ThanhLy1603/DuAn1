@@ -4,22 +4,15 @@
  */
 package Map;
 import java.util.Map;
+import java.util.TreeMap;
 /**
  *
  * @author ADMIN
  */
 public class Test {
     public static void main(String[] args) {
-        MapLoaiSanPham mapLSP = new MapLoaiSanPham();
-        Map<String, String> list = mapLSP.getMapData();
+        MapGioiTinh map = new MapGioiTinh();
         
-//        for (Map.Entry<String, String> o : list.entrySet()) {
-//            System.out.println(o.getKey());
-//            System.out.println(o.getValue());
-//            System.out.println("------------------------------");
-//        }
-
-        System.out.println(mapLSP.getIDByValue("Đầm"));
-        System.out.println(mapLSP.getValueByID("DRE"));
+        System.out.println(map.getIDByValue("Tất cả"));
     }
 }

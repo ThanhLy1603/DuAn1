@@ -4,7 +4,6 @@
  */
 package Utils;
 
-import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -45,8 +44,8 @@ public class SelectPhotos {
         return image;
     }
     
-    public void setImage(JLabel lable, String image) {
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/Photos/" + image));
+    public void setImage(JLabel lable, String imageName) {
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/Photos/" + imageName));
         lable.setIcon(imageIcon);
     }
 }
