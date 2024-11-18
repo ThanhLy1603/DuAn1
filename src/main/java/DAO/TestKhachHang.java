@@ -26,14 +26,18 @@ public class TestKhachHang {
 //        KhachHang kh = dao.getDataById(ma);
 //        System.out.println(ma);
 //        System.out.println(kh.getTenKH());
-
-        KhachHang kh=new KhachHang();
-        kh.setMaKH("KH10");
-        kh.setTenKH("Kiet");
-        kh.setGioiTinh(true);
-        kh.setDiaChi("11/48c");
-        kh.setSoDT("0769034419");
-        dao.insertData(kh);
-
+//
+//        KhachHang kh=new KhachHang();
+//        kh.setMaKH("KH10");
+//        kh.setTenKH("Kiet");
+//        kh.setGioiTinh(true);
+//        kh.setDiaChi("11/48c");
+//        kh.setSoDT("0769034419");
+//        dao.insertData(kh);
+        List<KhachHang> list = dao.getDataByValue("Leao");
+        
+        for (KhachHang o : list) {
+            System.out.println(o.toString());
+        }
     }
 }

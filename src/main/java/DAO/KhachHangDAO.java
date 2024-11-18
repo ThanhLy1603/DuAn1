@@ -8,8 +8,11 @@ import Interfaces.DAO;
 import Entity.KhachHang;
 import Utils.JDBC;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -97,7 +100,28 @@ public class KhachHangDAO implements DAO<KhachHang, String> {
 
     @Override
     public List<KhachHang> getDataByValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<KhachHang> list = new ArrayList<>();
+        String sql = "SELECT * FROM KhachHang WHERE TenKH like ? OR MaKH like ?";
+        Object[] values = {
+            "%" + value + "%",
+            "%" + value + "%"
+                
+        };
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        try {
+            while (rs.next()) {
+                KhachHang kh = new KhachHang();
+                kh.setMaKH(rs.getString("MAKH"));
+                kh.setTenKH(rs.getString("TENKH"));
+                kh.setGioiTinh(rs.getBoolean("GIOITINH"));
+                kh.setDiaChi(rs.getString("DIACHI"));
+                kh.setSoDT(rs.getString("SDT"));
+                list.add(kh);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
 }
