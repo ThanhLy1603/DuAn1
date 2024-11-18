@@ -10,7 +10,12 @@ import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Interfaces.Initialize;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -65,8 +70,8 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jComboBoxLocGioiTinh = new javax.swing.JComboBox<>();
-        jComboBoxLocVaiTro = new javax.swing.JComboBox<>();
+        cbGioiTinh = new javax.swing.JComboBox<>();
+        cbVaiTro = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         Tabs = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -139,6 +144,11 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         });
 
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Mật Khẩu");
 
@@ -267,6 +277,12 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         jLabel15.setText("Lọc theo vai trò");
 
+        cbGioiTinh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbGioiTinhActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -275,11 +291,11 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                 .addContainerGap()
                 .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxLocGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxLocVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -287,8 +303,8 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jComboBoxLocVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxLocGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
                 .addGap(0, 6, Short.MAX_VALUE))
         );
@@ -423,6 +439,15 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         reset();
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
+    private void cbGioiTinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbGioiTinhActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbGioiTinhActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -468,8 +493,8 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
-    private javax.swing.JComboBox<String> jComboBoxLocGioiTinh;
-    private javax.swing.JComboBox<String> jComboBoxLocVaiTro;
+    private javax.swing.JComboBox<String> cbGioiTinh;
+    private javax.swing.JComboBox<String> cbVaiTro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -515,6 +540,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                 txtSDT.getText(), // Số điện thoại
                 txtEmail.getText()
         )); // Email
+        reset();
         fillToTable();
     }
 
@@ -533,12 +559,24 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        dao.updateData(new NhanVien(
+                txtMaNV.getText(), // Mã nhân viên
+                txtPassword.getText(), // Mật khẩu
+                txtTenNV.getText(), // Tên nhân viên
+                rdbNam.isSelected(), // Giới tính
+                rbtnTruongPhong.isSelected(), // Chức vụ
+                Float.parseFloat(txtLuong.getText()), // Lương
+                txtSDT.getText(), // Số điện thoại
+                txtEmail.getText()
+        ));
+        fillToTable();
     }
 
     @Override
     public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        dao.deleteById(txtMaNV.getText());
+        reset();
+        fillToTable();
     }
 
     @Override
@@ -574,25 +612,80 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     @Override
     public void init() {
         this.fillToTable();
+        this.generateCbx();
     }
 
     @Override
     public void fillToTable() {
         DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
         model.setRowCount(0);
+
+        // Lọc giới tính
+        int selectValueGioiTinh = cbGioiTinh.getSelectedIndex();  // "Tất cả" có chỉ số = 0
+        int gioiTinh = selectValueGioiTinh == 0 ? -1 : selectValueGioiTinh;  // Nếu "Tất cả" thì -1
+
+        // Lọc chức vụ
+        int selectValueChucVu = cbVaiTro.getSelectedIndex();  // "Tất cả" có chỉ số = 0
+        int chucVu = selectValueChucVu == 0 ? -1 : selectValueChucVu;  // Nếu "Tất cả" thì -1
         List<NhanVien> list = dao.getAllData();
         list.forEach(nv -> {
-            Object[] values = {nv.getTenNV(), nv.isGioiTinh(), nv.isChucVu(),
-                df.format(nv.getLuong()), nv.getSoDT(), nv.getEmail()};
+            Object[] values = {
+                nv.getTenNV(),
+                nv.isGioiTinh() ? "Nam" : "Nữ",
+                nv.isChucVu() ? "Quản lý" : "Nhân viên",
+                df.format(nv.getLuong()),
+                nv.getSoDT(),
+                nv.getEmail()
+            };
             model.addRow(values);
         });
-        tblNhanVien.setModel(model);
+
     }
 
     @Override
     public void generateCbx() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       // Thiết lập combobox giới tính
+        cbxGioiTinh();
+        // Khi người dùng thay đổi lựa chọn giới tính, gọi phương thức fillToTable để cập nhật bảng
+        cbGioiTinh.addActionListener(e -> fillToTable());
+
+        // Thiết lập combobox chức vụ
+        cbxChucVu();
+        // Khi người dùng thay đổi lựa chọn chức vụ, gọi phương thức fillToTable để cập nhật bảng
+        cbVaiTro.addActionListener(e -> fillToTable());
+
     }
+
+    public void cbxGioiTinh() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] gender = {
+            "Tất cả",
+            "Nam",
+            "Nữ"
+        };
+
+        for (String o : gender) {
+            model.addElement(o);
+        }
+
+        cbGioiTinh.setModel(model);
+    }
+
+    public void cbxChucVu() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        String[] VaiTro = {
+            "Tất cả",
+            "Quản Lý",
+            "Nhân Viên"
+        };
+
+        for (String o : VaiTro) {
+            model.addElement(o);
+        }
+
+        cbVaiTro.setModel(model);
+    }
+
 
     @Override
     public void getForm(int index) {
@@ -628,4 +721,36 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     public void showDetail() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    //    void fillToTable() {
+//    DefaultTableModel model = (DefaultTableModel) tblQuanLyNhanVien.getModel();
+//    model.setRowCount(0);
+//    try {
+//        // Lấy giá trị lọc từ combo box hoặc text field
+//        String gioiTinh = (String) cboGioiTinh.getSelectedItem();
+//        String chucVu = (String) cboChucVu.getSelectedItem();
+//        
+//        // Lấy danh sách nhân viên từ DAO
+//        List<NhanVien> list = dao.selectAll(); // Giả sử DAO có phương thức lấy tất cả nhân viên
+//        
+//        // Áp dụng bộ lọc
+//        List<NhanVien> filteredList = list.stream()
+//            .filter(nv -> (gioiTinh.equals("Tất cả") || nv.getGioiTinh().equals(gioiTinh)))
+//            .filter(nv -> (chucVu.equals("Tất cả") || nv.getChucVu().equals(chucVu)))
+//            .toList();
+//        
+//        // Đổ dữ liệu vào bảng
+//        filteredList.forEach(nv -> {
+//            Object[] row = {
+//                nv.getMaNV(),
+//                nv.getHoTen(),
+//                nv.getGioiTinh(),
+//                nv.getChucVu()
+//            };
+//            model.addRow(row);
+//        });
+//    } catch (Exception e) {
+//        throw new RuntimeException(e);
+//    }
+//}
 }

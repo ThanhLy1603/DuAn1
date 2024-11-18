@@ -356,6 +356,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -409,11 +412,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel14" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jComboBoxLocGioiTinh" min="-2" pref="95" max="-2" attributes="0"/>
+                  <Component id="cbGioiTinh" min="-2" pref="95" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel15" min="-2" pref="92" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jComboBoxLocVaiTro" min="-2" pref="97" max="-2" attributes="0"/>
+                  <Component id="cbVaiTro" min="-2" pref="97" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -423,8 +426,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBoxLocVaiTro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBoxLocGioiTinh" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbVaiTro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbGioiTinh" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
@@ -443,17 +446,20 @@
             <Property name="text" type="java.lang.String" value="L&#x1ecd;c theo vai tr&#xf2;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBoxLocGioiTinh">
+        <Component class="javax.swing.JComboBox" name="cbGioiTinh">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbGioiTinhActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBoxLocVaiTro">
+        <Component class="javax.swing.JComboBox" name="cbVaiTro">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
