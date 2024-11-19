@@ -15,21 +15,26 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import Map.MapGioiTinh;
 import Map.MapChucVu;
+import Utils.DialogBox;
+import java.util.ArrayList;
+
 /**
  *
  * @author PHONG
  */
 public class NhanVienJDialog extends javax.swing.JFrame implements CrudController, CheckForm<NhanVien, String>, Initialize<NhanVien> {
+
     private NhanVienDao dao = new NhanVienDao();
-    private DecimalFormat df = new DecimalFormat("#,###");
+    private DecimalFormat df = new DecimalFormat("#");
     private MapChucVu mapRole = new MapChucVu();
     private MapGioiTinh mapGender = new MapGioiTinh();
+
     /**
      * Creates new form NhanVien
      */
     public NhanVienJDialog() {
         initComponents();
-        
+
         init();
     }
 
@@ -37,7 +42,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     public void init() {
         this.fillToTable();
         this.generateCbx();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -45,7 +50,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     public void fillToTable() {
         DefaultTableModel model = new DefaultTableModel();
         List<NhanVien> list = dao.getAllData();
-        
+
         String[] col = {
             "Tên nhân viên",
             "Giới tính",
@@ -54,9 +59,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             "Số điện thoại",
             "Email"
         };
-        
+
         model.setColumnIdentifiers(col);
-        
+
         list.forEach(nv -> {
             Object[] values = {
                 nv.getTenNV(),
@@ -68,19 +73,19 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             };
             model.addRow(values);
         });
-        
+
         tblNhanVien.setModel(model);
     }
-    
+
     @Override
     public void filterTable() {
         DefaultTableModel model = new DefaultTableModel();
         String itemGioiTinh = (String) cbGioiTinh.getSelectedItem();
         String itemChucVu = (String) cbVaiTro.getSelectedItem();
-        
+
         int indexGioiTinh = mapGender.getIDByValue(itemGioiTinh);
         int indexChucVu = mapRole.getIDByValue(itemChucVu);
-        
+
         List<NhanVien> list = dao.getDataByValue(indexGioiTinh, indexChucVu);
         String[] col = {
             "Tên nhân viên",
@@ -90,9 +95,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             "Số điện thoại",
             "Email"
         };
-        
+
         model.setColumnIdentifiers(col);
-        
+
         list.forEach(nv -> {
             Object[] values = {
                 nv.getTenNV(),
@@ -102,17 +107,17 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                 nv.getSoDT(),
                 nv.getEmail()
             };
-            
+
             model.addRow(values);
         });
-        
+
         tblNhanVien.setModel(model);
-        
+
         System.out.println("ChucVu = " + indexChucVu);
         System.out.println("Gioi Tinh = " + indexGioiTinh);
         System.out.println("-----------------------------");
     }
-    
+
     @Override
     public void generateCbx() {
         cbxGioiTinh();
@@ -149,7 +154,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         cbVaiTro.setModel(model);
     }
 
-
     @Override
     public void getForm(int index) {
         NhanVien nv = dao.getAllData().get(index);
@@ -159,6 +163,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     @Override
     public void setForm(NhanVien nv) {
         txtMaNV.setText(nv.getMaNV());
+        txtPassword.setText(nv.getMatKhau());
         txtTenNV.setText(nv.getTenNV());
         rdbNam.setSelected(nv.isNam());
         rdbNu.setSelected(nv.isNu());
@@ -174,20 +179,26 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         int index = tblNhanVien.getSelectedRow();
         getForm(index);
     }
+
     @Override
     public void create() {
-        dao.insertData(new NhanVien(
-                txtMaNV.getText(), // Mã nhân viên
-                txtPassword.getText(), // Mật khẩu
-                txtTenNV.getText(), // Tên nhân viên
-                rdbNam.isSelected(), // Giới tính
-                rbtnTruongPhong.isSelected(), // Chức vụ
-                Float.parseFloat(txtLuong.getText()), // Lương
-                txtSDT.getText(), // Số điện thoại
-                txtEmail.getText()
-        )); // Email
-        reset();
-        fillToTable();
+        if (isCheckValid()) {
+            if (isCheckDuplicate()) {
+                dao.insertData(new NhanVien(
+                        txtMaNV.getText(), // Mã nhân viên
+                        txtPassword.getText(), // Mật khẩu
+                        txtTenNV.getText(), // Tên nhân viên
+                        rdbNam.isSelected(), // Giới tính
+                        rbtnTruongPhong.isSelected(), // Chức vụ
+                        Float.parseFloat(txtLuong.getText()), // Lương
+                        txtSDT.getText(), // Số điện thoại
+                        txtEmail.getText()
+                )); // Email
+                DialogBox.notice(this, "tạo Thành công");
+                reset();
+                fillToTable();
+            }
+        }
     }
 
     @Override
@@ -205,54 +216,200 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
     @Override
     public void update() {
-        dao.updateData(new NhanVien(
-                txtMaNV.getText(), // Mã nhân viên
-                txtPassword.getText(), // Mật khẩu
-                txtTenNV.getText(), // Tên nhân viên
-                rdbNam.isSelected(), // Giới tính
-                rbtnTruongPhong.isSelected(), // Chức vụ
-                Float.parseFloat(txtLuong.getText()), // Lương
-                txtSDT.getText(), // Số điện thoại
-                txtEmail.getText()
-        ));
-        fillToTable();
+        if (isCheckValid()) {
+            dao.updateData(new NhanVien(
+                    txtMaNV.getText(), // Mã nhân viên
+                    txtPassword.getText(), // Mật khẩu
+                    txtTenNV.getText(), // Tên nhân viên
+                    rdbNam.isSelected(), // Giới tính
+                    rbtnTruongPhong.isSelected(), // Chức vụ
+                    Float.parseFloat(txtLuong.getText()), // Lương
+                    txtSDT.getText(), // Số điện thoại
+                    txtEmail.getText()
+            )); // Email
+            DialogBox.notice(this, "Update Thành Công");
+            fillToTable();
+
+        }
     }
 
     @Override
     public void delete() {
-        dao.deleteById(txtMaNV.getText());
-        reset();
-        fillToTable();
+        if (isCheckDelete()) {
+            if (DialogBox.confirm(this, "Bạn có muốn xóa nhân viên này không")) {
+                dao.deleteById(txtMaNV.getText());
+                reset();
+                fillToTable();
+            }
+        }
     }
 
     @Override
     public boolean isCheckValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String luong = txtLuong.getText().replaceAll(",", "");  // Loại bỏ dấu phẩy nếu có
+        String patternNumber = "\\d*";
+        String patternText = "^[a-zA-ZÀ-ỹ\\s]+$";
+        String maNV = txtMaNV.getText();
+        String matKhau = txtPassword.getText();
+        String tenNV = txtTenNV.getText();
+        String soDT = txtSDT.getText();
+        String email = txtEmail.getText();
+        if (maNV == null || maNV.isEmpty()) {
+            DialogBox.alert(this, "Mã nhân viên Không được trống");
+            return false;
+        }
+        if (!maNV.matches("PS\\d+")) {
+            DialogBox.alert(this, "Mã nhân viên phải bắt đầu PS và sau là số!");
+        }
+        if (matKhau == null || matKhau.isEmpty()) {
+            DialogBox.alert(this, "Mật khẩu Không được trống");
+            return false;
+        }
+
+        if (tenNV == null || tenNV.isEmpty()) {
+            DialogBox.alert(this, "Tên nhân viên Không được trống");
+            return false;
+        }
+        if (!tenNV.matches(patternText)) {
+            DialogBox.alert(this, "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng, không được chứa số hoặc ký tự đặc biệt");
+            return false;
+        }
+        if (luong == null || luong.trim().isEmpty()) {
+            DialogBox.alert(this, "Lương Không được trống");
+            return false;
+        }
+        if (!luong.matches(patternNumber)) {
+            DialogBox.alert(this, "Lương chỉ được chứa chữ số, không được chứa chữ cái hoặc ký tự đặc biệt");
+            return false;
+        }
+        if (soDT == null || soDT.trim().isEmpty()) {
+            DialogBox.alert(this, "Số điện thoại Không được trống");
+            return false;
+        }
+        if (!soDT.matches("^\\d+$")) {
+            DialogBox.alert(this, "Số điện thoại chỉ được chứa chữ số, không được chứa chữ cái hoặc ký tự đặc biệt");
+            return false;
+        }
+        if (email == null || email.trim().isEmpty()) {
+            DialogBox.alert(this, "Email Không được trống");
+            return false;
+        }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            DialogBox.alert(this, "Email không hợp lệ. Vui lòng nhập email đúng định dạng");
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean isCheckContain(List<NhanVien> list, String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (list == null || list.isEmpty()) {
+            return false;
+        }
+        for (NhanVien nv : list) {
+            if (nv.getMaNV().equals(ma)) {
+                return true;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean isCheckDuplicate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maNV = txtMaNV.getText();
+        List<NhanVien> list = dao.getAllData();
+        if (isCheckContain(list, maNV)) {
+            DialogBox.alert(this, "Mã nhân viên này có rồi, vui lòng nhập mã khác!");
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean isCheckUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maNV = txtMaNV.getText();
+        List<NhanVien> list = dao.getAllData();
+        if (!isCheckContain(list, maNV)) {
+            DialogBox.alert(this, "Không tìm thấy mã nhân viên cần sửa");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public boolean isCheckLength() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        String maNV = txtMaNV.getText();  // Lấy mã nhân viên từ input
+//        String matKhau = txtPassword.getText();  // Lấy mật khẩu từ input
+//        String tenNV = txtTenNV.getText();  // Lấy tên nhân viên từ input
+//        String soDT = txtSDT.getText();  // Lấy số điện thoại từ input
+//        String email = txtEmail.getText();  // Lấy email từ input
+//
+//        // Kiểm tra độ dài mã nhân viên (ví dụ: phải có ít nhất 3 ký tự và tối đa 10 ký tự)
+//        if (maNV.length() < 3 || maNV.length() > 10) {
+//            DialogBox.alert(this, "Mã nhân viên phải có độ dài từ 3 đến 10 ký tự");
+//            return false;
+//        }
+//
+//        // Kiểm tra độ dài mật khẩu (ví dụ: phải có ít nhất 6 ký tự)
+//        if (matKhau.length() < 6) {
+//            DialogBox.alert(this, "Mật khẩu phải có ít nhất 6 ký tự");
+//            return false;
+//        }
+//
+//        // Kiểm tra độ dài tên nhân viên (ví dụ: từ 3 đến 50 ký tự)
+//        if (tenNV.length() < 3 || tenNV.length() > 50) {
+//            DialogBox.alert(this, "Tên nhân viên phải có độ dài từ 3 đến 50 ký tự");
+//            return false;
+//        }
+//
+//        // Kiểm tra độ dài số điện thoại (ví dụ: 10 hoặc 11 ký tự)
+//        if (soDT.length() != 10 && soDT.length() != 11) {
+//            DialogBox.alert(this, "Số điện thoại phải có 10 hoặc 11 ký tự");
+//            return false;
+//        }
+//
+//        // Kiểm tra độ dài email (ví dụ: phải có ít nhất 5 ký tự)
+//        if (email.length() < 5) {
+//            DialogBox.alert(this, "Email phải có ít nhất 5 ký tự");
+//            return false;
+//        }
+//
+//        // Nếu tất cả các trường đều hợp lệ, trả về true
+        return true;
     }
 
     @Override
     public boolean isCheckDelete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String maNV = txtMaNV.getText(); // Lấy mã nhân viên từ input
+        // Kiểm tra nếu mã nhân viên trống
+        if (maNV == null || maNV.trim().isEmpty()) {
+            DialogBox.alert(this, "Mã nhân viên không được để trống");
+            return false;  // Không thể xóa nếu mã nhân viên không hợp lệ
+        }
+
+        return true;
+    }
+
+    public void SearchByName() {
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        model.setRowCount(0);  // Xóa các dòng hiện tại trong bảng
+        String timKiem = txtTimKiem.getText().trim();
+        System.out.println("Searching for: " + timKiem); // In ra tên đang tìm kiếm
+        // Lấy kết quả tìm kiếm từ phương thức getDateByName
+        List<NhanVien> list = dao.getDateByName(timKiem);
+
+        // Duyệt qua danh sách nhân viên và thêm vào bảng
+        for (NhanVien nv : list) {
+            model.addRow(new Object[]{
+                nv.getTenNV(),
+                nv.isGioiTinh() ? "Nam" : "Nữ",
+                nv.isChucVu() ? "Quản lý" : "Nhân viên",
+                df.format(nv.getLuong()),
+                nv.getSoDT(),
+                nv.getEmail()
+            });
+        }
     }
 
     /**
@@ -575,6 +732,15 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         Tabs.addTab("Nhân viên", jPanel4);
 
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
+
         btnSearch.setText("Tìm");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -638,6 +804,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
@@ -678,6 +845,15 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     private void cbVaiTroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVaiTroActionPerformed
         filterTable();
     }//GEN-LAST:event_cbVaiTroActionPerformed
+
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        SearchByName();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTimKiemKeyPressed
 
     /**
      * @param args the command line arguments
@@ -756,5 +932,5 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     private javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
-    
+
 }

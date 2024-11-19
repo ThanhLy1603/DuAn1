@@ -10,6 +10,7 @@ import Utils.JDBC;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.plaf.nimbus.NimbusStyle;
 
 /**
  *
@@ -29,8 +30,8 @@ public class NhanVienDao implements DAO<NhanVien, String> {
                 nv.setMaNV(rs.getString("MaNV"));
                 nv.setTenNV(rs.getString("TenNV"));
                 nv.setMatKhau(rs.getString("MatKhau"));
-                nv.setGioiTinh(rs.getInt("GioiTinh")==1);
-                nv.setChucVu(rs.getInt("ChucVu")==1);
+                nv.setGioiTinh(rs.getInt("GioiTinh") == 1);
+                nv.setChucVu(rs.getInt("ChucVu") == 1);
                 nv.setLuong(rs.getDouble("Luong"));
                 nv.setSoDT(rs.getString("SoDT"));
                 nv.setEmail(rs.getString("Email"));
@@ -66,7 +67,7 @@ public class NhanVienDao implements DAO<NhanVien, String> {
         }
         return null;
     }
-    
+
     public List<NhanVien> getDataByValue(Integer gioiTinh, Integer chucVu) {
         List<NhanVien> list = new ArrayList<>();
         String sql = "EXEC SP_FilterNhanVien ?,?";
@@ -90,7 +91,31 @@ public class NhanVienDao implements DAO<NhanVien, String> {
             throw new RuntimeException(e);
         }
     }
-        
+
+    public List<NhanVien> getDateByName(String name) {
+        List<NhanVien> list = new ArrayList<>();
+        String sql = "SELECT * FROM NhanVien WHERE TenNV LIKE ?";
+        Object[] values = {"%"+name +"%"};
+        ResultSet rs = JDBC.executeQuery(sql, values);  // Giả sử JDBC.executeQuery đã hỗ trợ tham số an toàn
+        try {
+            while (rs.next()) {
+                NhanVien nv = new NhanVien();
+                nv.setMaNV(rs.getString("MaNV"));
+                nv.setTenNV(rs.getString("TenNV"));
+                nv.setMatKhau(rs.getString("MatKhau"));
+                nv.setGioiTinh(rs.getBoolean("GioiTinh"));
+                nv.setChucVu(rs.getBoolean("ChucVu"));
+                nv.setLuong(rs.getDouble("Luong"));
+                nv.setSoDT(rs.getString("SoDT"));
+                nv.setEmail(rs.getString("Email"));
+                list.add(nv);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;  // Trả về danh sách nhân viên
+    }
+
     @Override
     public void insertData(NhanVien nv) {
         String sql = "EXEC SP_InsertUpdateNhanVien ?, ?, ?,?,?,?,?,?";
@@ -134,5 +159,5 @@ public class NhanVienDao implements DAO<NhanVien, String> {
     public List<NhanVien> getDataByValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }
