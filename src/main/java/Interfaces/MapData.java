@@ -8,8 +8,8 @@ import java.util.Map;
  *
  * @author ADMIN 
  */
-public interface MapData<Type1, Type2> {
-    public Map<Type1, Type2> getMapData();
-    public Type2 getValueByID(Type1 id);
-    public Type1 getIDByValue(Type2 value);
+public interface MapData<Key, Value> {
+    public Map<Key, Value> getMapData();
+    public Value getValueByID(Key id);
+    public Key getIDByValue(Value value);
 }
