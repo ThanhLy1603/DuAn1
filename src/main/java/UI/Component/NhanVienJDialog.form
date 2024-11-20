@@ -53,11 +53,7 @@
                               <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel13" min="-2" pref="65" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtTimKiem" min="-2" pref="136" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtTimKiem" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jLabel1" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
@@ -89,10 +85,7 @@
                       <Component id="Tabs" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtTimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnSearch" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="txtTimKiem" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -161,18 +154,18 @@
                           <Component id="rbtnNhanVien" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel10" min="-2" pref="61" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel11" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="rdbNam" min="-2" pref="55" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="rdbNu" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel11" min="-2" pref="37" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="txtLuong" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="txtLuong" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -226,11 +219,11 @@
                           <Component id="rbtnTruongPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rbtnNhanVien" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="rdbNu" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="rdbNu" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdbNam" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -584,11 +577,6 @@
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTimKiemKeyPressed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTimKiemKeyReleased"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnSearch">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="T&#xec;m"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

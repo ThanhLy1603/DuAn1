@@ -34,7 +34,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
      */
     public NhanVienJDialog() {
         initComponents();
-
         init();
     }
 
@@ -42,7 +41,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     public void init() {
         this.fillToTable();
         this.generateCbx();
-
         setLocationRelativeTo(null);
     }
 
@@ -122,6 +120,8 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     public void generateCbx() {
         cbxGioiTinh();
         cbxChucVu();
+        rbtnNhanVien.setSelected(true); // Giả sử "Nhân viên" là lựa chọn mặc định
+        rdbNam.setSelected(true);       // Giả sử "Nam" là giới tính mặc định
     }
 
     public void cbxGioiTinh() {
@@ -246,72 +246,58 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
     @Override
     public boolean isCheckValid() {
+        StringBuilder sb = new StringBuilder();
         String luong = txtLuong.getText().replaceAll(",", "");  // Loại bỏ dấu phẩy nếu có
         String patternNumber = "\\d*";
-        String patternText = "^[a-zA-ZÀ-ỹ\\s]+$";
+        String patternText = "\\s+";
+        String patternEmail = "\\w+@\\w+\\.\\w+";
         String maNV = txtMaNV.getText();
         String matKhau = txtPassword.getText();
         String tenNV = txtTenNV.getText();
+        String patternSDT = "0\\d{9}";
         String soDT = txtSDT.getText();
         String email = txtEmail.getText();
-        if (maNV == null || maNV.isEmpty()) {
-            DialogBox.alert(this, "Mã nhân viên Không được trống");
-            return false;
+        int count = 0;
+        if (maNV.equals("") || maNV.matches(patternText)) {
+            sb.append("Mã nhân viên Không được trống\n");
+            count++;
         }
-        if (!maNV.matches("PS\\d+")) {
-            DialogBox.alert(this, "Mã nhân viên phải bắt đầu PS và sau là số!");
-        }
-        if (matKhau == null || matKhau.isEmpty()) {
-            DialogBox.alert(this, "Mật khẩu Không được trống");
-            return false;
+        if (matKhau.equals("") || matKhau.isEmpty()) {
+            sb.append("Bạn chưa nhập mật khẩu\n");
+            count++;
         }
 
-        if (tenNV == null || tenNV.isEmpty()) {
-            DialogBox.alert(this, "Tên nhân viên Không được trống");
-            return false;
+        if (tenNV.equals("") || tenNV.matches(patternText)) {
+            sb.append("Tên Nhân viên không được trống!\n");
+            count++;
         }
-        if (!tenNV.matches(patternText)) {
-            DialogBox.alert(this, "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng, không được chứa số hoặc ký tự đặc biệt");
-            return false;
+        if (luong.equals("") || !luong.matches(patternNumber)) {
+            sb.append("Lương Không được trống\n");
+            count++;
         }
-        if (luong == null || luong.trim().isEmpty()) {
-            DialogBox.alert(this, "Lương Không được trống");
-            return false;
+        if (soDT.equals("") || !soDT.matches(patternSDT)) {
+            sb.append("Số điện thoại Không được trống\n");
+            count++;
         }
-        if (!luong.matches(patternNumber)) {
-            DialogBox.alert(this, "Lương chỉ được chứa chữ số, không được chứa chữ cái hoặc ký tự đặc biệt");
-            return false;
+        if (email.equals("") || !email.matches(patternEmail)) {
+            sb.append("Email Không được trống\n");
+            count++;
         }
-        if (soDT == null || soDT.trim().isEmpty()) {
-            DialogBox.alert(this, "Số điện thoại Không được trống");
-            return false;
+        if (sb.length() > 0) {
+            DialogBox.notice(this, sb.toString());
         }
-        if (!soDT.matches("^\\d+$")) {
-            DialogBox.alert(this, "Số điện thoại chỉ được chứa chữ số, không được chứa chữ cái hoặc ký tự đặc biệt");
-            return false;
-        }
-        if (email == null || email.trim().isEmpty()) {
-            DialogBox.alert(this, "Email Không được trống");
-            return false;
-        }
-        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            DialogBox.alert(this, "Email không hợp lệ. Vui lòng nhập email đúng định dạng");
-            return false;
-        }
-        return true;
+        return count == 0;
     }
 
     @Override
     public boolean isCheckContain(List<NhanVien> list, String ma) {
-        if (list == null || list.isEmpty()) {
-            return false;
-        }
-        for (NhanVien nv : list) {
-            if (nv.getMaNV().equals(ma)) {
-                return true;
+        int count = 0;
+        for (NhanVien o : list) {
+            if (ma.equals(o.getMaNV())) {
+                count++;
             }
         }
-        return true;
+        return count != 0;
     }
 
     @Override
@@ -459,7 +445,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
         txtTimKiem = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -587,16 +572,16 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                         .addComponent(rbtnNhanVien)
                         .addGap(78, 78, 78)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(rdbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(54, 54, 54)
-                                .addComponent(txtLuong)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtLuong))))
                 .addGap(160, 160, 160))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(199, 199, 199)
@@ -638,10 +623,10 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                         .addComponent(jLabel5)
                         .addComponent(rbtnTruongPhong)
                         .addComponent(rbtnNhanVien))
-                    .addComponent(rdbNu)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rdbNam)
-                        .addComponent(jLabel10)))
+                        .addComponent(rdbNu)
+                        .addComponent(rdbNam))
+                    .addComponent(jLabel10))
                 .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnThem)
@@ -741,8 +726,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             }
         });
 
-        btnSearch.setText("Tìm");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -765,10 +748,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                                 .addGap(150, 150, 150)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnSearch))))
+                                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -791,9 +771,7 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
                         .addGap(20, 20, 20)
                         .addComponent(Tabs))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearch))
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -897,7 +875,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
     private javax.swing.ButtonGroup btGgioiTinh;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnLamMoi;
-    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JComboBox<String> cbGioiTinh;
