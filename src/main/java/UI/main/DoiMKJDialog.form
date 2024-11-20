@@ -31,22 +31,22 @@
                       <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                       <Component id="btnHuyBo" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtTenTK" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtMKHientai" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtMKMoi" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtXacNhanMKmoi" alignment="0" pref="241" max="32767" attributes="0"/>
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtmk1" max="32767" attributes="0"/>
+                          <Component id="txtmk2" alignment="0" pref="241" max="32767" attributes="0"/>
+                          <Component id="txtmk3" alignment="0" pref="241" max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="52" max="32767" attributes="0"/>
@@ -65,15 +65,15 @@
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtMKHientai" min="-2" max="-2" attributes="0"/>
+              <Component id="txtmk1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtMKMoi" min="-2" max="-2" attributes="0"/>
+              <Component id="txtmk2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtXacNhanMKmoi" min="-2" max="-2" attributes="0"/>
+              <Component id="txtmk3" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="32" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCapNhat" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -102,6 +102,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTenTK">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -111,8 +114,6 @@
         <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u hi&#x1ec7;n t&#x1ea1;i"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtMKHientai">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -121,8 +122,6 @@
         <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u m&#x1edb;i"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtMKMoi">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -130,11 +129,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="X&#xe1;c nh&#x1ead;n m&#x1ead;t kh&#x1ea9;u m&#x1edb;i"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtXacNhanMKmoi">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtXacNhanMKmoiActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCapNhat">
       <Properties>
@@ -151,6 +145,24 @@
         </Property>
         <Property name="text" type="java.lang.String" value="H&#x1ee7;y b&#x1ecf;"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="txtmk1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="txtmk2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="txtmk3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtmk3ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

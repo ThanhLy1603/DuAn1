@@ -23,7 +23,6 @@ public class LoginJDialog extends javax.swing.JFrame implements CheckForm<NhanVi
      */
     public LoginJDialog() {
         initComponents();
-
         setLocationRelativeTo(null);
     }
 
@@ -79,8 +78,8 @@ public class LoginJDialog extends javax.swing.JFrame implements CheckForm<NhanVi
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(72, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addComponent(jLabel5)
+                .addGap(111, 111, 111))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

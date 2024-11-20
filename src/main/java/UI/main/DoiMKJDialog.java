@@ -3,20 +3,61 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package UI.main;
+import DAO.NhanVienDao;
+import Entity.NhanVien;
+import Interfaces.CheckForm;
+import Interfaces.Initialize;
+import Utils.Auth;
+import Utils.DialogBox;
+import java.util.List;
 
 /**
  *
  * @author PHONG
  */
-public class DoiMKJDialog extends javax.swing.JFrame {
+public class DoiMKJDialog extends javax.swing.JFrame implements CheckForm<String, NhanVien>,Initialize<NhanVien>{
 
     /**
      * Creates new form DoiMK
      */
     public DoiMKJDialog() {
         initComponents();
-        
+        init();
         setLocationRelativeTo(null);
+    }
+    NhanVienDao dao=new NhanVienDao();
+    
+    public void doiMatKhau(){
+        String maNV=txtTenTK.getText();
+        String maKhau=new String(txtmk1.getText());
+        String maKhauMoi=new String(txtmk2.getText());
+        String maKhauCheck=new String(txtmk3.getText());
+        if(!maKhau.equalsIgnoreCase(Auth.user.getMatKhau())){
+            DialogBox.alert(this,"Sai mật khẩu!");
+        }else if(maKhauMoi.equals(maKhau)){
+            DialogBox.alert(this, "Vui lòng nhập mật khẩu mới không trùng mật khẩu cũ");
+        }else if(!maKhauMoi.equals(maKhauCheck)){
+             DialogBox.alert(this, "Mật khẩu mới không đúng");
+        }else{
+            Auth.user.setMatKhau(maKhauMoi);
+            dao.updateData(Auth.user);
+            DialogBox.notice(this, "Đổi mật khẩu thành công");
+        }
+    }
+    private void huyBo(){
+        this.dispose();
+    }
+    
+     @Override
+    public void init() {
+       txtTenTK.setText(Auth.user.getMaNV());
+       btnCapNhat.addActionListener(e ->doiMatKhau());
+       btnHuyBo.addActionListener(e ->huyBo());
+    }
+    
+     @Override
+    public boolean isCheckValid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -32,13 +73,13 @@ public class DoiMKJDialog extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtTenTK = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtMKHientai = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtMKMoi = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtXacNhanMKmoi = new javax.swing.JTextField();
         btnCapNhat = new javax.swing.JButton();
         btnHuyBo = new javax.swing.JButton();
+        txtmk1 = new javax.swing.JPasswordField();
+        txtmk2 = new javax.swing.JPasswordField();
+        txtmk3 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,6 +88,8 @@ public class DoiMKJDialog extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("Tên tài khoản");
+
+        txtTenTK.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel3.setText("Mật khẩu hiện tại");
@@ -57,17 +100,22 @@ public class DoiMKJDialog extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel5.setText("Xác nhận mật khẩu mới");
 
-        txtXacNhanMKmoi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtXacNhanMKmoiActionPerformed(evt);
-            }
-        });
-
         btnCapNhat.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnCapNhat.setText("Cập nhật");
 
         btnHuyBo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnHuyBo.setText("Hủy bỏ");
+
+        txtmk1.setText("jPasswordField1");
+
+        txtmk2.setText("jPasswordField1");
+
+        txtmk3.setText("jPasswordField1");
+        txtmk3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtmk3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,19 +129,19 @@ public class DoiMKJDialog extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addComponent(btnHuyBo))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtTenTK)
-                            .addComponent(txtMKHientai)
-                            .addComponent(txtMKMoi)
-                            .addComponent(txtXacNhanMKmoi, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jLabel1)))
+                            .addComponent(jLabel5)
+                            .addComponent(txtmk1)
+                            .addComponent(txtmk2, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                            .addComponent(txtmk3, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,15 +156,15 @@ public class DoiMKJDialog extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMKHientai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtmk1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMKMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtmk2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtXacNhanMKmoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtmk3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCapNhat)
@@ -127,9 +175,9 @@ public class DoiMKJDialog extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtXacNhanMKmoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtXacNhanMKmoiActionPerformed
+    private void txtmk3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmk3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtXacNhanMKmoiActionPerformed
+    }//GEN-LAST:event_txtmk3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,9 +223,64 @@ public class DoiMKJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txtMKHientai;
-    private javax.swing.JTextField txtMKMoi;
     private javax.swing.JTextField txtTenTK;
-    private javax.swing.JTextField txtXacNhanMKmoi;
+    private javax.swing.JPasswordField txtmk1;
+    private javax.swing.JPasswordField txtmk2;
+    private javax.swing.JPasswordField txtmk3;
     // End of variables declaration//GEN-END:variables
+
+
+    @Override
+    public boolean isCheckContain(List<String> list, NhanVien ma) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDuplicate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckLength() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCheckDelete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    @Override
+    public void fillToTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void filterTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void generateCbx() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setForm(NhanVien o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
