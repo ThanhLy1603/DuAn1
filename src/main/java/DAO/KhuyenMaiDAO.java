@@ -9,6 +9,7 @@ import Utils.JDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +105,25 @@ public class KhuyenMaiDAO implements DAO<KhuyenMai, String> {
         
         JDBC.executeUpdate(sql, values);
     }
-
+    
+    public float getDataByDate(Date date) throws SQLException {
+        String sql = "SELECT Top 1 MucKM\n" +
+                        "FROM KhuyenMai\n" +
+                        "WHERE ? BETWEEN NgayBatDau AND NgayKetThuc\n" +
+                        "ORDER BY MucKM DESC";
+        
+        Object[] values = {date};
+        float mucKM = 0;
+        
+        ResultSet rs = JDBC.executeQuery(sql, values);
+        
+        while (rs.next()) {
+            mucKM = rs.getFloat("MucKM");
+        }
+        
+        return mucKM;
+    }
+    
     @Override
     public List<KhuyenMai> getDataByValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

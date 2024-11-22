@@ -9,20 +9,27 @@ import Entity.KhuyenMai;
 import java.util.Date;
 import Entity.LoaiSanPham;
 import DAO.SanPhamDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author anhth
  */
 public class Test {
     public static void main(String[] args) {
-        LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
-        List<LoaiSanPham> list = dao.getAllData();
-       
-        SanPhamDAO daoSP = new SanPhamDAO();
-        List<SanPham> listSP = daoSP.getAllData();
-        
-        for (SanPham o : listSP) {
-            System.out.println(o.toString());
+        KhuyenMaiDAO dao = new KhuyenMaiDAO();
+        Date date = new Date();
+        try {
+            
+            
+            float mucKM = dao.getDataByDate(date);
+            
+            System.out.println(date);
+            System.out.println(mucKM);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 }

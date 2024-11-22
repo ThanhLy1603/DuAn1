@@ -5,36 +5,37 @@
 package Map;
 
 import Interfaces.MapData;
-import java.util.Map;
 import Utils.JDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author ADMIN
  */
-public class MapSanPham implements MapData<String, String>{
+public class MapNhanVien implements MapData<String, String>{
 
     @Override
     public Map<String, String> getMapData() {
         Map<String, String> map = new TreeMap<>();
-        String sql = "SELECT * FROM SanPham";
+        String sql = "SELECT * FROM NhanVien";
         Object[] values = {};
         
         ResultSet rs = JDBC.executeQuery(sql, values);
-        
+           
         try {
-            while (rs.next()) {
-                map.put(
-                    rs.getString("MaSanPham"), 
-                    rs.getString("TenSanPham") + ", " + rs.getString("MauSac")
+            while (rs.next()){
+                map.put(rs.getString("MaNV"), 
+                        rs.getString("TenNV")
                 );
             }
+            
         } catch (SQLException ex) {
-            Logger.getLogger(MapSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MapNhanVien.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return map;

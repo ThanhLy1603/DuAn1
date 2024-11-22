@@ -5,18 +5,19 @@
 package Map;
 
 import Interfaces.MapData;
-import java.util.Map;
 import Utils.JDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author ADMIN
  */
-public class MapSanPham implements MapData<String, String>{
+public class MapChiTietSanPham implements MapData<String, String>{
 
     @Override
     public Map<String, String> getMapData() {
@@ -30,7 +31,7 @@ public class MapSanPham implements MapData<String, String>{
             while (rs.next()) {
                 map.put(
                     rs.getString("MaSanPham"), 
-                    rs.getString("TenSanPham") + ", " + rs.getString("MauSac")
+                    rs.getString("TenSanPham") + ", " + rs.getString("MauSac") + ", " + rs.getString("Size")
                 );
             }
         } catch (SQLException ex) {

@@ -9,12 +9,16 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import UI.Component.DoanhThuJDialog;
 import Interfaces.Panel;
+import UI.Component.HoaDonJDialog;
 import UI.Component.KhachHangJDialog;
 import UI.Component.KhuyenMaiJDialog;
 import UI.Component.NhanVienJDialog;
 import UI.Component.NhapHangJDialog;
 import UI.Component.SanPhamJDialog;
 import Utils.Auth;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -34,10 +38,10 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
 
     public void init() {
         setLocationRelativeTo(null);
-        isVaiTro();
+        VaiTro();
     }
 
-    public void isVaiTro() {
+    public void VaiTro() {
         if (Auth.isManager()) {
             lblVaiTro.setText("Quản Lý");
         } else {
@@ -123,6 +127,8 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnSanPham = new javax.swing.JPanel();
         pnKhuyenMai = new javax.swing.JPanel();
         pnNhapHang = new javax.swing.JPanel();
+        pnHoaDon = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +158,11 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setForeground(new java.awt.Color(255, 255, 255));
         lblHoaDon.setText("Hóa Đơn");
+        lblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHoaDonMouseClicked(evt);
+            }
+        });
 
         lblKhuyenMai.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblKhuyenMai.setForeground(new java.awt.Color(255, 255, 255));
@@ -331,7 +342,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
             .addGroup(pnKhachHangLayout.createSequentialGroup()
                 .addGap(511, 511, 511)
                 .addComponent(jLabel2)
-                .addContainerGap(510, Short.MAX_VALUE))
+                .addContainerGap(511, Short.MAX_VALUE))
         );
         pnKhachHangLayout.setVerticalGroup(
             pnKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,6 +405,29 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         );
 
         pnContainers.add(pnNhapHang, "card7");
+
+        pnHoaDon.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/LoginForm.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout pnHoaDonLayout = new javax.swing.GroupLayout(pnHoaDon);
+        pnHoaDon.setLayout(pnHoaDonLayout);
+        pnHoaDonLayout.setHorizontalGroup(
+            pnHoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnHoaDonLayout.createSequentialGroup()
+                .addContainerGap(377, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(409, 409, 409))
+        );
+        pnHoaDonLayout.setVerticalGroup(
+            pnHoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnHoaDonLayout.createSequentialGroup()
+                .addGap(227, 227, 227)
+                .addComponent(jLabel6)
+                .addContainerGap(303, Short.MAX_VALUE))
+        );
+
+        pnContainers.add(pnHoaDon, "card2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -485,6 +519,16 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         dialog.setVisible(true);
     }//GEN-LAST:event_lblDoiMatKhauMouseClicked
 
+    private void lblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHoaDonMouseClicked
+        try {
+            HoaDonJDialog dialog = new HoaDonJDialog();
+            showPanel(pnHoaDon);
+            showDialogInPanel(pnHoaDon, dialog);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuJDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblHoaDonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -524,6 +568,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblDoanhThu;
@@ -539,6 +584,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
     private javax.swing.JLabel lblVaiTro;
     private javax.swing.JPanel pnContainers;
     private javax.swing.JPanel pnDoanhThu;
+    private javax.swing.JPanel pnHoaDon;
     private javax.swing.JPanel pnKhachHang;
     private javax.swing.JPanel pnKhuyenMai;
     private javax.swing.JPanel pnNhanVien;

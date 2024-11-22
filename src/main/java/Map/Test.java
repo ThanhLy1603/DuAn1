@@ -10,16 +10,15 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String[] args) {
-        MapSanPham map = new MapSanPham();
+        MapNhanVien map = new MapNhanVien();
         Map<String, String> list = map.getMapData();
         
 //        for (Map.Entry<String, String> o : list.entrySet()) {
 //            System.out.println(o.getKey());
 //            System.out.println(o.getValue());
-//            System.out.println("-----------------------------");
 //        }
-
-//        System.out.println(map.getIDByValue("Áo Polo có logo MU"));
-        System.out.println(map.getValueByID("SP2"));
+        
+//        System.out.println(map.getIDByValue("Nguyễn Thành Lý"));
+        System.out.println(map.getValueByID("PS43138"));
     }
 }
