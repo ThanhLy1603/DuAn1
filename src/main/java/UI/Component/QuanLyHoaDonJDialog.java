@@ -4,17 +4,212 @@
  */
 package UI.Component;
 
+import DAO.ChiTietHoaDonDAO;
+import DAO.HoaDonDao;
+import DAO.NhanVienDao;
+import Entity.ChiTietHoaDon;
+import Entity.HoaDon;
+import Entity.NhanVien;
+import Interfaces.Initialize;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author hp
  */
-public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
+public class QuanLyHoaDonJDialog extends javax.swing.JFrame implements Initialize<HoaDon> {
 
     /**
      * Creates new form HoaDonChiTietJDialog
      */
     public QuanLyHoaDonJDialog() {
         initComponents();
+        init();
+    }
+    HoaDonDao hddao = new HoaDonDao();
+    ChiTietHoaDonDAO ctdao = new ChiTietHoaDonDAO();
+    NhanVienDao nvdao = new NhanVienDao();
+
+//    void fillToComboboxHoaDon(JComboBox comboBox, List<?> dataList, Object specialValue) {
+////        DefaultComboBoxModel model = (DefaultComboBoxModel) comboBox.getModel();
+////        model.removeAllElements(); // Xóa toàn bộ phần tử cũ
+////
+////        // Thêm giá trị đặc biệt (ví dụ: "All")
+////        if (specialValue != null) {
+////            model.addElement(specialValue);
+////        }
+////
+////        // Thêm các giá trị từ danh sách
+////        for (Object item : dataList) {
+////            model.addElement(item);
+////        }
+//    }
+    @Override
+    public void init() {
+        fillToTable();
+        filltoTableChiTiet();
+        generateCbx();
+    }
+    public void filltoTableChiTiet(){
+        DefaultTableModel model=(DefaultTableModel) tblHoaDoChiTiet.getModel();
+        List<ChiTietHoaDon> list=ctdao.getAllData();
+        list.forEach(ct->{
+            Object[] values={
+                ct.getMaHD(),
+                ct.getMaSP(),
+                ct.getMaKM(),
+                ct.getSoLuong(),
+                ct.getGia(),
+                ct.getThue(),
+        };
+            model.addRow(values);
+        });
+    }
+
+    @Override
+    public void fillToTable() {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        List<HoaDon> list = hddao.getAllData();
+        list.forEach(hd -> {
+            Object[] values = {
+                hd.getMaHD(),
+                hd.getMaNV(),
+                hd.getNgayLap(),
+                hd.getHinhThuc(),
+                hd.isTrangThai() ? "Đã Thanh Toán" : "Chưa Thanh Toán"
+            };
+            model.addRow(values);
+        });
+    }
+
+    @Override
+    public void filterTable() {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        model.setRowCount(0);
+//        String selectedMaNV = (String) cbNhanVien.getSelectedItem();
+//        Integer selectedThang = (Integer) cbThang.getSelectedItem();
+//        Integer selectedNam = (Integer) cbNam.getSelectedItem();
+
+//        String maNV = (selectedMaNV != null && !selectedMaNV.equals("All")) ? selectedMaNV.toString() : "All";
+//        int thang = 0;
+//        if (selectedThang != null) {
+//            thang = (Integer) selectedThang; // Giả sử cbThang là Integer
+//        }
+//
+//        // Xử lý năm
+//        int nam = 0;
+//        if (selectedNam != null) {
+//            nam = (Integer) selectedNam; // Giả sử cbNam là Integer
+//        }
+        String selectValueNV = (String) cbNhanVien.getSelectedItem();
+        String resultNV = selectValueNV.equals("Tất cả") ? "" : selectValueNV;
+
+        String selectValueNam = (String) cbNam.getSelectedItem();
+        String resultNam = selectValueNam.equals("Tất cả") ? "" : selectValueNam;
+
+        String selectValueThang = (String) cbThang.getSelectedItem();
+        String resultThang = selectValueThang.equals("Tất cả") ? "" : selectValueThang;
+        List<HoaDon> list = null;
+
+        if (resultNam.equals("") && resultThang.equals("") && resultNV.equals("")) {
+            // Không có Mã NV, Tháng và Năm
+            list = hddao.getAllData(); // Viết phương thức để lấy tất cả dữ liệu
+        } else if (resultNam.equals("") && resultThang.equals("")) {
+            // Không có Tháng và Năm, chỉ lọc theo Mã NV
+            list = hddao.getDataByValues(resultNV);
+        } else if (resultNam.equals("") && resultNV.equals("")) {
+            // Không có Năm và Mã NV, chỉ lọc theo Tháng
+            list = hddao.getDataByOnlyMonth(Integer.parseInt(resultThang));
+        } else if (resultThang.equals("") && resultNV.equals("")) {
+            // Không có Tháng và Mã NV, chỉ lọc theo Năm
+            list = hddao.getDataByOnlyYear(Integer.parseInt(resultNam));
+        } else if (resultNam.equals("")) {
+            // Không có Năm, lọc theo Tháng và Mã NV
+            list = hddao.getDataByThang(resultNV, Integer.parseInt(resultThang));
+        } else if (resultThang.equals("")) {
+            // Không có Tháng, lọc theo Năm và Mã NV
+            list = hddao.getDataByNam(resultNV, Integer.parseInt(resultNam));
+        } else if (resultNV.equals("")) {
+            // Không có Mã NV, lọc theo Tháng và Năm
+            list = hddao.getDataTime(Integer.parseInt(resultThang), Integer.parseInt(resultNam));
+        } else {
+            // Có đủ cả Mã NV, Tháng và Năm
+            list = hddao.getDataByValue(resultNV, Integer.parseInt(resultThang), Integer.parseInt(resultNam));
+        }
+        list.forEach(hd -> {
+            Object[] values = {
+                hd.getMaHD(),
+                hd.getMaNV(),
+                hd.getNgayLap(),
+                hd.getHinhThuc(),
+                hd.isTrangThai() ? "Đã Thanh Toán" : "Chưa Thanh Toán"
+            };
+            model.addRow(values);
+        });
+    }
+
+    @Override
+    public void generateCbx() {
+//        List<NhanVien> nhanVienList = nvdao.getAllData();
+//        fillToComboboxHoaDon(cbNhanVien, nhanVienList, "All");
+        cbxMaNV();
+        cbxNam();
+        cbxThang();
+    }
+
+    public void cbxNam() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<Integer> list = hddao.getYear();
+
+        model.addElement("Tất cả");
+        for (Integer o : list) {
+            model.addElement(String.valueOf(o));
+        }
+
+        cbNam.setModel(model);
+    }
+
+    public void cbxThang() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<Integer> list = hddao.getMonth();
+
+        model.addElement("Tất cả");
+        for (Integer o : list) {
+            model.addElement(String.valueOf(o));
+        }
+
+        cbThang.setModel(model);
+    }
+
+    public void cbxMaNV() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        List<String> list = hddao.getMaNV();
+
+        model.addElement("Tất cả");
+        for (String o : list) {
+            model.addElement(String.valueOf(o));
+        }
+        cbNhanVien.setModel(model);
+    }
+
+    @Override
+    public void setForm(HoaDon o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getForm(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showDetail() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -52,7 +247,7 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnThoiGian.setBackground(new java.awt.Color(255, 255, 255));
-        pnThoiGian.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnThoiGian.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         cbThang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbThang.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +261,11 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
         jLabel2.setText("Năm");
 
         cbNam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbNam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbNamActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnThoiGianLayout = new javax.swing.GroupLayout(pnThoiGian);
         pnThoiGian.setLayout(pnThoiGianLayout);
@@ -109,7 +309,7 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblHoaDon);
 
         pnThoiGian1.setBackground(new java.awt.Color(255, 255, 255));
-        pnThoiGian1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnThoiGian1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         cbNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbNhanVien.addActionListener(new java.awt.event.ActionListener() {
@@ -149,7 +349,7 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 223, Short.MAX_VALUE)
+                        .addGap(0, 221, Short.MAX_VALUE)
                         .addComponent(pnThoiGian1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(265, 265, 265)
                         .addComponent(pnThoiGian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -217,7 +417,7 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
-                        .addGap(0, 750, Short.MAX_VALUE)))
+                        .addGap(0, 755, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -252,11 +452,18 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
 
     private void cbThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbThangActionPerformed
         // TODO add your handling code here:
+        filterTable();
     }//GEN-LAST:event_cbThangActionPerformed
 
     private void cbNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNhanVienActionPerformed
         // TODO add your handling code here:
+        filterTable();
     }//GEN-LAST:event_cbNhanVienActionPerformed
+
+    private void cbNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNamActionPerformed
+        // TODO add your handling code here:
+        filterTable();
+    }//GEN-LAST:event_cbNamActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,4 +520,5 @@ public class QuanLyHoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JTable tblHoaDoChiTiet;
     private javax.swing.JTable tblHoaDon;
     // End of variables declaration//GEN-END:variables
+
 }

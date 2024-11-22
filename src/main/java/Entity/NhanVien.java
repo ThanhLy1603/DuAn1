@@ -114,6 +114,6 @@ public class NhanVien {
     
     @Override
     public String toString() {
-        return "NhanVien{" + "maNV=" + maNV + ", matKhau=" + matKhau + ", tenNV=" + tenNV + ", gioiTinh=" + gioiTinh + ", chucVu=" + chucVu + ", luong=" + luong + ", soDT=" + soDT + ", email=" + email + '}';
+       return this.maNV; // Chỉ hiển thị mã nhân viên trong ComboBox
     }
 }
