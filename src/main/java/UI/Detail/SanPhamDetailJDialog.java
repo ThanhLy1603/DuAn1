@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Map.MapLoaiSanPham;
 import Utils.DialogBox;
+import Utils.ValidateInput;
+import Utils.NumberFormat;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 
@@ -21,13 +23,29 @@ import javax.swing.DefaultComboBoxModel;
  *
  * @author ADMIN
  */
+enum colSP {
+    MASP(0),
+    LOAISP(1),
+    TENSP(2),
+    DONGIA(3),
+    SOLUONG(4),
+    TRANGTHAI(5);
+    int i;
+
+    private colSP(int i) {
+        this.i = i;
+    }
+}
 public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
         CheckForm<SanPham, String>,CrudController {
     private SanPhamDAO dao = new SanPhamDAO();
     private LoaiSanPhamDAO daoLSP = new LoaiSanPhamDAO();
-    private DecimalFormat df = new DecimalFormat("#");
+    private DecimalFormat df = new DecimalFormat("#,###");
     private MapLoaiSanPham map = new MapLoaiSanPham();
     private ChiTietSPDetailJDialog dialog = new ChiTietSPDetailJDialog();
+    private ValidateInput input = new ValidateInput();
+    private NumberFormat numFormat = new NumberFormat();
+    
     /**
      * Creates new form SanPhamDetailJDialog
      */
@@ -133,7 +151,22 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
 
     @Override
     public void getForm(int index) {
-        SanPham o = dao.getAllData().get(index);
+        String maSP = (String) tblSanPham.getValueAt(index, colSP.MASP.i);
+        String loai = (String) tblSanPham.getValueAt(index, colSP.LOAISP.i);
+        String tenSP = (String) tblSanPham.getValueAt(index, colSP.TENSP.i);
+        String donGia = (String) tblSanPham.getValueAt(index, colSP.DONGIA.i);
+        Object soLuong = tblSanPham.getValueAt(index, colSP.SOLUONG.i);
+        Object trangThai = tblSanPham.getValueAt(index, colSP.TRANGTHAI.i);
+        
+        SanPham o = new SanPham(
+                maSP,
+                loai,
+                tenSP,
+                Double.parseDouble(numFormat.removeCommas(donGia)), 
+                (int) soLuong,
+                trangThai == "Còn hàng"
+        );
+        
         setForm(o);
     }
     
@@ -359,12 +392,6 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
             }
         });
 
-        cbxLoaiSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxLoaiSanPhamActionPerformed(evt);
-            }
-        });
-
         txtTenSP.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtTenSPKeyPressed(evt);
@@ -376,6 +403,18 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         jLabel5.setText("Số lượng ");
 
         jLabel6.setText("Trạng thái");
+
+        txtDonGia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDonGiaKeyPressed(evt);
+            }
+        });
+
+        txtSoLuong.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSoLuongKeyPressed(evt);
+            }
+        });
 
         txtTrangThai.setEnabled(false);
 
@@ -529,16 +568,20 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
-        // TODO add your handling code here:
+        input.inputString(txtMaSP);
     }//GEN-LAST:event_txtMaSPActionPerformed
-
-    private void cbxLoaiSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLoaiSanPhamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxLoaiSanPhamActionPerformed
 
     private void txtTenSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenSPKeyPressed
         filterTable();
     }//GEN-LAST:event_txtTenSPKeyPressed
+
+    private void txtDonGiaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDonGiaKeyPressed
+        input.inputNumber(txtDonGia);
+    }//GEN-LAST:event_txtDonGiaKeyPressed
+
+    private void txtSoLuongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoLuongKeyPressed
+        input.inputNumber(txtSoLuong);
+    }//GEN-LAST:event_txtSoLuongKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

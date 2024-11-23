@@ -21,6 +21,20 @@ import javax.swing.JFileChooser;
  *
  * @author ADMIN
  */
+enum colCTSP {
+    MASP(0),
+    TENSP(1),
+    MAU(2),
+    CHATLIEU(3),
+    SIZE(4),
+    HINH(5);
+    int i;
+    
+    private colCTSP(int i) {
+        this.i = i;
+    }
+}
+
 public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
         CheckForm<SanPham, String>, CrudController{
     private SanPhamDAO dao = new SanPhamDAO();
@@ -173,7 +187,21 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
 
     @Override
     public void getForm(int index) {
-        SanPham o = dao.getAllData().get(index);
+        String maSP = (String) tblChiTietSanPham.getValueAt(index, colCTSP.MASP.i);
+        String tenSP = (String) tblChiTietSanPham.getValueAt(index, colCTSP.TENSP.i);
+        String mauSac = (String) tblChiTietSanPham.getValueAt(index, colCTSP.MAU.i);
+        String chatLieu = (String) tblChiTietSanPham.getValueAt(index, colCTSP.CHATLIEU.i);
+        String size = (String) tblChiTietSanPham.getValueAt(index, colCTSP.SIZE.i);
+        String hinh = (String) tblChiTietSanPham.getValueAt(index, colCTSP.HINH.i);
+        
+        SanPham o = new SanPham(
+                maSP, 
+                tenSP, 
+                mauSac, 
+                chatLieu, 
+                size, 
+                hinh
+        );
         
         setForm(o);
     }

@@ -12,6 +12,8 @@ import Entity.HoaDon;
 import Entity.SanPham;
 import Map.MapChiTietSanPham;
 import Utils.Auth;
+import Utils.DialogBox;
+import Utils.ValidateInput;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import Utils.NumberFormat;
 /**
  *
  * @author ADMIN
@@ -35,10 +37,12 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private Date date = new Date();
     private DecimalFormat dfInt = new DecimalFormat("#");
     private DecimalFormat dfMoney = new DecimalFormat("#,###");
+    private NumberFormat numFormat = new NumberFormat();
+    private ValidateInput input = new ValidateInput();
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     private final int THUE_VAT = 10;
     private DefaultTableModel model = new DefaultTableModel();
-    private double tongTien = 0;
+    
     /**
      * Creates new form HoaDonFormJDialog
      */
@@ -48,6 +52,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         init();
     }
     
+    // Khởi tạo cho form hóa đơn
     public void init() throws SQLException {
         fillToSanPhamTable();
         fillToHoaDonTable();
@@ -57,7 +62,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
-    
+    // Điền hết tất cả thông tin của hóa đơn vào bảng
     public void fillToSanPhamTable() {
         DefaultTableModel model = new DefaultTableModel();
         List<SanPham> list = daoSP.getAllData();
@@ -75,23 +80,28 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         tblDanhSachSanPham.setModel(model);
     }
     
+    // Điền thông tin của hóa đơn sao khi tìm kiếm
     public void filterToSanPhamTable() {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel modelSP = new DefaultTableModel();
         List<SanPham> list = daoSP.getDataByValue(txtTenSanPham.getText());
         
         String[] col = {"Danh sách sản phẩm"};
         
-        model.setColumnIdentifiers(col);
+        modelSP.setColumnIdentifiers(col);
+        modelSP.setRowCount(0);
+        
+        System.out.println(tblDanhSachSanPham.getRowCount());
         
         for (SanPham o : list) {
-            model.addRow(new Object[]{
+            modelSP.addRow(new Object[]{
                 o.getTenSP() + ", " + o.getMauSac() + ", " + o.getSize()
             });
         }
         
-        tblDanhSachSanPham.setModel(model);
+        tblDanhSachSanPham.setModel(modelSP);
     }
     
+    // Tạo danh sách mã hóa đơn đã tạo
     public List<String> listMaHD() {
         List<HoaDon> list = daoHD.getAllData();
         List<String> listMaHD = new ArrayList<>();
@@ -103,22 +113,26 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         return listMaHD;
     }
     
+    // Tạo mã hóa đơn
     public String generateMaHD() {
         String maHD = null;      
         int count = 1;
-       
+        
+        // Kiếm tra xem mã hóa đơn vào tạo có nằm trong danh sách đã có hay không
         do {
             maHD = String.format("HD%d", count++);
         } while (listMaHD().contains(maHD));
         
         return maHD;
-    }
+    }  
     
+    // Tạo mã nhân viên và tên nhân viên
     public void generateDateNV() {
         String maNhanVien = "PS43010";
         String tenNhanVien = "Trần Lê Duy Thiện";
         
-        if(Auth.isLogin()){
+        // Lấy mã và tên đăng nhập sau khi đăng nhập tài khoảng
+        if (Auth.isLogin()) {
             tenNhanVien = Auth.user.getTenNV();
             maNhanVien = Auth.user.getMaNV();
         }
@@ -128,15 +142,18 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         txtNgayBan.setText(formatter.format(date));
         txtMaHD.setText(generateMaHD());
     }
-        
+     
+    // Điền thông tin của sản phẩm vào form
     public void showTenSanPham() {
         int index = tblDanhSachSanPham.getSelectedRow();
-        SanPham o = daoSP.getAllData().get(index);
-        
-        String tenSP = o.getTenSP() + ", " + o.getMauSac() + ", " + o.getSize();
+        String tenSP = (String) tblDanhSachSanPham.getValueAt(index, 0);
         txtTenSanPham.setText(tenSP);
+        
+        System.out.println("index = " + index);
+        System.out.println(tenSP);
     }
     
+    // Tạo bảng hóa đơn và thêm thông tin hóa đơn vào bảng
     public void fillToHoaDonTable() {
         String[] col = {
             "Tên mặt hàng",
@@ -152,17 +169,29 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         tblHoaDon.setModel(model);
     }
     
+    // Khởi tạo giảm giá và thuế
     public void setGiamGiaThue() throws SQLException {
         float mucKM = daoKM.getDataByDate(date);
         txtGiamGia.setText(dfInt.format(mucKM));
         txtThue.setText(String.valueOf(THUE_VAT));
     }
     
+    // Điền tổng tiền vào form
     public void setTongTien() {
+        double tongTien = 0;
+        final int COL_THANHTIEN = 5;
         
+        for (int i = 0; i < tblHoaDon.getRowCount(); i++) {
+            String thanhTienInTable = numFormat.removeCommas((String) tblHoaDon.getValueAt(i,COL_THANHTIEN));
+            Double thanhTien = Double.valueOf(thanhTienInTable);
+            tongTien += thanhTien;
+        }
+        
+        txtTongTien.setText(dfMoney.format(tongTien));
     }
     
-    public void addSanPhamVaoHD() {    
+    // Thêm sản phẩm vào bảng hóa đơn
+    public void addSanPhamVaoHD() {       
         String tenSP = txtTenSanPham.getText();
         double donGia = Double.parseDouble(txtDonGia.getText());
         int soLuong = Integer.parseInt(txtSoLuong.getText());
@@ -181,7 +210,15 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         
         model.addRow(row);
         
+        tblHoaDon.setModel(model);  
+        setTongTien();
+    }
+    
+    public void clearHoaDon() {
+        model.setRowCount(0);
         tblHoaDon.setModel(model);
+        
+        setTongTien();
     }
     
     /**
@@ -208,7 +245,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtSoDT = new javax.swing.JTextField();
         txtMaNV = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -229,8 +266,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         tblDanhSachSanPham = new javax.swing.JTable();
         txtThue = new javax.swing.JTextField();
         btnThemHoaDon = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLuuHoaDon = new javax.swing.JButton();
+        btnHuyHoaDon = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -264,6 +301,12 @@ public class HoaDonJDialog extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel9.setText("Số điện thoại");
+
+        txtSoDT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSoDTKeyPressed(evt);
+            }
+        });
 
         txtMaNV.setEnabled(false);
 
@@ -303,7 +346,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                     .addComponent(jTextField4)
                     .addComponent(jTextField5)
                     .addComponent(jTextField6)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSoDT, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
         jPanel2Layout.setVerticalGroup(
@@ -334,7 +377,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtSoDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -352,8 +395,26 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel12.setText("Số lượng");
 
+        txtSoLuong.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSoLuongKeyPressed(evt);
+            }
+        });
+
+        txtDonGia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDonGiaKeyPressed(evt);
+            }
+        });
+
         jLabel13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel13.setText("Giảm giá %");
+
+        txtGiamGia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtGiamGiaKeyPressed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel14.setText("Thuế");
@@ -380,6 +441,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel15.setText("Tổng số tiền cần thanh toán");
 
+        txtTongTien.setEnabled(false);
+
         tblDanhSachSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
@@ -397,6 +460,12 @@ public class HoaDonJDialog extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblDanhSachSanPham);
+
+        txtThue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtThueKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -482,11 +551,21 @@ public class HoaDonJDialog extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton2.setText("Lưu hóa đơn");
+        btnLuuHoaDon.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnLuuHoaDon.setText("Lưu hóa đơn");
+        btnLuuHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuHoaDonActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton3.setText("Hủy hóa đơn");
+        btnHuyHoaDon.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnHuyHoaDon.setText("Hủy hóa đơn");
+        btnHuyHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyHoaDonActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton1.setText("Xóa khỏi hóa đơn");
@@ -511,9 +590,9 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                         .addGap(90, 90, 90)
                         .addComponent(jButton1)
                         .addGap(85, 85, 85)
-                        .addComponent(jButton2)
+                        .addComponent(btnLuuHoaDon)
                         .addGap(96, 96, 96)
-                        .addComponent(jButton3)))
+                        .addComponent(btnHuyHoaDon)))
                 .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -528,8 +607,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(btnLuuHoaDon)
+                    .addComponent(btnHuyHoaDon)
                     .addComponent(btnThemHoaDon))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
@@ -548,6 +627,35 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private void txtTenSanPhamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenSanPhamKeyPressed
         filterToSanPhamTable();
     }//GEN-LAST:event_txtTenSanPhamKeyPressed
+
+    private void btnHuyHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyHoaDonActionPerformed
+        clearHoaDon();
+    }//GEN-LAST:event_btnHuyHoaDonActionPerformed
+
+    private void txtDonGiaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDonGiaKeyPressed
+        input.inputNumber(txtDonGia);
+    }//GEN-LAST:event_txtDonGiaKeyPressed
+
+    private void txtSoLuongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoLuongKeyPressed
+        input.inputNumber(txtSoLuong);
+    }//GEN-LAST:event_txtSoLuongKeyPressed
+
+    private void btnLuuHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuHoaDonActionPerformed
+        DialogBox.notice(this, "Đơn giá: " + txtDonGia.getText());
+        DialogBox.notice(this, "Số lượng: " + txtSoLuong.getText());
+    }//GEN-LAST:event_btnLuuHoaDonActionPerformed
+
+    private void txtGiamGiaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGiamGiaKeyPressed
+        input.inputDecimal(txtGiamGia);
+    }//GEN-LAST:event_txtGiamGiaKeyPressed
+
+    private void txtThueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtThueKeyPressed
+        input.inputDecimal(txtThue);
+    }//GEN-LAST:event_txtThueKeyPressed
+
+    private void txtSoDTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoDTKeyPressed
+        input.inputPhone(txtSoDT);
+    }//GEN-LAST:event_txtSoDTKeyPressed
 
     /**
      * @param args the command line arguments
@@ -590,10 +698,10 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHuyHoaDon;
+    private javax.swing.JButton btnLuuHoaDon;
     private javax.swing.JButton btnThemHoaDon;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -616,7 +724,6 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JTable tblDanhSachSanPham;
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTextField txtDonGia;
@@ -624,6 +731,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaHD;
     private javax.swing.JTextField txtMaNV;
     private javax.swing.JTextField txtNgayBan;
+    private javax.swing.JTextField txtSoDT;
     private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTenNhanVien;
     private javax.swing.JTextField txtTenSanPham;

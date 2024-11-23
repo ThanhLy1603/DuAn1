@@ -16,6 +16,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ADMIN
  */
+enum colLoaiSP {
+    MALOAI(0),
+    TENLOAI(1);
+    int i;
+    
+    private colLoaiSP(int i) {
+        this.i = i;
+    }
+}
 public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initialize<LoaiSanPham>,
         CheckForm<LoaiSanPham, String>, CrudController {
     private LoaiSanPhamDAO dao = new LoaiSanPhamDAO();
@@ -90,7 +99,10 @@ public class LoaiSPDetailJDialog extends javax.swing.JFrame implements Initializ
 
     @Override
     public void getForm(int index) {
-        LoaiSanPham o = dao.getAllData().get(index);
+        String maLoai = (String) tblThuocTinhSanPham.getValueAt(index, colLoaiSP.MALOAI.i);
+        String tenLoai = (String) tblThuocTinhSanPham.getValueAt(index, colLoaiSP.TENLOAI.i);
+        
+        LoaiSanPham o = new LoaiSanPham(maLoai, tenLoai);
         setForm(o);
     }
 

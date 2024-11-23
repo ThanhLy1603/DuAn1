@@ -35,7 +35,25 @@ public class SanPham {
         this.hinhAnh = hinhAnh;
         this.trangThai = trangThai;
     }
-
+    
+    public SanPham(String maSP, String maLoai, String tenSP, double donGia, int soLuong, boolean trangThai) {
+        this.maSP = maSP;
+        this.maLoai = maLoai;
+        this.tenSP = tenSP;
+        this.donGia = donGia;
+        this.soLuong = soLuong;
+        this.trangThai = trangThai;
+    }
+    
+    public SanPham(String maSP, String tenSP, String mauSac, String chatLieu, String size, String hinhAnh) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.mauSac = mauSac;
+        this.chatLieu = chatLieu;
+        this.size = size;
+        this.hinhAnh = hinhAnh;
+    }
+    
     public String getMaSP() {
         return maSP;
     }
