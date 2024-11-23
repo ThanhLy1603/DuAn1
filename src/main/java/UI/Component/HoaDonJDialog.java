@@ -197,7 +197,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         float giamGia = Float.parseFloat(txtGiamGia.getText());
         int thue = Integer.parseInt(txtThue.getText());
-        double thanhTien = (donGia * soLuong) * (100 - giamGia + thue);
+        double thanhTien = donGia * soLuong * ((100 - giamGia)/100);
         
         Object[] row = {
             tenSP,

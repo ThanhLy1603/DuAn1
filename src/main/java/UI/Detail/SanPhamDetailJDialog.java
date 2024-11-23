@@ -36,6 +36,7 @@ enum colSP {
         this.i = i;
     }
 }
+
 public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initialize<SanPham>,
         CheckForm<SanPham, String>,CrudController {
     private SanPhamDAO dao = new SanPhamDAO();
@@ -313,6 +314,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         txtSoLuong.setText("");
         txtTrangThai.setText("");
         generateCbx();
+        fillToTable();
     }
 
     @Override

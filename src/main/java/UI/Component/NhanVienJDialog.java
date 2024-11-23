@@ -263,7 +263,6 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             )); // Email
             DialogBox.notice(this, "Update Thành Công");
             fillToTable();
-
         }
     }
 
@@ -292,10 +291,12 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         String soDT = txtSDT.getText();
         String email = txtEmail.getText();
         int count = 0;
+        
         if (maNV.equals("") || maNV.matches(patternText)) {
             sb.append("Mã nhân viên Không được trống\n");
             count++;
         }
+        
         if (matKhau.equals("") || matKhau.isEmpty()) {
             sb.append("Bạn chưa nhập mật khẩu\n");
             count++;
@@ -305,21 +306,26 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
             sb.append("Tên Nhân viên không được trống!\n");
             count++;
         }
+        
         if (luong.equals("") || !luong.matches(patternNumber)) {
             sb.append("Lương Không được trống\n");
             count++;
         }
+        
         if (soDT.equals("") || !soDT.matches(patternSDT)) {
             sb.append("Số điện thoại Không được trống\n");
             count++;
         }
+        
         if (email.equals("") || !email.matches(patternEmail)) {
             sb.append("Email Không được trống\n");
             count++;
         }
+        
         if (sb.length() > 0) {
             DialogBox.notice(this, sb.toString());
         }
+        
         return count == 0;
     }
 

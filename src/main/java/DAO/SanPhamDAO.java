@@ -21,7 +21,8 @@ public class SanPhamDAO implements DAO<SanPham, String>{
     @Override
     public List<SanPham> getAllData() {
         List<SanPham> list = new ArrayList();
-        String sql = "SELECT * FROM SanPham";
+        String sql = "select * from SanPham\n" +
+                    "order by cast(substring(MaSanPham,3,4) as int) asc";
         Object[] values = {};
         
         ResultSet rs = JDBC.executeQuery(sql, values);
