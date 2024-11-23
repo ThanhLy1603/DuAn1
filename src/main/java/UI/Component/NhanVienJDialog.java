@@ -50,7 +50,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         List<NhanVien> list = dao.getAllData();
 
         String[] col = {
+            "MaNV",
             "Tên nhân viên",
+            "Mật Khẩu",
             "Giới tính",
             "Chức vụ",
             "Lương",
@@ -62,7 +64,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         list.forEach(nv -> {
             Object[] values = {
+                nv.getMaNV(),
                 nv.getTenNV(),
+                nv.getMatKhau(),
                 nv.isGioiTinh() ? "Nam" : "Nữ",
                 nv.isChucVu() ? "Quản lý" : "Nhân viên",
                 df.format(nv.getLuong()),
@@ -86,7 +90,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         List<NhanVien> list = dao.getDataByValue(indexGioiTinh, indexChucVu);
         String[] col = {
+            "MaNV",
             "Tên nhân viên",
+            "Mật Khẩu",
             "Giới tính",
             "Chức vụ",
             "Lương",
@@ -98,7 +104,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         list.forEach(nv -> {
             Object[] values = {
+                nv.getMaNV(),
                 nv.getTenNV(),
+                nv.getMatKhau(),
                 nv.isGioiTinh() ? "Nam" : "Nữ",
                 nv.isChucVu() ? "Quản lý" : "Nhân viên",
                 df.format(nv.getLuong()),
@@ -156,7 +164,24 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
     @Override
     public void getForm(int index) {
-        NhanVien nv = dao.getAllData().get(index);
+        String maNV = (String) tblNhanVien.getValueAt(index, 0); // MaNV
+        String tenNV = (String) tblNhanVien.getValueAt(index, 1); // TenNV
+        String matKhau = (String) tblNhanVien.getValueAt(index, 2); // MatKhau
+        boolean gioiTinh = "Nam".equals(tblNhanVien.getValueAt(index, 3)); // Giới tính
+        boolean chucVu = "Quản Lý".equals(tblNhanVien.getValueAt(index, 4)); // Chức vụ
+        String luongStr = (String) tblNhanVien.getValueAt(index, 5); // Lương
+        String soDT = (String) tblNhanVien.getValueAt(index, 6); // Số điện thoại
+        String email = (String) tblNhanVien.getValueAt(index, 7); // Email
+
+        double luong = 0.0;
+        try {
+            luong = Double.parseDouble(luongStr); // Chuyển đổi lương nếu là số
+        } catch (NumberFormatException e) {
+            // Xử lý nếu không phải số (có thể ghi log hoặc set lương mặc định)
+            System.out.println("Lương không hợp lệ: " + luongStr);
+        }
+
+        NhanVien nv = new NhanVien(maNV, matKhau, tenNV, gioiTinh, chucVu, luong, soDT, email);
         setForm(nv);
     }
 
@@ -165,10 +190,12 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         txtMaNV.setText(nv.getMaNV());
         txtPassword.setText(nv.getMatKhau());
         txtTenNV.setText(nv.getTenNV());
-        rdbNam.setSelected(nv.isNam());
-        rdbNu.setSelected(nv.isNu());
-        rbtnNhanVien.setSelected(nv.isNhanVien());
-        rbtnTruongPhong.setSelected(nv.isTruongPhong());
+        rdbNam.setSelected(nv.isGioiTinh()); // true nếu là "Nam"
+        rdbNu.setSelected(!nv.isGioiTinh()); // false nếu là "Nam"
+
+        // Gán giá trị cho radio button chức vụ
+        rbtnTruongPhong.setSelected(nv.isChucVu()); // true nếu là "Quản lý"
+        rbtnNhanVien.setSelected(!nv.isChucVu()); // false nếu là "Quản lý"
         txtLuong.setText(df.format((long) nv.getLuong()));
         txtEmail.setText(nv.getEmail());
         txtSDT.setText(nv.getSoDT());
@@ -388,7 +415,9 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
         // Duyệt qua danh sách nhân viên và thêm vào bảng
         for (NhanVien nv : list) {
             model.addRow(new Object[]{
+                nv.getMaNV(),
                 nv.getTenNV(),
+                nv.getMatKhau(),
                 nv.isGioiTinh() ? "Nam" : "Nữ",
                 nv.isChucVu() ? "Quản lý" : "Nhân viên",
                 df.format(nv.getLuong()),
@@ -685,13 +714,13 @@ public class NhanVienJDialog extends javax.swing.JFrame implements CrudControlle
 
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tên nhân viên", "Giới tính", "Chức vụ", "Lương", "Số điện thoại", "Email"
+                "MaNV", "Mật Khẩu", "Tên nhân viên", "Giới tính", "Chức vụ", "Lương", "Số điện thoại", "Email"
             }
         ));
         tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
