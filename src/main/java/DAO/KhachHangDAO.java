@@ -69,7 +69,7 @@ public class KhachHangDAO implements DAO<KhachHang, String> {
         Object[] values = {
             kh.getMaKH(),
             kh.getTenKH(),
-            kh.isGioiTinh(),
+            kh.isGioiTinh()?1:0,
             kh.getDiaChi(),
             kh.getSoDT()
         };
@@ -81,11 +81,12 @@ public class KhachHangDAO implements DAO<KhachHang, String> {
     public void updateData(KhachHang kh) {
         String sql="EXEC SP_InsertUpdateKhachHang ?, ?, ?,?,?";
         Object[] values = {
+            kh.getMaKH(),
             kh.getTenKH(),
-            kh.isGioiTinh(),
+            kh.isGioiTinh()?1:0,
             kh.getDiaChi(),
             kh.getSoDT(),
-            kh.getMaKH()
+
         };
         
         JDBC.executeUpdate(sql, values);

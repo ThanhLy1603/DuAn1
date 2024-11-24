@@ -104,7 +104,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
 
         jPanel1 = new javax.swing.JPanel();
         pnSideMenu = new javax.swing.JPanel();
-        lblBanHang = new javax.swing.JLabel();
+        lblLichSuBanHang = new javax.swing.JLabel();
         lblSanPham = new javax.swing.JLabel();
         lblHoaDon = new javax.swing.JLabel();
         lblKhuyenMai = new javax.swing.JLabel();
@@ -137,12 +137,12 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
 
         pnSideMenu.setBackground(new java.awt.Color(153, 153, 153));
 
-        lblBanHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblBanHang.setForeground(new java.awt.Color(255, 255, 255));
-        lblBanHang.setText("Bán Hàng");
-        lblBanHang.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblLichSuBanHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblLichSuBanHang.setForeground(new java.awt.Color(255, 255, 255));
+        lblLichSuBanHang.setText("Lịch Sử Bán Hàng");
+        lblLichSuBanHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblBanHangMouseClicked(evt);
+                lblLichSuBanHangMouseClicked(evt);
             }
         });
 
@@ -157,7 +157,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
 
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setForeground(new java.awt.Color(255, 255, 255));
-        lblHoaDon.setText("Hóa Đơn");
+        lblHoaDon.setText("Hóa đơn");
         lblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblHoaDonMouseClicked(evt);
@@ -269,7 +269,6 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
                 .addGap(46, 46, 46)
                 .addGroup(pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblDoanhThu)
-                    .addComponent(lblBanHang)
                     .addComponent(lblSanPham)
                     .addComponent(lblHoaDon)
                     .addComponent(lblKhuyenMai)
@@ -278,15 +277,19 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
                     .addComponent(lblThoat)
                     .addComponent(lblNhapHang)
                     .addComponent(lblDoiMatKhau))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnSideMenuLayout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addComponent(lblLichSuBanHang)
+                .addGap(25, 25, 25))
         );
         pnSideMenuLayout.setVerticalGroup(
             pnSideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnSideMenuLayout.createSequentialGroup()
                 .addComponent(pnVaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(lblBanHang)
-                .addGap(30, 30, 30)
+                .addGap(33, 33, 33)
+                .addComponent(lblLichSuBanHang)
+                .addGap(33, 33, 33)
                 .addComponent(lblSanPham)
                 .addGap(31, 31, 31)
                 .addComponent(lblHoaDon)
@@ -319,7 +322,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnDoanhThuLayout.setHorizontalGroup(
             pnDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnDoanhThuLayout.createSequentialGroup()
-                .addContainerGap(377, Short.MAX_VALUE)
+                .addContainerGap(370, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(409, 409, 409))
         );
@@ -342,7 +345,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
             .addGroup(pnKhachHangLayout.createSequentialGroup()
                 .addGap(511, 511, 511)
                 .addComponent(jLabel2)
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addContainerGap(504, Short.MAX_VALUE))
         );
         pnKhachHangLayout.setVerticalGroup(
             pnKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,7 +361,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnNhanVien.setLayout(pnNhanVienLayout);
         pnNhanVienLayout.setHorizontalGroup(
             pnNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1086, Short.MAX_VALUE)
+            .addGap(0, 1079, Short.MAX_VALUE)
         );
         pnNhanVienLayout.setVerticalGroup(
             pnNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +374,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnSanPham.setLayout(pnSanPhamLayout);
         pnSanPhamLayout.setHorizontalGroup(
             pnSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1086, Short.MAX_VALUE)
+            .addGap(0, 1079, Short.MAX_VALUE)
         );
         pnSanPhamLayout.setVerticalGroup(
             pnSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -384,7 +387,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnKhuyenMai.setLayout(pnKhuyenMaiLayout);
         pnKhuyenMaiLayout.setHorizontalGroup(
             pnKhuyenMaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1086, Short.MAX_VALUE)
+            .addGap(0, 1079, Short.MAX_VALUE)
         );
         pnKhuyenMaiLayout.setVerticalGroup(
             pnKhuyenMaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,7 +400,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnNhapHang.setLayout(pnNhapHangLayout);
         pnNhapHangLayout.setHorizontalGroup(
             pnNhapHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1086, Short.MAX_VALUE)
+            .addGap(0, 1079, Short.MAX_VALUE)
         );
         pnNhapHangLayout.setVerticalGroup(
             pnNhapHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -415,7 +418,7 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pnHoaDonLayout.setHorizontalGroup(
             pnHoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnHoaDonLayout.createSequentialGroup()
-                .addContainerGap(377, Short.MAX_VALUE)
+                .addContainerGap(370, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(409, 409, 409))
         );
@@ -462,10 +465,9 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblBanHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBanHangMouseClicked
-        // TODO add your handling code here:
-        //Hiên thị panel và ẩn panel
-    }//GEN-LAST:event_lblBanHangMouseClicked
+    private void lblLichSuBanHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLichSuBanHangMouseClicked
+
+    }//GEN-LAST:event_lblLichSuBanHangMouseClicked
 
     private void lblDoanhThuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDoanhThuMouseClicked
         // TODO add your handling code here:
@@ -570,12 +572,12 @@ public class MenuJDialog extends javax.swing.JFrame implements Panel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblBanHang;
     private javax.swing.JLabel lblDoanhThu;
     private javax.swing.JLabel lblDoiMatKhau;
     private javax.swing.JLabel lblHoaDon;
     private javax.swing.JLabel lblKhachHang;
     private javax.swing.JLabel lblKhuyenMai;
+    private javax.swing.JLabel lblLichSuBanHang;
     private javax.swing.JLabel lblNhanVien;
     private javax.swing.JLabel lblNhapHang;
     private javax.swing.JLabel lblSanPham;

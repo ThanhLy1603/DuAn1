@@ -12,11 +12,11 @@ import javax.swing.text.DocumentFilter;
  *
  * @author ADMIN
  */
-public class NumbericDocumentFilter extends DocumentFilter {
+public class MaxLength extends DocumentFilter {
     
     private final int maxLength;
 
-    public NumbericDocumentFilter(int maxLength) {
+    public MaxLength(int maxLength) {
         this.maxLength = maxLength;
     }
 
@@ -43,11 +43,6 @@ public class NumbericDocumentFilter extends DocumentFilter {
     private boolean isValidInput(FilterBypass fb, String text) throws BadLocationException {
         if (text == null) {
             return true;
-        }
-
-        // Kiểm tra chuỗi chỉ chứa số
-        if (!text.matches("\\d*")) {
-            return false;
         }
 
         // Kiểm tra độ dài tối đa
