@@ -4,12 +4,13 @@
  */
 package UI.Component;
 import DAO.KhachHangDAO;
-import Entity.DoanhThu;
 import Interfaces.Initialize;
 import Interfaces.CheckForm;
 import Interfaces.CrudController;
 import Entity.KhachHang;
+import Utils.DialogBox;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -92,12 +93,14 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public void getForm(int index) {
-        
+        KhachHang o = dao.getAllData().get(index);
+        setForm(o);
     }
 
     @Override
     public void showDetail() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int index = tblKhachHang.getSelectedRow();
+        getForm(index);
     }
 
     @Override
@@ -112,22 +115,77 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public boolean isCheckValid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        StringBuilder sb = new StringBuilder();
+        String maKH = txtMaKH.getText();
+        String tenKH = txtTenKH.getText();
+        String sdt = txtSDT.getText();
+        String diachi = txaDiaChi.getText();
+        String patternText = "\\s+";
+        int count = 0;
+        
+        if (tenKH.equals("") || tenKH.matches(patternText)) {
+            sb.append("Bạn chưa nhập tên\n");
+            count++;
+        }
+        
+        if (maKH.equals("") || maKH.matches(patternText)) {
+            sb.append("Bạn chưa nhập mã\n");
+            count++;
+        }
+        
+        
+        
+        if(sdt.equals("") || sdt.matches(patternText)) {
+            sb.append("Bạn chưa nhập số điện thoại");
+            count++;
+        }
+        
+        if(diachi.equals("") || diachi.matches(patternText)) {
+            sb.append("Bạn chưa nhập địa chỉ");
+            count++;
+        }
+        
+        if (sb.length() > 0) {
+            DialogBox.notice(this, sb.toString());
+        }
+        
+        return count == 0;
     }
 
     @Override
     public boolean isCheckContain(List<KhachHang> list, String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int count = 0;
+        for (KhachHang o : list) {
+            if (ma.equals(o.getMaKH())) count++;
+        }
+        
+        return count != 0;
     }
 
     @Override
     public boolean isCheckDuplicate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<KhachHang> list = dao.getAllData();
+        String ma = txtMaKH.getText();
+        
+        if (isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Mã loại này có rồi. Vui lòng nhập mã loại khác");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public boolean isCheckUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<KhachHang> list = dao.getAllData();
+        String ma = txtMaKH.getText();
+        
+        if (!isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Không tìm thấy khách hàng cần sửa");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -137,27 +195,70 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public boolean isCheckDelete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<KhachHang> list = dao.getAllData();
+        String ma = txtMaKH.getText();
+        
+        if (!isCheckContain(list, ma)) {
+            DialogBox.notice(this, "Không tìm thấy khách hàng cần xóa");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public void create() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (isCheckValid()) {
+            if (isCheckDuplicate()) {
+                String maKH = txtMaKH.getText();
+                String tenKH = txtTenKH.getText();
+                String sdt = txtSDT.getText();
+                String diachi = txaDiaChi.getText();
+                Boolean gioiTinh = rdnNam.isSelected();
+              
+                dao.insertData(new KhachHang(maKH, tenKH, gioiTinh, sdt, diachi)); 
+                DialogBox.notice(this, "Thêm thành công");
+                reset();
+                fillToTable();
+            }
+        }
+
+
     }
 
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        txtMaKH.setText("");
+        txtTenKH.setText("");
+        rdnNam.setSelected(true);
+        txtSDT.setText("");
+        txaDiaChi.setText("");
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        if(isCheckValid()){
+//            if(isCheckDuplicate()) {
+                String maKH = txtMaKH.getText();
+                String tenKH = txtTenKH.getText();
+                String sdt = txtSDT.getText();
+                String diachi = txaDiaChi.getText();
+                Boolean gioiTinh = rdnNam.isSelected();
+              
+                dao.insertData(new KhachHang(maKH, tenKH, gioiTinh, sdt, diachi)); 
+                DialogBox.notice(this, "Sửa thành công");
+                reset();
+                fillToTable(); 
+//            };
+        }
+        
+      }
 
     @Override
     public void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        isCheckDelete();
+        dao.deleteById(txtMaKH.getText());
+        fillToTable();
     }
 
     /**
@@ -358,6 +459,11 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
         jLabel7.setText("Tìm kiếm:");
 
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtSearchKeyPressed(evt);
@@ -375,6 +481,11 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
                 "Mã KH", "Tên KH", "Giới tính", "SĐT", "Địa chỉ"
             }
         ));
+        tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKhachHangMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblKhachHang);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -457,24 +568,36 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        create();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnRenewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRenewActionPerformed
-        // TODO add your handling code here:
+        reset();
     }//GEN-LAST:event_btnRenewActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        delete();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
         // TODO add your handling code here:
         filterTable();
     }//GEN-LAST:event_txtSearchKeyPressed
+
+    private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
+        // TODO add your handling code here:
+        showDetail();
+    }//GEN-LAST:event_tblKhachHangMouseClicked
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
 
     /**
      * @param args the command line arguments
