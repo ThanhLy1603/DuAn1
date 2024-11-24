@@ -140,7 +140,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     @Override
     public void setForm(SanPham o) {
         String itemCbx = map.getValueByID(o.getMaLoai());
-        String donGia = df.format(o.getDonGia());
+        String donGia = String.valueOf((int)o.getDonGia());
         
         txtMaSP.setText(o.getMaSP());
         cbxLoaiSanPham.setSelectedItem(itemCbx);
@@ -161,7 +161,7 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
         
         SanPham o = new SanPham(
                 maSP,
-                loai,
+                map.getIDByValue(loai),
                 tenSP,
                 Double.parseDouble(numFormat.removeCommas(donGia)), 
                 (int) soLuong,
@@ -282,10 +282,10 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
                         txtTenSP.getText(), 
                         Double.parseDouble(txtDonGia.getText()), 
                         Integer.parseInt(txtSoLuong.getText()), 
-                        "", 
-                        "", 
-                        "", 
-                        "", 
+                        "",
+                        "",
+                        "",
+                        "",
                         true
                 )); 
                 
@@ -303,10 +303,6 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
                 "", 
                 0, 
                 0, 
-                "", 
-                "",
-                "",
-                "", 
                 true
         );
         setForm(sp);
@@ -329,10 +325,10 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
                         txtTenSP.getText(), 
                         Double.parseDouble(txtDonGia.getText()), 
                         Integer.parseInt(txtSoLuong.getText()), 
-                        "", 
-                        "", 
-                        "", 
-                        "", 
+                        "",
+                        "",
+                        "",
+                        "",
                         true
                 )); 
                 
@@ -570,10 +566,11 @@ public class SanPhamDetailJDialog extends javax.swing.JFrame implements Initiali
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
-        input.inputString(txtMaSP);
+        input.inputText(txtMaSP);
     }//GEN-LAST:event_txtMaSPActionPerformed
 
     private void txtTenSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenSPKeyPressed
+        input.inputText(txtTenSP);
         filterTable();
     }//GEN-LAST:event_txtTenSPKeyPressed
 

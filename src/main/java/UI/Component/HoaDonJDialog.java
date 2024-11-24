@@ -10,6 +10,7 @@ import DAO.KhuyenMaiDAO;
 import DAO.SanPhamDAO;
 import Entity.HoaDon;
 import Entity.SanPham;
+import Entity.KhachHang;
 import Map.MapChiTietSanPham;
 import Utils.Auth;
 import Utils.DialogBox;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Utils.NumberFormat;
+import Utils.NumbericDocumentFilter;
+import javax.swing.text.AbstractDocument;
 /**
  *
  * @author ADMIN
@@ -56,7 +59,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     public void init() throws SQLException {
         fillToSanPhamTable();
         fillToHoaDonTable();
-        generateDateNV();
+        generateForm();
         setGiamGiaThue();
         
         setLocationRelativeTo(null);
@@ -104,13 +107,13 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     // Tạo danh sách mã hóa đơn đã tạo
     public List<String> listMaHD() {
         List<HoaDon> list = daoHD.getAllData();
-        List<String> listMaHD = new ArrayList<>();
+        List<String> maHD = new ArrayList<>();
         
         for (HoaDon o : list) {
-            listMaHD.add(o.getMaHD());
+            maHD.add(o.getMaHD());
         }
         
-        return listMaHD;
+        return maHD;
     }
     
     // Tạo mã hóa đơn
@@ -124,10 +127,32 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         } while (listMaHD().contains(maHD));
         
         return maHD;
-    }  
+    } 
+    
+    public List<String> listMaKH() {
+        List<KhachHang> list = daoKH.getAllData();
+        List<String> maKH = new ArrayList<>();
+        
+        for (KhachHang o : list) {
+            maKH.add(o.getMaKH());
+        }
+        
+        return maKH;
+    }
+    
+    public String generateMaKH() {
+        String maKH = null;
+        int count = 1;
+        
+        do {
+            maKH = String.format("KH%d", count++);    
+        } while (listMaKH().contains(maKH));
+                
+        return maKH;
+    }
     
     // Tạo mã nhân viên và tên nhân viên
-    public void generateDateNV() {
+    public void generateForm() {
         String maNhanVien = "PS43010";
         String tenNhanVien = "Trần Lê Duy Thiện";
         
@@ -141,6 +166,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         txtTenNhanVien.setText(tenNhanVien);
         txtNgayBan.setText(formatter.format(date));
         txtMaHD.setText(generateMaHD());
+        txtMaKH.setText(generateMaKH());
     }
      
     // Điền thông tin của sản phẩm vào form
@@ -197,7 +223,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         float giamGia = Float.parseFloat(txtGiamGia.getText());
         int thue = Integer.parseInt(txtThue.getText());
-        double thanhTien = donGia * soLuong * ((100 - giamGia)/100);
+        double thanhTien = donGia * soLuong * ((1 - giamGia/100))*(100 + thue)/100;
         
         Object[] row = {
             tenSP,
@@ -211,6 +237,15 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         model.addRow(row);
         
         tblHoaDon.setModel(model);  
+        setTongTien();
+    }
+    
+    public void removeSanPham() {
+        int index = tblHoaDon.getSelectedRow();
+        model.removeRow(index);
+        
+        tblHoaDon.setModel(model);
+        
         setTongTien();
     }
     
@@ -242,8 +277,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtMaKH = new javax.swing.JTextField();
+        txtTenKH = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         txtSoDT = new javax.swing.JTextField();
         txtMaNV = new javax.swing.JTextField();
@@ -268,7 +303,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
         btnThemHoaDon = new javax.swing.JButton();
         btnLuuHoaDon = new javax.swing.JButton();
         btnHuyHoaDon = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnXoaKhoiHD = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -301,6 +336,12 @@ public class HoaDonJDialog extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel9.setText("Số điện thoại");
+
+        txtTenKH.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTenKHKeyPressed(evt);
+            }
+        });
 
         txtSoDT.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -343,8 +384,8 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5)
+                    .addComponent(txtMaKH)
+                    .addComponent(txtTenKH)
                     .addComponent(jTextField6)
                     .addComponent(txtSoDT, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
@@ -357,12 +398,12 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                     .addComponent(txtMaHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNgayBan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -567,8 +608,13 @@ public class HoaDonJDialog extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton1.setText("Xóa khỏi hóa đơn");
+        btnXoaKhoiHD.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnXoaKhoiHD.setText("Xóa khỏi hóa đơn");
+        btnXoaKhoiHD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaKhoiHDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -588,7 +634,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                         .addGap(124, 124, 124)
                         .addComponent(btnThemHoaDon)
                         .addGap(90, 90, 90)
-                        .addComponent(jButton1)
+                        .addComponent(btnXoaKhoiHD)
                         .addGap(85, 85, 85)
                         .addComponent(btnLuuHoaDon)
                         .addGap(96, 96, 96)
@@ -606,7 +652,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnXoaKhoiHD)
                     .addComponent(btnLuuHoaDon)
                     .addComponent(btnHuyHoaDon)
                     .addComponent(btnThemHoaDon))
@@ -651,11 +697,20 @@ public class HoaDonJDialog extends javax.swing.JFrame {
 
     private void txtThueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtThueKeyPressed
         input.inputDecimal(txtThue);
+        ((AbstractDocument) txtThue.getDocument()).setDocumentFilter(new NumbericDocumentFilter(2));
     }//GEN-LAST:event_txtThueKeyPressed
 
     private void txtSoDTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoDTKeyPressed
         input.inputPhone(txtSoDT);
     }//GEN-LAST:event_txtSoDTKeyPressed
+
+    private void btnXoaKhoiHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaKhoiHDActionPerformed
+        removeSanPham();
+    }//GEN-LAST:event_btnXoaKhoiHDActionPerformed
+
+    private void txtTenKHKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenKHKeyPressed
+        input.inputText(txtTenKH);
+    }//GEN-LAST:event_txtTenKHKeyPressed
 
     /**
      * @param args the command line arguments
@@ -701,7 +756,7 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JButton btnHuyHoaDon;
     private javax.swing.JButton btnLuuHoaDon;
     private javax.swing.JButton btnThemHoaDon;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnXoaKhoiHD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -721,18 +776,18 @@ public class HoaDonJDialog extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTable tblDanhSachSanPham;
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTextField txtDonGia;
     private javax.swing.JTextField txtGiamGia;
     private javax.swing.JTextField txtMaHD;
+    private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtMaNV;
     private javax.swing.JTextField txtNgayBan;
     private javax.swing.JTextField txtSoDT;
     private javax.swing.JTextField txtSoLuong;
+    private javax.swing.JTextField txtTenKH;
     private javax.swing.JTextField txtTenNhanVien;
     private javax.swing.JTextField txtTenSanPham;
     private javax.swing.JTextField txtThue;

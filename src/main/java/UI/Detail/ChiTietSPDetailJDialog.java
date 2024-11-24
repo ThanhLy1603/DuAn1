@@ -256,7 +256,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
 
             String hinhAnh = photo.getPhotoName();
 
-            dao.updateData(new SanPham(
+            dao.updateChiTietSanPham(new SanPham(
                     txtMaSanPham.getText(), 
                     o.getMaLoai(), 
                     txtTenSanPham.getText(), 
@@ -330,7 +330,7 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
             }
         });
 
-        btnThem.setText("Thêm");
+        btnThem.setText("Thêm thông tin");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemActionPerformed(evt);
@@ -394,9 +394,9 @@ public class ChiTietSPDetailJDialog extends javax.swing.JFrame implements Initia
                 .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2)

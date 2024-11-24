@@ -18,7 +18,10 @@ public class ValidateInput {
     public String patternNumber = "\\d*";
     public String patternString = "[a-zA-Z0-9]*";
     public String patternDecimal = "^[0-9.]*$";
-    public String patternPhone = "^[0-9]{1,10}$";
+    public String patternPhone = "^\\d{1,10}$";
+    public String patternSymbol = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯàáâãèéêìíòóôõùúăđĩũơưĂÂÊÔƠƯáàảãạắằẳẵặấầẩẫậéèẻẽẹếềểễệóòỏõọốồổỗộớờởỡợúùủũụứừửữựỳỵýỷỹ ,\\.]+$";
+    public String patternText = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯàáâãèéêìíòóôõùúăđĩũơưĂÂÊÔƠƯáàảãạắằẳẵặấầẩẫậéèẻẽẹếềểễệóòỏõọốồổỗộớờởỡợúùủũụứừửữựỳỵýỷỹ]+$"; 
+
     
     public void inputString(JTextField textField) {
        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
@@ -32,6 +35,29 @@ public class ValidateInput {
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 if (text.matches(patternString)) { // Chỉ chấp nhận các ký tự số
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+
+            @Override
+            public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+                super.remove(fb, offset, length); // Cho phép xóa bình thường
+            }
+        });
+    }
+    
+    public void inputText(JTextField textField) {
+       ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches(patternText)) { // Chỉ chấp nhận các ký tự số
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches(patternText)) { // Chỉ chấp nhận các ký tự số
                     super.replace(fb, offset, length, text, attrs);
                 }
             }
@@ -101,6 +127,31 @@ public class ValidateInput {
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 if (text.matches(patternPhone)) { // Chỉ chấp nhận các ký tự số
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+
+            @Override
+            public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+                super.remove(fb, offset, length); // Cho phép xóa bình thường
+            }
+        });
+        
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumbericDocumentFilter(10));
+    }
+    
+    public void inputSymbol(JTextField textField) {
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches(patternSymbol)) { // Chỉ chấp nhận các ký tự số
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches(patternSymbol)) { // Chỉ chấp nhận các ký tự số
                     super.replace(fb, offset, length, text, attrs);
                 }
             }

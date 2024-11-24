@@ -20,9 +20,9 @@ public class SanPhamDAO implements DAO<SanPham, String>{
 
     @Override
     public List<SanPham> getAllData() {
+        // Nên truy vấn sắp xếp mã sản phẩm
         List<SanPham> list = new ArrayList();
-        String sql = "select * from SanPham\n" +
-                    "order by cast(substring(MaSanPham,3,4) as int) asc";
+        String sql = "select * from SanPham";
         Object[] values = {};
         
         ResultSet rs = JDBC.executeQuery(sql, values);
@@ -113,7 +113,20 @@ public class SanPhamDAO implements DAO<SanPham, String>{
             
         JDBC.executeUpdate(sql, values);
     }
-
+    
+    public void updateChiTietSanPham(SanPham o) {
+        String sql = "UPDATE SanPham SET MauSac = ?, ChatLieu = ?, Size = ?, HinhAnh = ? WHERE MaSanPham = ?";
+        Object[] values = {
+            o.getMauSac(),
+            o.getChatLieu(),
+            o.getSize(),
+            o.getHinhAnh(),
+            o.getMaSP()
+        };
+        
+        JDBC.executeUpdate(sql, values);
+    }
+    
     @Override
     public void deleteById(String ma) {
         String sql = "DELETE FROM SanPham WHERE MaSanPham=?";
