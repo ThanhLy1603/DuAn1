@@ -93,8 +93,18 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
 
     @Override
     public void getForm(int index) {
-        KhachHang o = dao.getAllData().get(index);
-        setForm(o);
+       String maKH = (String) tblKhachHang.getValueAt(index, 0);
+       String tenKH = (String) tblKhachHang.getValueAt(index, 1);
+       String gioiTinhStr = (String) tblKhachHang.getValueAt(index, 2);
+       String sdt = (String) tblKhachHang.getValueAt(index, 3);
+       String diachi = (String) tblKhachHang.getValueAt(index, 4);
+       
+       boolean gioiTinh = gioiTinhStr.equals("Nam");
+       rdnNam.setSelected(gioiTinh);
+       rdnNu.setSelected(gioiTinh);
+       
+       KhachHang kh = new KhachHang(maKH, tenKH, gioiTinh, sdt, diachi);
+       setForm(kh);
     }
 
     @Override
