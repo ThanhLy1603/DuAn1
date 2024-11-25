@@ -52,6 +52,7 @@ public class KhachHangJDialog extends javax.swing.JFrame implements Initialize<K
                 o.getMaKH(),
                 o.getTenKH(),
                 o.isGioiTinh()?"Nam":"Nữ",
+                o.getSoDT(),
                 o.getDiaChi()
             });
         }
